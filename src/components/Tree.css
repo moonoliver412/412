@@ -7,19 +7,21 @@
 }
 
 /* Stage-driven parts chase their new transform smoothly so the 1s session
-   ticks blend into continuous growth. */
+   ticks blend into continuous growth. P8 pop-and-settle: the bezier
+   overshoots (~1.56) then springs back for a gentle toy-like bounce. */
 .cs-tree__grow {
   transition:
-    transform 950ms cubic-bezier(0.34, 1.2, 0.4, 1),
+    transform 950ms cubic-bezier(0.34, 1.56, 0.56, 1),
     opacity 500ms ease;
   will-change: transform;
 }
 
 /* Per-leaf / per-branch birth pop (no will-change: there are ~250 of these
-   after the detail-density pass — rim dabs, micro dabs, scatter leaves). */
+   after the detail-density pass — rim dabs, micro dabs, scatter leaves).
+   Same P8 overshoot bezier: each part pops past its size, then settles. */
 .cs-tree__leaf {
   transition:
-    transform 950ms cubic-bezier(0.34, 1.2, 0.4, 1),
+    transform 950ms cubic-bezier(0.34, 1.56, 0.56, 1),
     opacity 600ms ease;
 }
 

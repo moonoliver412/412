@@ -8,7 +8,8 @@ import './Tree.css';
 //            sprout → seedling → sapling (first branches) → young tree →
 //            mature celebration (fruit, glow, sparkles).
 //   wilted : drooping branches, brown-olive foliage, fallen leaves, no sway.
-//   kind   : 'oak' | 'birch' | 'pine' | 'maple' | 'willow' (unknown → oak)
+//   kind   : 'oak' | 'birch' | 'pine' | 'maple' | 'willow' | 'cherry' |
+//            'bamboo' | 'sunflower' (unknown → oak)
 //   size   : rendered pixel width (height = size * 1.25).
 //   seed   : optional number — deterministic per-instance shape variation.
 //
@@ -16,13 +17,38 @@ import './Tree.css';
 // sparkles) is generated ONCE per (kind, seed) with a seeded PRNG inside
 // useMemo, so the per-second growth ticks only update stage-driven transforms.
 //
+// Forest-style redesign pass (P1–P8):
+//   P1 toy proportions — chunky short trunks, oversized rounded canopies.
+//   P2 mass construction — every canopy is 2–4 big rounded masses, each with
+//      a TWO-TONE lighter scallop cap on the upper-left lit side; the
+//      instanced real-leaf detail stays, but as texture INSIDE the masses.
+//   P3 soft linework — foliage edges are low-contrast darker SELF-edges
+//      (deep tone of the same fill); only trunks/wood keep the bold outline.
+//   P4 calmer palette — milkier, less saturated fills, identity hue kept.
+//   P5 silhouette-first — eight distinct silhouette classes (dome, slim
+//      column, tiered spike, flame dome, weeping curtain, blossom cloud,
+//      pole grove, lollipop flower).
+//   P6 one signature each — oak acorns, maple golden crown, pine droop+cones,
+//      birch bold lenticels, willow floor-length fronds, cherry blossom dots,
+//      bamboo segmented culms, sunflower giant golden head.
+//   P7 universal seedling — shared seed → cotyledon sprout for all kinds.
+//   P8 pop-and-settle — birth/stage transitions overshoot then settle.
+//
 // Species notes (matched to the user's reference art):
 //   maple : autumn fire — deep-red shadow clusters low/outside, scarlet and
 //           vivid-orange mids, golden crown last; dark branches in the gaps.
-//   oak   : bold-outlined cartoon clouds in 3 greens on a forked caramel
-//           trunk; stage-5 acorns dangle below cluster edges.
+//   oak   : cartoon clouds in 3 greens on a forked caramel trunk;
+//           stage-5 acorns dangle below cluster edges.
 //   pine  : flat tall conifer — 13 drooping speckled swag tiers with feathered
 //           needle-fan undersides + pointed crown/leader, bare trunk + tuft.
+//   cherry: slender dark trunk under a cloud of soft pink masses, white-pink
+//           blossom dots, falling petals; full bloom + white highlights at 5.
+//   bamboo: grove of 3–5 segmented culms (node rings, blade tufts at upper
+//           nodes), no canopy mass; grows culm-by-culm and node-by-node;
+//           mature = tallest culm + golden glints at the tips.
+//   sunflower: thick green stem, big leaves low, giant head (brown seed disc
+//           + golden petal ring) that lifts upright as it grows; mature =
+//           open head with seed spiral + glow; wilted = head bows over.
 //
 // Detail-density pass (trees now render 92–200px): ~1.6× leaf scatter, a
 // second finer rim-highlight pass on the lit side, two-tone micro dabs inside
@@ -76,15 +102,24 @@ const WILT_TRUNK = '#6f6552';
 const WILT_BIRCH_TRUNK = '#c9c2ac';
 const wiltLeaf = (c) => mix(c, WILT_LEAF, 0.78);
 
+// P4 calmer palette: every fill is shifted milkier / pastel-ward (lower
+// saturation, higher lightness) while keeping the species' identity hue.
 const KINDS = {
-  // oak: classic cartoon — lime tops / kelly mid / dark undersides, caramel trunk
-  oak: { seed: 11, trunk: '#b07a3a', trunkDk: '#8a5a26', back: '#2e7a2c', mid: '#55a437', front: '#8dc63f', rim: '#b4e36a' },
-  birch: { seed: 23, trunk: '#ece6d6', trunkDk: '#b9b29c', back: '#7c9551', mid: '#9fb86a', front: '#bccd85', rim: '#e0e4a6' },
-  // pine: flat modern conifer — dark forest + olive tiers, pale speckles (rim)
-  pine: { seed: 37, trunk: '#6b4f33', trunkDk: '#8f7250', back: '#334f39', mid: '#5f7d52', front: '#6f8f5e', rim: '#a8bc8e' },
-  // maple: fiery autumn — deep red shadows → scarlet → orange → golden crown
-  maple: { seed: 53, trunk: '#7d4633', trunkDk: '#54301f', back: '#9b2a1a', mid: '#d8492b', front: '#ef7c2a', rim: '#f6b73c' },
-  willow: { seed: 71, trunk: '#71543a', trunkDk: '#573f28', back: '#577646', mid: '#7da064', front: '#98b97c', rim: '#bfd59b' },
+  // oak: classic 3-green cloud dome, caramel trunk — softened lime/kelly/deep
+  oak: { seed: 11, trunk: '#c79a63', trunkDk: '#9a7244', back: '#4f8f51', mid: '#79b865', front: '#a3d385', rim: '#cdeaa9' },
+  // birch: chalk-white trunk (signature), milky sage canopy
+  birch: { seed: 23, trunk: '#f4f0e4', trunkDk: '#c9c2ad', back: '#84a05e', mid: '#a6bf78', front: '#c4d693', rim: '#e3eab2' },
+  // pine: deep conifer hue kept, lifted toward milky sage tiers
+  pine: { seed: 37, trunk: '#937352', trunkDk: '#74573c', back: '#455f44', mid: '#6c8a63', front: '#87a378', rim: '#b5c99c' },
+  // maple: autumn fire kept — rust → soft scarlet → apricot → creamy gold
+  maple: { seed: 53, trunk: '#9b6a50', trunkDk: '#71492f', back: '#b34d33', mid: '#df7a4a', front: '#f2a055', rim: '#f7cd7e' },
+  willow: { seed: 71, trunk: '#95764f', trunkDk: '#74573a', back: '#6b8c58', mid: '#90ae74', front: '#b1ca90', rim: '#d6e5ad' },
+  // cherry: slender cocoa trunk, cloud of milky pink blossom masses
+  cherry: { seed: 83, trunk: '#6b5048', trunkDk: '#4f3a33', back: '#eaa0b8', mid: '#f3bccd', front: '#f9d4df', rim: '#fdeaf0' },
+  // bamboo: fresh celadon culms — trunk slots double as culm tones
+  bamboo: { seed: 97, trunk: '#a8cc8b', trunkDk: '#7ca261', back: '#79a763', mid: '#97c07d', front: '#b6d698', rim: '#d9ebbb' },
+  // sunflower: leafy green stem, butter-gold petal tones
+  sunflower: { seed: 113, trunk: '#93b069', trunkDk: '#6f8b4a', back: '#e0a945', mid: '#ecc163', front: '#f5d781', rim: '#fbe9ad' },
 };
 
 // --- real leaf silhouettes (instanced via <defs>/<use>) ---------------------
@@ -132,6 +167,22 @@ const LEAF_PATHS = {
   ],
   // pine: needle bundles — 5 short needles / 7 long needles fanning downward
   pine: [needleBundle(5, 9, 110), needleBundle(7, 11, 150)],
+  // cherry: small rounded blossom petals / petal-oval leaf with a notched tip
+  cherry: [
+    'M 0 1.8 L 0 0.3 C -3.2 -0.6 -4.6 -3.4 -3.8 -6.6 C -3 -9.4 -1.4 -10.6 -0.3 -9 L 0 -8.4 L 0.3 -9 C 1.4 -10.6 3 -9.4 3.8 -6.6 C 4.6 -3.4 3.2 -0.6 0 0.3 Z M 0 -0.6 L 0 -7.6',
+    'M 0 1.6 L 0 0.3 C -2.6 -0.4 -3.9 -2.6 -3.5 -5.4 C -3.1 -8 -1.6 -9.6 0 -10.2 C 1.6 -9.6 3.1 -8 3.5 -5.4 C 3.9 -2.6 2.6 -0.4 0 0.3 Z M 0 -0.5 L 0 -8.6',
+    'M 0 2 L 0 0.4 C -2.2 -0.8 -3 -3.2 -2.4 -5.8 C -1.9 -8.2 -0.9 -9.8 0 -11 C 0.9 -9.8 1.9 -8.2 2.4 -5.8 C 3 -3.2 2.2 -0.8 0 0.4 Z M 0 -0.6 L 0 -9.2',
+  ],
+  // bamboo: slender tapering blades (straight + wind-bent), long thin midrib
+  bamboo: [
+    'M 0 1.4 L 0 0.2 C -1.4 -1.8 -1.7 -6.2 -0.9 -10 C -0.5 -12 0.5 -13.4 0.7 -13.8 C 1.5 -10.8 1.7 -5.4 0.9 -1.6 C 0.7 -0.8 0.3 -0.2 0 0.2 Z M 0 -0.8 L 0.5 -11.6',
+    'M 0 1.4 L 0 0.2 C -1.8 -2.2 -2.6 -6 -1.6 -9.4 C -0.9 -11.6 1 -13 2.2 -13.2 C 2.4 -10 1.6 -5 0.4 -1.8 C 0.2 -1 0.1 -0.4 0 0.2 Z M 0 -0.8 L 1.2 -11',
+  ],
+  // sunflower: plump rounded ray petal with a softly creased midline
+  sunflower: [
+    'M 0 1.2 L 0 0.2 C -2.6 -1 -3.8 -4 -3.4 -7.4 C -3 -10.6 -1.6 -12.6 0 -13.2 C 1.6 -12.6 3 -10.6 3.4 -7.4 C 3.8 -4 2.6 -1 0 0.2 Z M 0 -0.6 L 0 -11.4',
+    'M 0 1.2 L 0 0.2 C -3 -0.8 -4.4 -3.6 -4 -6.6 C -3.6 -9.6 -1.8 -11.6 0 -12.2 C 1.8 -11.6 3.6 -9.6 4 -6.6 C 4.4 -3.6 3 -0.8 0 0.2 Z M 0 -0.6 L 0 -10.4',
+  ],
 };
 
 // (Leaf instances are scattered by the existing `scatter()` below and
@@ -168,9 +219,31 @@ function blob(rng, cx, cy, rx, ry, lobes) {
   return d + ' Z';
 }
 
-// Toned, layer-tagged lobed cluster (maple / oak canopies are stacks of these).
+// P3 soft linework: foliage edges are darker SELF-tones of the fill, not ink.
+const selfEdge = (fill) => mix(fill, '#13240f', 0.42);
+// P2 two-tone shading: lighter scallop cap on the upper-left lit side.
+const capTone = (fill) => mix(fill, '#ffffff', 0.3);
+
+// Toned, layer-tagged lobed cluster (canopies are stacks of these). Each
+// cluster carries its lit-side cap blob + soft self-edge color (P2/P3).
 function clump(rng, x, y, rx, ry, fill, layer, birth, lobes = 9) {
-  return { d: blob(rng, x, y, rx, ry, lobes), ox: x, oy: y, fill, wfill: wiltLeaf(fill), layer, birth };
+  return {
+    d: blob(rng, x, y, rx, ry, lobes),
+    capD: blob(rng, x - rx * 0.2, y - ry * 0.34, rx * 0.58, ry * 0.5, Math.max(6, lobes - 2)),
+    ox: x, oy: y, fill, wfill: wiltLeaf(fill),
+    cap: capTone(fill), wcap: wiltLeaf(capTone(fill)),
+    edge: selfEdge(fill), wedge: wiltLeaf(selfEdge(fill)),
+    layer, birth,
+  };
+}
+
+// Big back-silhouette mass with the same two-tone lit cap (birch / willow).
+function silo(rng, x, y, rx, ry, lobes, birth) {
+  return {
+    d: blob(rng, x, y, rx, ry, lobes),
+    capD: blob(rng, x - rx * 0.2, y - ry * 0.34, rx * 0.56, ry * 0.48, Math.max(6, lobes - 2)),
+    ox: x, oy: y, birth,
+  };
 }
 
 // Point on quadratic bezier (used to hang willow leaflets along frond spines).
@@ -295,7 +368,8 @@ function buildOak(rng, pal) {
   // Classic cartoon oak: wide flattened dome of bold-outlined cloud clusters
   // in 3 greens; smooth caramel trunk that FORKS into limbs reaching into the
   // canopy, wavy skirt at the ground; acorns dangle below cluster edges at 5.
-  const h = 56, bw = 13, tw = 8.5;
+  // P1 toy proportions: stubby chunky bole, dome ≈ 2× the trunk's visual mass.
+  const h = 46, bw = 14.5, tw = 9.5;
   const trunkD = [
     `M ${R(-bw - 9)} 0 Q ${R(-bw - 2)} -2 ${R(-bw + 1)} -6`,
     `Q ${R(-bw * 0.78)} ${R(-h * 0.38)} ${-tw} ${-h} L ${tw} ${-h}`,
@@ -351,6 +425,13 @@ function buildOak(rng, pal) {
     ],
     knots: [{ x: R(-bw * 0.35), y: R(-h * 0.5), rx: 2, ry: 2.8 }],
     branches,
+    // P2 masses-first: three BIG unifying dome masses appear before any
+    // cluster, so the canopy reads as rounded masses with clusters as texture.
+    sils: [
+      silo(rng, -28, -42, 42, 30, 11, 2.5),
+      silo(rng, 26, -44, 40, 29, 11, 2.7),
+      silo(rng, 0, -64, 34, 25, 10, 3.0),
+    ],
     // subtle underside shading along each fork limb (kept inside silhouette)
     branchShade: [
       { d: 'M -6 10 Q -20 -2 -32 -22', birth: 2.45 },
@@ -358,7 +439,6 @@ function buildOak(rng, pal) {
       { d: 'M 4 8 Q 10 -14 13 -36', birth: 2.8 },
       { d: 'M 6 10 Q 22 0 34 -18', birth: 2.95 },
     ],
-    sils: [],
     clusters,
     leaves: scatter(rng, pal, { cx: 0, cy: -50, rx: 56, ry: 34, count: 100, rMin: 5, rMax: 8, birthMin: 2.7, birthMax: 4.8 }),
     shadeLo: [{ cx: 2, cy: -30, rx: 50, ry: 22 }, { cx: 34, cy: -42, rx: 26, ry: 14 }],
@@ -389,15 +469,17 @@ function buildOak(rng, pal) {
 }
 
 function buildBirch(rng, pal) {
-  const h = 132, bw = 6.5, tw = 3.6;
+  // P1: trunk shortened/widened (still the roster's slim column silhouette);
+  // P6: chalk-white bark with BOLDER black lenticel dashes.
+  const h = 100, bw = 8, tw = 4.6;
   const trunkD = [
     `M ${R(-bw - 3)} 0 Q ${R(-bw)} -6 ${R(-bw * 0.85)} ${R(-h * 0.3)}`,
     `Q ${R(-bw * 0.6)} ${R(-h * 0.6)} ${R(-tw + 1.5)} ${-h} L ${R(tw + 2)} ${-h}`,
     `Q ${R(bw * 0.7)} ${R(-h * 0.55)} ${R(bw * 0.9)} ${R(-h * 0.25)}`,
     `Q ${bw} -6 ${R(bw + 3)} 0 Z`,
   ].join(' ');
-  const lenticels = Array.from({ length: 13 }, (_, i) => ({
-    x: R((rng() - 0.5) * 5), y: R(-h * (0.08 + i * 0.066) - rng() * 4), w: R(3.5 + rng() * 3.5),
+  const lenticels = Array.from({ length: 15 }, (_, i) => ({
+    x: R((rng() - 0.5) * 7), y: R(-h * (0.07 + i * 0.058) - rng() * 4), w: R(5.5 + rng() * 4.5),
   }));
   return {
     trunkH: h, trunkD,
@@ -417,11 +499,11 @@ function buildBirch(rng, pal) {
       { d: limb(0, 0, -7, -52, 2.6, 0.8, -3), birth: 3.0, droop: 8 },
     ],
     sils: [
-      { d: blob(rng, -15, -28, 25, 21, 9), ox: -15, oy: -28, birth: 2.7 },
-      { d: blob(rng, 13, -46, 27, 23, 9), ox: 13, oy: -46, birth: 3.05 },
-      { d: blob(rng, -7, -66, 22, 18, 8), ox: -7, oy: -66, birth: 3.45 },
-      { d: blob(rng, 26, -28, 19, 15, 8), ox: 26, oy: -28, birth: 2.95 },
-      { d: blob(rng, 0, -82, 16, 13, 8), ox: 0, oy: -82, birth: 3.85 },
+      silo(rng, -15, -28, 27, 23, 9, 2.7),
+      silo(rng, 13, -46, 29, 25, 9, 3.05),
+      silo(rng, -7, -66, 24, 20, 8, 3.45),
+      silo(rng, 26, -28, 20, 16, 8, 2.95),
+      silo(rng, 0, -82, 17, 14, 8, 3.85),
     ],
     leaves: scatter(rng, pal, { cx: 0, cy: -46, rx: 38, ry: 42, count: 130, rMin: 2.8, rMax: 5.4, birthMin: 2.6, birthMax: 5.0, round: 0.85 }),
     shadeLo: [{ cx: 4, cy: -30, rx: 30, ry: 22 }, { cx: 16, cy: -52, rx: 20, ry: 16 }],
@@ -465,8 +547,9 @@ function swagTier(rng, y, hw, droop) {
 function buildPine(rng, pal) {
   // Tall narrow flat-illustration conifer: 10 drooping swag tiers + pointed
   // crown, alternating dark-forest / olive fills with pale speckles, straight
-  // bare trunk at the bottom (~15% of height) and a grass tuft at the base.
-  const h = 52, bw = 7, tw = 5.5;
+  // bare trunk at the bottom and a grass tuft at the base.
+  // P1: shorter, chunkier bole — the drooping tier stack carries the mass.
+  const h = 40, bw = 8.5, tw = 6.5;
   const trunkD = [
     `M ${R(-bw - 2.5)} 0 Q ${R(-bw + 0.5)} -4 ${R(-bw * 0.9)} -10 L ${-tw} ${-h}`,
     `L ${tw} ${-h} L ${R(bw * 0.9)} -10 Q ${R(bw - 0.5)} -4 ${R(bw + 2.5)} 0 Z`,
@@ -493,7 +576,15 @@ function buildPine(rng, pal) {
       const fy = R(y + droop * Math.pow(Math.abs(fx) / hw, 1.6) + 1 + rng() * 2);
       fans += `M ${fx} ${fy} l -2.2 4.2 M ${fx} ${fy} l 0 5 M ${fx} ${fy} l 2.2 4.2 `;
     }
-    return { d: swagTier(rng, y, hw, droop), y, birth, fill, wfill: wiltLeaf(fill), speckles, fans: fans.trim(), fanStroke: needleStroke, wfanStroke: wiltLeaf(needleStroke) };
+    // P2 two-tone: lighter lit stroke along each tier's upper-left edge.
+    const th = hw * 0.5 + 7;
+    const capLine = `M ${R(-hw * 0.9)} ${R(y + droop * 0.55)} Q ${R(-hw * 0.5)} ${R(y - th * 0.32)} ${R(-hw * 0.12)} ${R(y - th * 0.78)}`;
+    return {
+      d: swagTier(rng, y, hw, droop), y, birth, fill, wfill: wiltLeaf(fill),
+      edge: selfEdge(fill), wedge: wiltLeaf(selfEdge(fill)),
+      capLine, cap: capTone(fill), wcap: wiltLeaf(capTone(fill)),
+      speckles, fans: fans.trim(), fanStroke: needleStroke, wfanStroke: wiltLeaf(needleStroke),
+    };
   });
   tiers.reverse(); // draw top tiers first so each fringe overlaps the one above
   return {
@@ -546,7 +637,8 @@ function buildMaple(rng, pal) {
   // Fiery autumn maple: deep-red shadow clusters along the bottom/edges,
   // scarlet + vivid-orange mids, golden-yellow crown; dark branches thread
   // through gaps; thick tapered red-brown trunk with streaks and root flare.
-  const h = 66, bw = 12, tw = 7;
+  // P1: trunk shortened + widened so the flame dome dominates.
+  const h = 50, bw = 13.5, tw = 8;
   const trunkD = [
     `M ${R(-bw - 9)} 0 Q ${R(-bw - 4)} -2.5 ${R(-bw - 1.5)} -8`,
     `Q ${R(-bw * 0.8)} ${R(-h * 0.34)} ${R(-bw * 0.66)} ${R(-h * 0.56)}`,
@@ -628,7 +720,13 @@ function buildMaple(rng, pal) {
       { d: limb(-30, -50, -48, -68, 1.1, 0.4, -3), birth: 3.75 },
       { d: limb(26, -52, 44, -70, 1, 0.4, 3), birth: 3.95 },
     ],
-    sils: [],
+    // P2 masses-first: big rust under-masses lay down the flame dome before
+    // the scarlet/orange/gold clusters texture it.
+    sils: [
+      silo(rng, -26, -36, 40, 28, 11, 2.45),
+      silo(rng, 24, -38, 38, 27, 11, 2.6),
+      silo(rng, 0, -60, 34, 25, 10, 2.9),
+    ],
     clusters,
     leaves: scatter(rng, pal, { cx: 0, cy: -46, rx: 50, ry: 36, count: 112, rMin: 4.5, rMax: 8, birthMin: 2.6, birthMax: 4.9 }),
     starLeaves: Array.from({ length: 9 }, () => ({
@@ -663,7 +761,9 @@ function buildMaple(rng, pal) {
 }
 
 function buildWillow(rng, pal) {
-  const h = 86, bw = 10, tw = 5.5;
+  // P1: shorter arching bole; P6 signature: FLOOR-LENGTH fronds — the curtain
+  // sweeps all the way down to the ground line (local +h below the crown).
+  const h = 64, bw = 11, tw = 6;
   const trunkD = [
     `M ${R(-bw - 4.5)} 0 Q ${R(-bw)} -8 ${R(-bw * 0.7)} ${R(-h * 0.35)}`,
     `Q ${R(-bw * 0.2)} ${R(-h * 0.68)} ${R(8 - tw)} ${-h} L ${R(8 + tw)} ${-h}`,
@@ -675,11 +775,11 @@ function buildWillow(rng, pal) {
     const ax = -47 + i * 10.5 + (rng() - 0.5) * 5;
     const ay = -14 - Math.cos((i / 9 - 0.5) * Math.PI) * 12 + rng() * 4;
     const p0 = [ax, ay];
-    const p1 = [ax + (rng() - 0.5) * 8, ay + 36 + rng() * 8];
-    const p2 = [ax + (rng() - 0.5) * 16, ay + 72 + rng() * 16];
+    const p1 = [ax + (rng() - 0.5) * 8, ay + 40 + rng() * 8];
+    const p2 = [ax + (rng() - 0.5) * 16, 56 + rng() * 8]; // tips kiss the ground
     const leaflets = [];
-    for (let j = 0; j < 11; j++) {
-      const t = 0.14 + (j / 10) * 0.86;
+    for (let j = 0; j < 12; j++) {
+      const t = 0.12 + (j / 11) * 0.88;
       const [lx, ly] = qPt(p0, p1, p2, t);
       const [tx, ty] = qPt(p0, p1, p2, Math.min(t + 0.05, 1));
       const ang = (Math.atan2(ty - ly, tx - lx) * 180) / Math.PI;
@@ -713,9 +813,9 @@ function buildWillow(rng, pal) {
       { d: limb(0, 0, -4, -34, 3.2, 1.1, -3), birth: 2.85, droop: 8 },
     ],
     sils: [
-      { d: blob(rng, 0, -24, 47, 25, 11), ox: 0, oy: -24, birth: 2.75 },
-      { d: blob(rng, -22, -32, 30, 16, 9), ox: -22, oy: -32, birth: 3.1 },
-      { d: blob(rng, 20, -34, 28, 15, 9), ox: 20, oy: -34, birth: 3.3 },
+      silo(rng, 0, -24, 49, 27, 11, 2.75),
+      silo(rng, -22, -34, 31, 17, 9, 3.1),
+      silo(rng, 20, -36, 29, 16, 9, 3.3),
     ],
     leaves: scatter(rng, pal, { cx: 0, cy: -26, rx: 42, ry: 21, count: 72, rMin: 4.5, rMax: 8, birthMin: 2.6, birthMax: 4.6 }),
     fronds,
@@ -739,7 +839,230 @@ function buildWillow(rng, pal) {
   };
 }
 
-const BUILDERS = { oak: buildOak, birch: buildBirch, pine: buildPine, maple: buildMaple, willow: buildWillow };
+function buildCherry(rng, pal) {
+  // New silhouette class: blossom cloud — slender curved cocoa trunk under
+  // 3 oversized milky-pink masses (P1/P2). P6 signature: white-pink blossom
+  // dots; PETALS (not leaves) drift down; stage 5 = full bloom with white
+  // five-petal highlight blossoms.
+  const h = 48, bw = 6, tw = 3.4;
+  const trunkD = [
+    `M ${R(-bw - 3.5)} 0 Q ${R(-bw + 0.5)} -8 ${R(-bw * 0.55)} ${R(-h * 0.4)}`,
+    `Q ${R(-bw * 0.1)} ${R(-h * 0.72)} ${R(3 - tw)} ${-h} L ${R(3 + tw)} ${-h}`,
+    `Q ${R(bw * 0.95)} ${R(-h * 0.55)} ${R(bw * 0.9)} ${R(-h * 0.22)}`,
+    `Q ${R(bw + 1)} -6 ${R(bw + 3.5)} 0 Z`,
+  ].join(' ');
+  const clusters = [
+    // three BIG masses (left / right / crown) + two small fillers
+    clump(rng, -22, -24, 23, 17, pal.back, 'back', 2.6, 10),
+    clump(rng, 22, -26, 22, 16, pal.mid, 'back', 2.8, 10),
+    clump(rng, -1, -26, 16, 12, pal.back, 'mid', 2.95),
+    clump(rng, 0, -50, 25, 18, pal.mid, 'mid', 3.15, 10),
+    clump(rng, -17, -58, 14, 11, pal.front, 'front', 3.8),
+    clump(rng, 16, -58, 13, 10, pal.front, 'front', 3.95),
+  ];
+  return {
+    trunkH: h, trunkD,
+    bark: [
+      `M ${R(-bw * 0.3)} -8 Q ${R(-bw * 0.1)} ${R(-h * 0.4)} ${R(1.5)} ${R(-h * 0.68)}`,
+      `M ${R(bw * 0.4)} -5 Q ${R(bw * 0.42)} ${R(-h * 0.3)} ${R(4)} ${R(-h * 0.56)}`,
+    ],
+    knots: [{ x: -1.5, y: R(-h * 0.42), rx: 1.6, ry: 2.2 }],
+    branches: [
+      { d: limb(-2, 6, -26, -28, 4, 1.2, -7), birth: 2.4, droop: 14 },
+      { d: limb(2, 4, 24, -32, 3.6, 1.1, 6), birth: 2.6, droop: 12 },
+      { d: limb(0, 2, -3, -48, 2.8, 0.9, -3), birth: 2.85, droop: 8 },
+    ],
+    sils: [],
+    clusters,
+    leaves: scatter(rng, pal, { cx: 0, cy: -38, rx: 44, ry: 28, count: 64, rMin: 3, rMax: 5.5, birthMin: 2.7, birthMax: 4.8, round: 0.9 }),
+    shadeLo: [{ cx: 2, cy: -24, rx: 40, ry: 18 }],
+    shadeHi: [{ cx: -8, cy: -52, rx: 26, ry: 14 }],
+    rims: rims(rng, 0, -44, 40, 24, 7),
+    rims2: rims2(rng, 0, -46, 38, 22, 26),
+    dabs: microDabs(
+      rng,
+      [[-22, -24, 23, 17], [22, -26, 22, 16], [0, -50, 25, 18]],
+      10,
+      mix(pal.front, '#ffffff', 0.5),
+      mix(pal.back, '#9c5a74', 0.5)
+    ),
+    // stage-5 white five-petal highlight blossoms scattered over the cloud
+    fruits: [
+      { x: -30, y: -22, rot: 0 }, { x: 26, y: -20, rot: 10 }, { x: -8, y: -36, rot: -8 },
+      { x: 12, y: -52, rot: 6 }, { x: -20, y: -48, rot: -5 }, { x: 32, y: -38, rot: 8 },
+      { x: 0, y: -62, rot: 0 }, { x: -36, y: -34, rot: -10 },
+    ],
+    sparkles: sparkles(rng, 0, -40, 42, 30, 6),
+    // falling petals: soft pink, never browned
+    fallers: Array.from({ length: 5 }, (_, i) => ({
+      x: R((rng() - 0.5) * 80), y: R(-24 + rng() * 16),
+      delay: R(i * 6 + rng() * 4), dur: R(13 + rng() * 5),
+      fill: mix(pal.front, '#ffffff', rng() * 0.5),
+    })),
+    fallen: fallenLeaves(rng, 4),
+    glow: [0, -40, 76, 56],
+    canopyDX: 3, // curved trunk leans the cloud slightly off-axis
+  };
+}
+
+function buildBamboo(rng, pal) {
+  // New silhouette class: pole grove — NO canopy mass at all. Five segmented
+  // culms of varying heights grow culm-by-culm AND node-by-node (every
+  // section has its own birth); node rings + blade tufts at the upper nodes
+  // are the P6 signature; stage 5 = the tall center culm tops out and golden
+  // glints sit at the tips.
+  const h = 9; // tiny root crown — the culms rise straight from the grove base
+  const trunkD = 'M -12 0 Q -10 -6.5 -4.5 -8 L 4.5 -8 Q 10 -6.5 12 0 Q 6 -2.2 0 -1.6 Q -6 -2.2 -12 0 Z';
+  const culmSpecs = [
+    { x: -24, ch: 62, w: 4.6, birth: 2.5, layer: 'back', lean: -2.4 },
+    { x: -11, ch: 104, w: 5.6, birth: 2.95, layer: 'mid', lean: -1.2 },
+    { x: 1, ch: 136, w: 6.2, birth: 3.95, layer: 'front', lean: 0.4 },
+    { x: 13, ch: 88, w: 5.2, birth: 3.35, layer: 'mid', lean: 1.6 },
+    { x: 25, ch: 54, w: 4.2, birth: 2.7, layer: 'back', lean: 2.6 },
+  ];
+  const culms = [];
+  const leaves = [];
+  const fruits = [];
+  for (const c of culmSpecs) {
+    const n = Math.max(3, Math.round(c.ch / 23));
+    const segLen = c.ch / n;
+    const tone = mix(c.layer === 'back' ? pal.back : c.layer === 'mid' ? pal.mid : pal.trunk, pal.front, rng() * 0.25);
+    const segs = [];
+    for (let i = 0; i < n; i++) {
+      segs.push({
+        x: R(c.x + c.lean * (i / n) * 2), y0: R(4 - i * segLen), len: R(segLen + 0.6),
+        // node-by-node: every section fully grown by 4.55 + 0.45 span = 5.0,
+        // so the tall culm visibly tops out right at the mature lock.
+        birth: R(Math.min(c.birth + i * 0.12, 4.55)),
+      });
+    }
+    culms.push({
+      segs, w: c.w, layer: c.layer,
+      fill: tone, wfill: wiltLeaf(tone),
+      cap: capTone(tone), wcap: wiltLeaf(capTone(tone)),
+      edge: selfEdge(tone), wedge: wiltLeaf(selfEdge(tone)),
+    });
+    // blade tufts sprouting from the top two nodes of each culm
+    for (let nd = 1; nd <= 2 && nd < n; nd++) {
+      const ny = 4 - (n - nd) * segLen;
+      const nx = c.x + c.lean * ((n - nd) / n) * 2;
+      const side = nd % 2 ? 1 : -1;
+      for (let b = 0; b < 3; b++) {
+        const f = b === 0 ? pal.front : b === 1 ? pal.mid : mix(pal.mid, pal.rim, 0.4);
+        leaves.push({
+          x: R(nx + side * (c.w * 0.5 + 1)), y: R(ny + b * 1.6),
+          rx: R(4.6 + rng() * 1.6), ry: 4,
+          rot: R(side * (62 + b * 24) + (rng() - 0.5) * 14),
+          fill: f, wfill: wiltLeaf(f), layer: c.layer,
+          birth: R(Math.min(c.birth + (n - nd) * 0.12 + 0.2, 4.45)),
+        });
+      }
+    }
+    fruits.push({ x: R(c.x + c.lean * 2), y: R(4 - c.ch - 3), rot: 0 });
+  }
+  return {
+    trunkH: h, trunkD,
+    bark: [],
+    knots: [],
+    tuft: [
+      'M -30 0 Q -31.5 -4 -30.5 -7', 'M -17 0 Q -17.5 -4.5 -16 -8',
+      'M 18 0 Q 18.5 -4 17.5 -7.5', 'M 30 0 Q 31.5 -3.5 31 -6.5',
+    ],
+    branches: [],
+    sils: [],
+    culms,
+    leaves,
+    shadeLo: [], shadeHi: [],
+    rims: [],
+    fruits,
+    sparkles: sparkles(rng, 0, -70, 30, 60, 6),
+    fallers: fallers(rng, 0, -56, 26, 2, pal.mid),
+    fallen: fallenLeaves(rng, 3),
+    glow: [0, -70, 52, 84],
+    canopyDX: 0,
+  };
+}
+
+function buildSunflower(rng, pal) {
+  // New silhouette class: lollipop flower — one thick green stem, big leaves
+  // low, giant golden head. The head lifts upright while it grows (tilt → 0,
+  // riding the rising stem top), opens ring-by-ring, and at 5 reveals the
+  // golden-angle seed spiral + glow. Wilted: the head bows over completely.
+  const h = 74, bw = 5, tw = 3.6;
+  const trunkD = [
+    `M ${R(-bw - 2)} 0 Q ${R(-bw)} -8 ${R(-bw * 0.8)} ${R(-h * 0.45)}`,
+    `Q ${R(-bw * 0.72)} ${R(-h * 0.8)} ${-tw} ${-h} L ${tw} ${-h}`,
+    `Q ${R(bw * 0.78)} ${R(-h * 0.7)} ${R(bw * 0.85)} ${R(-h * 0.35)}`,
+    `Q ${R(bw)} -7 ${R(bw + 2)} 0 Z`,
+  ].join(' ');
+  const discR = 13.5;
+  const petals = [];
+  for (let i = 0; i < 16; i++) {
+    // outer ray ring opens first…
+    const a = (i / 16) * Math.PI * 2 - Math.PI / 2;
+    petals.push({
+      x: R(Math.cos(a) * (discR + 1.5)), y: R(Math.sin(a) * (discR + 1.5)),
+      rot: R((a * 180) / Math.PI + 90), s: R(1.55 + rng() * 0.25), v: i % 2,
+      fill: i % 2 ? pal.mid : pal.front,
+      birth: R(3.05 + (i % 8) * 0.16 + rng() * 0.08),
+    });
+  }
+  for (let i = 0; i < 11; i++) {
+    // …then a brighter inner ring completes the open head
+    const a = (i / 11) * Math.PI * 2 - Math.PI / 3;
+    petals.push({
+      x: R(Math.cos(a) * (discR - 3)), y: R(Math.sin(a) * (discR - 3)),
+      rot: R((a * 180) / Math.PI + 90), s: R(1.1 + rng() * 0.2), v: (i + 1) % 2,
+      fill: i % 2 ? pal.front : mix(pal.front, pal.rim, 0.6),
+      birth: R(3.85 + (i % 6) * 0.1 + rng() * 0.05), // fully open by 5
+    });
+  }
+  const spiral = [];
+  for (let i = 0; i < 16; i++) {
+    const a = i * 2.39996; // golden angle
+    const r = 2.2 + Math.sqrt(i) * 2.35;
+    spiral.push({ x: R(Math.cos(a) * r), y: R(Math.sin(a) * r), r: R(1 + i * 0.05) });
+  }
+  const leafGreen = mix(pal.trunk, pal.trunkDk, 0.4);
+  return {
+    trunkH: h, trunkD,
+    bark: [`M 0 -6 Q 0.8 ${R(-h * 0.4)} 0 ${R(-h * 0.8)}`],
+    knots: [],
+    branches: [],
+    sils: [],
+    leaves: [],
+    head: {
+      y: -19, discR, tilt: 16, wiltBow: -88,
+      petals, spiral,
+      disc: '#9c6b3e', discIn: '#7c5330',
+      // big droopy stem leaves LOW on the stalk (canopy coords: +y = down)
+      stemLeaves: [
+        { d: 'M 0 24 C -9 23 -18 18 -21.5 8.5 C -11.5 6.5 -2.5 13.5 0 24 Z', oy: 24, fill: leafGreen, birth: 2.5 },
+        { d: 'M 0 28 C 9 27 18 22 21.5 12.5 C 11.5 10.5 2.5 17.5 0 28 Z', oy: 28, fill: mix(leafGreen, pal.trunkDk, 0.25), birth: 2.65 },
+        { d: 'M 0 42 C -8 41 -16 37 -19 28.5 C -10 26.5 -2 33 0 42 Z', oy: 42, fill: mix(leafGreen, pal.trunkDk, 0.4), birth: 2.85 },
+        { d: 'M 0 46 C 7.5 45 15 41 18 33 C 9.5 31 2 37.5 0 46 Z', oy: 46, fill: leafGreen, birth: 3.0 },
+      ],
+    },
+    shadeLo: [], shadeHi: [],
+    rims: [],
+    // four golden dew-glints just outside the petal tips at stage 5
+    fruits: [
+      { x: -20, y: -32, rot: 0 }, { x: 19, y: -30, rot: 0 },
+      { x: 0, y: -42, rot: 0 }, { x: -14, y: -4, rot: 0 },
+    ],
+    sparkles: sparkles(rng, 0, -22, 30, 26, 5),
+    fallers: fallers(rng, 0, -16, 22, 2, pal.mid),
+    fallen: fallenLeaves(rng, 3),
+    glow: [0, -19, 48, 48],
+    canopyDX: 0,
+    wiltBow: -5, wiltDy: 2, // stem barely tips — the HEAD does the bowing
+  };
+}
+
+const BUILDERS = {
+  oak: buildOak, birch: buildBirch, pine: buildPine, maple: buildMaple, willow: buildWillow,
+  cherry: buildCherry, bamboo: buildBamboo, sunflower: buildSunflower,
+};
 
 // Species-specific stage-5 celebration fruit (drawn around local 0,0).
 const FRUIT_STROKE = { stroke: '#111', strokeWidth: 1, vectorEffect: 'non-scaling-stroke' };
@@ -772,6 +1095,33 @@ function Fruit({ kind }) {
         <g>
           <path d="M 0 -2 Q 1.6 -4.2 0.6 -6.4" fill="none" stroke="#3a3325" strokeWidth="1" vectorEffect="non-scaling-stroke" />
           <circle cx="0" cy="0" r="2.4" fill={GOLD} {...FRUIT_STROKE} />
+        </g>
+      );
+    case 'cherry': // white five-petal highlight blossom with a golden heart
+      return (
+        <g>
+          <g fill="#fff6f9" stroke="#e8b8c9" strokeWidth="0.7" vectorEffect="non-scaling-stroke">
+            <circle cx="0" cy="-2.7" r="1.8" />
+            <circle cx="2.6" cy="-0.8" r="1.8" />
+            <circle cx="1.6" cy="2.2" r="1.8" />
+            <circle cx="-1.6" cy="2.2" r="1.8" />
+            <circle cx="-2.6" cy="-0.8" r="1.8" />
+          </g>
+          <circle cx="0" cy="0" r="1.3" fill={GOLD} />
+        </g>
+      );
+    case 'bamboo': // golden glint riding a culm tip
+      return (
+        <g>
+          <path d="M 0 -4 L 1 -1 L 4 0 L 1 1 L 0 4 L -1 1 L -4 0 L -1 -1 Z" fill={GOLD} stroke="#a87b22" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <circle cx="0" cy="0" r="1" fill="#fff7df" />
+        </g>
+      );
+    case 'sunflower': // dew-glint sparkling at the petal tips
+      return (
+        <g>
+          <circle cx="0" cy="0" r="1.9" fill="#fff7df" stroke={GOLD} strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <path d="M 0 -3.6 L 0 3.6 M -3.6 0 L 3.6 0" fill="none" stroke={GOLD} strokeWidth="1" vectorEffect="non-scaling-stroke" />
         </g>
       );
     case 'oak': // acorn: brown nut, darker textured cap, little stem
@@ -856,23 +1206,67 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
         );
       });
 
-  // bold-outlined lobed clusters (maple / oak canopies), per depth layer
+  // P2 mass-first canopy: each rounded mass = flat base + lighter scallop cap
+  // on the upper-left lit side. P3: low-contrast darker SELF-edge, not ink.
   const clusterEls = (layer) =>
     (T.clusters || [])
       .filter((c) => c.layer === layer)
       .map((c, i) => {
         const k = grow(c.birth, 0.7);
         return (
-          <path
+          <g
             key={`c${layer}${i}`}
-            d={c.d}
-            fill={wilted ? c.wfill : c.fill}
-            className="cs-tree__leaf cs-tree__tint"
+            className="cs-tree__leaf"
             style={{ transform: `scale(${Math.max(k, 0.001)})`, transformOrigin: `${c.ox}px ${c.oy}px`, opacity: k > 0.02 ? 1 : 0 }}
-            {...OUTLINE}
-          />
+          >
+            <path
+              d={c.d}
+              fill={wilted ? c.wfill : c.fill}
+              stroke={wilted ? c.wedge : c.edge}
+              strokeWidth="1.1" strokeLinejoin="round" vectorEffect="non-scaling-stroke"
+              className="cs-tree__tint cs-tree__tintstroke"
+            />
+            <path d={c.capD} fill={wilted ? c.wcap : c.cap} className="cs-tree__tint" />
+          </g>
         );
       });
+
+  // bamboo culms: every culm SECTION is its own birth-staged element
+  // (node-by-node growth) — segment body + lit-side stripe + node ring.
+  const culmEls = (layer) =>
+    (T.culms || [])
+      .filter((c) => c.layer === layer)
+      .flatMap((c, ci) =>
+        c.segs.map((sg, si) => {
+          const k = grow(sg.birth, 0.45);
+          const w2 = c.w / 2;
+          return (
+            <g
+              key={`u${ci}-${si}`}
+              className="cs-tree__leaf"
+              style={{ transform: `scale(${Math.max(k, 0.001)})`, transformOrigin: `${sg.x}px ${sg.y0}px`, opacity: k > 0.02 ? 1 : 0 }}
+            >
+              <rect
+                x={R(sg.x - w2)} y={R(sg.y0 - sg.len)} width={c.w} height={sg.len} rx={R(w2 * 0.7)}
+                fill={wilted ? c.wfill : c.fill}
+                stroke={wilted ? c.wedge : c.edge}
+                strokeWidth="1" vectorEffect="non-scaling-stroke"
+                className="cs-tree__tint cs-tree__tintstroke"
+              />
+              <path
+                d={`M ${R(sg.x - w2 * 0.45)} ${R(sg.y0 - sg.len + 2)} L ${R(sg.x - w2 * 0.45)} ${R(sg.y0 - 2)}`}
+                fill="none" stroke={wilted ? c.wcap : c.cap} strokeWidth="1.3" strokeLinecap="round"
+                vectorEffect="non-scaling-stroke" className="cs-tree__tintstroke" opacity="0.9"
+              />
+              <path
+                d={`M ${R(sg.x - w2 - 0.9)} ${R(sg.y0 - sg.len)} L ${R(sg.x + w2 + 0.9)} ${R(sg.y0 - sg.len)}`}
+                fill="none" stroke={wilted ? c.wedge : c.edge} strokeWidth="1.4" strokeLinecap="round"
+                vectorEffect="non-scaling-stroke" className="cs-tree__tintstroke"
+              />
+            </g>
+          );
+        })
+      );
 
   const glowE = T.glow || [0, -40, 80, 64];
 
@@ -914,7 +1308,13 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
             key={v}
             id={`leaf-${uid}-${v}`}
             d={d}
-            stroke="rgba(20, 24, 12, 0.35)"
+            stroke={
+              safeKind === 'cherry'
+                ? 'rgba(146, 84, 104, 0.4)'
+                : safeKind === 'sunflower'
+                  ? 'rgba(146, 102, 28, 0.45)'
+                  : 'rgba(20, 24, 12, 0.35)'
+            }
             strokeWidth="0.7"
             strokeLinecap="round"
           />
@@ -960,7 +1360,7 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
           ))}
           {T.lenticels &&
             T.lenticels.map((m, i) => (
-              <path key={i} d={`M ${m.x - m.w / 2} ${m.y} h ${m.w}`} stroke="#23201a" strokeWidth="2.2" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+              <path key={i} d={`M ${m.x - m.w / 2} ${m.y} h ${m.w}`} stroke="#1b1813" strokeWidth="3" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
             ))}
           {T.knots.map((k, i) => (
             <ellipse key={i} cx={k.x} cy={k.y} rx={k.rx} ry={k.ry} fill={k.dark ? '#23201a' : 'none'} stroke={pal.trunkDk} strokeWidth="1.3" vectorEffect="non-scaling-stroke" />
@@ -1004,7 +1404,7 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
         <g
           className="cs-tree__grow"
           style={{
-            transform: `translate(${CX + T.canopyDX * trunkScaleY}px, ${trunkTopY + 4}px) scale(${Math.max(canopyScale, 0.001)}) rotate(${wilted ? -7 : 0}deg) translate(0px, ${wilted ? 5 : 0}px)`,
+            transform: `translate(${CX + T.canopyDX * trunkScaleY}px, ${trunkTopY + 4}px) scale(${Math.max(canopyScale, 0.001)}) rotate(${wilted ? (T.wiltBow ?? -7) : 0}deg) translate(0px, ${wilted ? (T.wiltDy ?? 5) : 0}px)`,
             opacity: canopyOn ? 1 : 0,
           }}
         >
@@ -1045,21 +1445,28 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
             })}
           </g>
 
-          {/* BACK depth layer: lobed silhouettes (primary outline) + dark leaves */}
+          {/* BACK depth layer: big soft-edged masses + dark leaves */}
           <g className="cs-tree__layer cs-tree__layer--back" style={slump(-2.5, 2)}>
             {T.sils.map((sil, i) => {
               const k = grow(sil.birth, 0.8);
               return (
-                <path
+                <g
                   key={i}
-                  d={sil.d}
-                  fill={lf(pal.back)}
-                  className="cs-tree__leaf cs-tree__tint"
+                  className="cs-tree__leaf"
                   style={{ transform: `scale(${Math.max(k, 0.001)})`, transformOrigin: `${sil.ox}px ${sil.oy}px`, opacity: k > 0.02 ? 1 : 0 }}
-                  {...OUTLINE}
-                />
+                >
+                  <path
+                    d={sil.d}
+                    fill={lf(pal.back)}
+                    stroke={lf(selfEdge(pal.back))}
+                    strokeWidth="1.1" strokeLinejoin="round" vectorEffect="non-scaling-stroke"
+                    className="cs-tree__tint cs-tree__tintstroke"
+                  />
+                  <path d={sil.capD} fill={lf(capTone(pal.back))} className="cs-tree__tint" />
+                </g>
               );
             })}
+            {culmEls('back')}
             {T.tiers &&
               T.tiers.map((t) => {
                 const k = grow(t.birth, 0.7);
@@ -1069,12 +1476,20 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
                     className="cs-tree__leaf"
                     style={{ transform: `scale(${Math.max(k, 0.001)})`, transformOrigin: `0px ${t.y}px`, opacity: k > 0.02 ? 1 : 0 }}
                   >
-                    {/* flat-look swag: dark-green self-outline, not the ink outline */}
+                    {/* flat-look swag: soft darker SELF-edge (P3), lit cap stroke (P2) */}
                     <path
                       d={t.d}
                       fill={wilted ? t.wfill : t.fill}
-                      className="cs-tree__tint"
-                      stroke="#1e2f23" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke"
+                      className="cs-tree__tint cs-tree__tintstroke"
+                      stroke={wilted ? t.wedge : t.edge} strokeWidth="1.2" strokeLinejoin="round" vectorEffect="non-scaling-stroke"
+                    />
+                    <path
+                      d={t.capLine}
+                      fill="none"
+                      stroke={wilted ? t.wcap : t.cap}
+                      strokeWidth="2.4" strokeLinecap="round" vectorEffect="non-scaling-stroke"
+                      className="cs-tree__tintstroke"
+                      opacity="0.8"
                     />
                     {t.speckles.map((sp, j) => (
                       <circle key={j} cx={sp[0]} cy={sp[1]} r={sp[2]} fill={pal.rim} opacity="0.55" />
@@ -1141,8 +1556,76 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
 
           {/* MID depth layer */}
           <g className="cs-tree__layer cs-tree__layer--mid" style={slump(-4, 4)}>
+            {culmEls('mid')}
             {clusterEls('mid')}
             {leafEls('mid')}
+            {/* sunflower: giant head — lifts upright as it grows (tilt → 0 on
+                the rising stem top), opens ring-by-ring, seed spiral at 5;
+                wilted = the head bows over completely at the stem top. */}
+            {T.head &&
+              (() => {
+                const H = T.head;
+                const hk = grow(2.95, 0.9);
+                const tilt = wilted ? H.wiltBow : lerp(H.tilt, 0, canopyT);
+                return (
+                  <g>
+                    {H.stemLeaves.map((sl, i) => {
+                      const k = grow(sl.birth, 0.6);
+                      return (
+                        <path
+                          key={`sl${i}`}
+                          d={sl.d}
+                          fill={lf(sl.fill)}
+                          stroke={lf(selfEdge(sl.fill))}
+                          strokeWidth="1" strokeLinejoin="round" vectorEffect="non-scaling-stroke"
+                          className="cs-tree__leaf cs-tree__tint cs-tree__tintstroke"
+                          style={{ transform: `scale(${Math.max(k, 0.001)})`, transformOrigin: `0px ${sl.oy}px`, opacity: k > 0.02 ? 1 : 0 }}
+                        />
+                      );
+                    })}
+                    <g className="cs-tree__grow" style={{ transform: `rotate(${tilt}deg)`, transformOrigin: '0px 2px' }}>
+                      <g
+                        className="cs-tree__leaf"
+                        style={{ transform: `translate(0px, ${H.y}px) scale(${Math.max(hk, 0.001)})`, opacity: hk > 0.02 ? 1 : 0 }}
+                      >
+                        {H.petals.map((p, i) => {
+                          const k = grow(p.birth, 0.5);
+                          return (
+                            <use
+                              key={`p${i}`}
+                              href={`#leaf-${uid}-${p.v}`}
+                              fill={lf(p.fill)}
+                              className="cs-tree__leaf cs-tree__tint"
+                              style={{ transform: `translate(${p.x}px, ${p.y}px) rotate(${p.rot}deg) scale(${R(Math.max(k, 0.001) * p.s)})`, opacity: k > 0.02 ? 1 : 0 }}
+                            />
+                          );
+                        })}
+                        <circle
+                          cx="0" cy="0" r={H.discR}
+                          fill={lf(H.disc)}
+                          stroke={lf(mix(H.disc, '#3c2814', 0.5))}
+                          strokeWidth="1.2" vectorEffect="non-scaling-stroke"
+                          className="cs-tree__tint cs-tree__tintstroke"
+                        />
+                        <circle cx="0" cy="0" r={R(H.discR * 0.62)} fill={lf(H.discIn)} className="cs-tree__tint" />
+                        {H.spiral.map((sp, i) => {
+                          const k = grow(4.45 + i * 0.02, 0.4);
+                          return (
+                            <circle
+                              key={`sp${i}`}
+                              cx={sp.x} cy={sp.y} r={sp.r}
+                              fill={lf(mix(H.discIn, '#3c2814', 0.55))}
+                              className="cs-tree__leaf cs-tree__tint"
+                              style={{ opacity: k * 0.9 }}
+                            />
+                          );
+                        })}
+                        <circle cx="-4" cy="-4" r="2.6" fill="#fff7df" className="cs-tree__grow" style={{ opacity: mature ? 0.55 : 0 }} />
+                      </g>
+                    </g>
+                  </g>
+                );
+              })()}
             {T.starLeaves &&
               T.starLeaves.map((sl, i) => {
                 const k = grow(sl.birth);
@@ -1195,6 +1678,7 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
 
           {/* FRONT depth layer: brightest leaves */}
           <g className="cs-tree__layer cs-tree__layer--front" style={slump(-5.5, 5)}>
+            {culmEls('front')}
             {clusterEls('front')}
             {leafEls('front')}
             {/* tiny two-tone dabs inside the biggest clusters — micro texture */}

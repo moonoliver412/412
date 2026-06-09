@@ -11,7 +11,7 @@ export const LANGUAGES = [
     id: 'html',
     name: 'HTML',
     color: '#e5b95e',
-    species: ['oak', 'birch', 'maple'],
+    species: ['oak', 'birch', 'maple', 'cherry'],
     topics: [
       {
         id: 'html-structure',
@@ -91,7 +91,7 @@ export const LANGUAGES = [
     id: 'css',
     name: 'CSS',
     color: '#7fa3c8',
-    species: ['willow', 'birch', 'pine'],
+    species: ['willow', 'birch', 'pine', 'bamboo'],
     topics: [
       {
         id: 'css-selectors',
@@ -171,7 +171,7 @@ export const LANGUAGES = [
     id: 'js',
     name: 'JS',
     color: '#d98a5e',
-    species: ['pine', 'maple', 'oak'],
+    species: ['pine', 'maple', 'oak', 'sunflower'],
     topics: [
       {
         id: 'js-variables',
