@@ -149,6 +149,16 @@
   pointer-events: visiblePainted;
 }
 
+/* …except decorative layers that paint near-invisible gradients over large
+   areas (mature glow, sparkles, falling leaves, ground shadow) — they would
+   silently steal hovers/clicks from neighbouring cells. */
+.cs-iso-slot__stand.is-clickable svg .cs-tree__glow,
+.cs-iso-slot__stand.is-clickable svg .cs-tree__sparkle,
+.cs-iso-slot__stand.is-clickable svg .cs-tree__fall,
+.cs-iso-slot__stand.is-clickable svg ellipse[fill^='url(#shadow'] {
+  pointer-events: none;
+}
+
 .cs-iso-slot__stand.is-clickable {
   cursor: pointer;
 }
@@ -164,75 +174,64 @@
   border-radius: 12px;
 }
 
-/* caption pill sits just in front of the cell, below the tree's feet */
+/* Minimalist hover tooltip — hidden until the slot (cell, tree, or label
+   itself) is hovered or keyboard-focused. Selection is communicated by the
+   orange cell glow, so nothing needs to be permanently on screen. */
 .cs-iso-slot__label {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
-  padding: 4px 14px 5px;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 10px 4px;
   border-radius: var(--radius-pill, 999px);
-  background: var(--bg, #c5d2c2);
-  border: 1.5px solid var(--ink, #111);
+  background: rgba(17, 17, 17, 0.82);
+  border: none;
+  color: #f6f3ea;
   white-space: nowrap;
-  pointer-events: none;
-  line-height: 1.15;
+  line-height: 1.2;
   font: inherit;
-  color: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 130ms ease;
 }
 
-/* clickable caption pills are real buttons — a reliable big-hit-area target */
-button.cs-iso-slot__label {
+.cs-iso-slot__label.is-visible,
+.cs-iso-plot__slot:focus-within .cs-iso-slot__label {
+  opacity: 1;
+}
+
+button.cs-iso-slot__label.is-visible {
   pointer-events: auto;
   cursor: pointer;
 }
 
-button.cs-iso-slot__label:hover {
-  background: #e8e8e8;
-}
-
-button.cs-iso-slot__label.is-highlighted:hover {
-  background: var(--orange, #ff4500);
-}
-
-button.cs-iso-slot__label:focus-visible {
-  outline: 2.5px solid var(--orange, #ff4500);
-  outline-offset: 2px;
-}
-
 .cs-iso-slot__label.is-highlighted {
-  background: var(--orange, #ff4500);
+  background: rgba(255, 69, 0, 0.92);
   color: #fff;
 }
 
 .cs-iso-slot__caption {
   font-family: var(--font-display, 'Oswald', sans-serif);
-  font-size: 14px;
+  font-size: 10.5px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
 }
 
 .cs-iso-slot__sub {
   font-family: var(--font-body, 'Inter', sans-serif);
-  font-size: 11px;
+  font-size: 9.5px;
   font-weight: 600;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
-/* dense grids (K > 3): smaller caption pills so neighbours don't collide */
+/* dense grids (K > 3): nudge the tooltip closer */
 .cs-iso-plot--dense .cs-iso-slot__label {
-  padding: 2px 9px 3px;
-  top: calc(100% + 5px);
-}
-
-.cs-iso-plot--dense .cs-iso-slot__caption {
-  font-size: 11px;
-  letter-spacing: 0.4px;
+  top: calc(100% + 4px);
 }
 
 .cs-iso-plot--dense .cs-iso-slot__sub {

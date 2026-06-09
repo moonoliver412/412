@@ -1,4 +1,4 @@
-import { useId, useMemo } from 'react';
+import { useId, useMemo, useState } from 'react';
 import './IsometricPlot.css';
 
 // ---------------------------------------------------------------------------
@@ -211,6 +211,14 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
   const showPatch = PATCH_SPOTS.every(
     ([u, v]) => !occupied.has(`${Math.floor(u * K)},${Math.floor(v * K)}`)
   );
+
+  // Labels are hover-revealed tooltips, not permanent pills — hover state is
+  // driven from the cell polygon, the tree's painted pixels, and the label.
+  const [hoveredId, setHoveredId] = useState(null);
+  const hoverProps = (key) => ({
+    onMouseEnter: () => setHoveredId(key),
+    onMouseLeave: () => setHoveredId((h) => (h === key ? null : h)),
+  });
 
   const clipLeftId = `${uid}-soil-left`;
   const clipRightId = `${uid}-soil-right`;
@@ -447,6 +455,7 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
               s.onClick ? ' is-clickable' : ''
             }`}
             onClick={s.onClick}
+            {...hoverProps(key)}
           />
         ))}
 
@@ -605,18 +614,24 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
                 onClick={s.onClick}
                 aria-pressed={s.onClick ? !!s.highlighted : undefined}
                 aria-label={s.onClick && s.caption ? `Select ${s.caption}` : undefined}
+                {...hoverProps(key)}
               >
                 {s.content}
               </Stand>
               {(s.caption || s.sub) && (() => {
-                // Clickable slots get a button label — the most reliable
-                // click target (trees only take clicks on painted pixels).
+                // Hover-revealed minimalist tooltip (also shown on keyboard
+                // focus via :focus-within). Clickable slots keep it as a
+                // button so it remains a reliable click target while shown.
                 const Label = s.onClick ? 'button' : 'div';
                 return (
                   <Label
                     type={s.onClick ? 'button' : undefined}
                     onClick={s.onClick}
-                    className={`cs-iso-slot__label${s.highlighted ? ' is-highlighted' : ''}`}
+                    tabIndex={s.onClick ? -1 : undefined}
+                    className={`cs-iso-slot__label${s.highlighted ? ' is-highlighted' : ''}${
+                      hoveredId === key ? ' is-visible' : ''
+                    }`}
+                    {...hoverProps(key)}
                   >
                     {s.caption && <span className="cs-iso-slot__caption">{s.caption}</span>}
                     {s.sub && <span className="cs-iso-slot__sub">{s.sub}</span>}
