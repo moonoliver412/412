@@ -1,0 +1,504 @@
+/* Forest page — trophy landscape of grove scenes */
+
+.forest-badge {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.forest-intro {
+  margin: -8px 0 22px;
+  font-size: 16px;
+  max-width: 560px;
+}
+
+.forest-intro a {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* ---- summary strip ------------------------------------------------------ */
+
+.forest-summary {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 18px 36px;
+  margin-bottom: 36px;
+  border: 1.5px solid var(--ink);
+  width: fit-content;
+}
+
+.forest-summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.forest-summary-number {
+  font-family: var(--font-display);
+  font-size: 38px;
+  line-height: 1;
+  color: var(--amber);
+  letter-spacing: 1px;
+}
+
+.forest-summary-number small {
+  font-size: 22px;
+  opacity: 0.7;
+}
+
+.forest-summary-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #fff;
+  opacity: 0.7;
+}
+
+.forest-summary-divider {
+  width: 1.5px;
+  align-self: stretch;
+  background: rgba(229, 185, 94, 0.35);
+}
+
+/* ---- grove sections ------------------------------------------------------ */
+
+.grove {
+  margin-bottom: 40px;
+}
+
+.grove-header {
+  margin-bottom: 14px;
+}
+
+.grove-header-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 10px 26px;
+  border-radius: var(--radius-pill);
+}
+
+.grove-header-name {
+  font-size: 24px;
+  margin: 0;
+}
+
+.grove-header-count {
+  color: #fff;
+  opacity: 0.75;
+  font-size: 14px;
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+/* ---- grove scene card ---------------------------------------------------- */
+
+.grove-card {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background:
+    linear-gradient(
+      180deg,
+      #e6eee1 0px,
+      #dfe7da 120px,
+      var(--card) 230px
+    );
+}
+
+/* sky band with drifting clouds */
+.grove-sky {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 130px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.grove-cloud {
+  position: absolute;
+  opacity: 0.9;
+}
+
+.grove-cloud--a {
+  width: 96px;
+  top: 18px;
+  left: -110px;
+  animation: grove-cloud-drift 95s linear infinite;
+}
+
+.grove-cloud--b {
+  width: 66px;
+  top: 62px;
+  left: -80px;
+  animation: grove-cloud-drift 140s linear infinite;
+  animation-delay: -55s;
+  opacity: 0.75;
+}
+
+@keyframes grove-cloud-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(1700px);
+  }
+}
+
+/* faint horizon accent in the language's color */
+.grove-horizon {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grove-accent, var(--amber));
+  opacity: 0.3;
+}
+
+/* ---- landscape rows with depth staging ------------------------------------ */
+
+/* Topics are chunked into rows of up to 3 tiles. The LAST row is the front of
+   the scene; each row behind it (--row-depth: 1, 2, …) is raised, slightly
+   scaled down and layered underneath, so the grove reads as one landscape
+   rather than a grid of cards. Scales to any number of rows. */
+.grove-plots {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 170px 32px 28px; /* headroom for the larger 120px trees */
+}
+
+.grove-row {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+  transform-origin: 50% 100%;
+  transform: translateY(calc(var(--row-depth, 0) * -18px))
+    scale(calc(1 - var(--row-depth, 0) * 0.07));
+}
+
+/* Headroom for trees of the next row, which overflow above their tiles. */
+.grove-row + .grove-row {
+  margin-top: 108px;
+}
+
+.grove-plot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 196px;
+}
+
+.grove-plot-scene {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* Per-column micro offsets inside a row keep the staggered, organic feel:
+   outer tiles sit a touch higher, the middle one steps forward. */
+.grove-row .grove-plot:nth-child(3n + 1) .grove-plot-scene {
+  transform: translateY(-12px) scale(0.97);
+}
+.grove-row .grove-plot:nth-child(3n + 2) {
+  z-index: 2;
+}
+.grove-row .grove-plot:nth-child(3n + 2) .grove-plot-scene {
+  transform: translateY(8px) scale(1.04);
+}
+.grove-row .grove-plot:nth-child(3n) .grove-plot-scene {
+  transform: translateY(-4px);
+}
+
+/* stage-0 plots are dimmed */
+.grove-plot--empty .grove-plot-scene {
+  opacity: 0.6;
+}
+.grove-plot--empty .grove-plot-label {
+  opacity: 0.55;
+}
+
+/* ---- on-tile decorations (children of IsoTile) ---------------------------- */
+
+.plot-stand {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 32px;
+}
+
+.plot-tree {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* golden halo behind a mastered tree */
+.plot-halo {
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 132px;
+  height: 132px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(229, 185, 94, 0.5) 0%,
+    rgba(229, 185, 94, 0.2) 45%,
+    rgba(229, 185, 94, 0) 70%
+  );
+  z-index: 0;
+  pointer-events: none;
+  animation: plot-halo-pulse 4.5s ease-in-out infinite;
+}
+
+.plot-halo::after {
+  content: '';
+  position: absolute;
+  inset: 16%;
+  border-radius: 50%;
+  border: 2px solid rgba(229, 185, 94, 0.75);
+}
+
+@keyframes plot-halo-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.07);
+  }
+}
+
+/* rising sparkle particles for mastered trees */
+.plot-sparkles {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 112px;
+  height: 140px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.plot-sparkle {
+  position: absolute;
+  bottom: 8px;
+  width: 9px;
+  height: 9px;
+  background: var(--amber);
+  clip-path: polygon(
+    50% 0%,
+    62% 38%,
+    100% 50%,
+    62% 62%,
+    50% 100%,
+    38% 62%,
+    0% 50%,
+    38% 38%
+  );
+  opacity: 0;
+  animation: plot-sparkle-rise 3s ease-in infinite;
+}
+
+.plot-sparkle--0 {
+  left: 8%;
+  animation-delay: 0s;
+}
+.plot-sparkle--1 {
+  left: 30%;
+  animation-delay: 1.2s;
+  width: 7px;
+  height: 7px;
+}
+.plot-sparkle--2 {
+  left: 52%;
+  animation-delay: 0.5s;
+}
+.plot-sparkle--3 {
+  left: 72%;
+  animation-delay: 1.9s;
+  width: 7px;
+  height: 7px;
+}
+.plot-sparkle--4 {
+  left: 90%;
+  animation-delay: 2.5s;
+}
+
+@keyframes plot-sparkle-rise {
+  0% {
+    transform: translateY(0) scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-112px) scale(1.1) rotate(60deg);
+    opacity: 0;
+  }
+}
+
+/* small gray cloud hovering over a wilted tree */
+.plot-wilt-cloud {
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  width: 62px;
+  transform: translateX(-62%);
+  z-index: 3;
+  pointer-events: none;
+  animation: plot-wilt-hover 5s ease-in-out infinite;
+}
+
+@keyframes plot-wilt-hover {
+  0%,
+  100% {
+    transform: translateX(-62%) translateY(0);
+  }
+  50% {
+    transform: translateX(-62%) translateY(5px);
+  }
+}
+
+/* ---- labels --------------------------------------------------------------- */
+
+.grove-plot-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.grove-plot-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grove-plot-progress {
+  font-size: 14px;
+  color: #3b3b3b;
+}
+
+.grove-plot-wilted {
+  color: var(--wilt);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.grove-mastered-pill {
+  position: relative;
+  background: var(--amber);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-pill);
+  padding: 2px 14px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  /* static base glow — never animated (cheap) */
+  box-shadow: 0 0 8px rgba(229, 185, 94, 0.6);
+}
+
+/* The pulse lives on a pseudo-element with a STATIC shadow whose opacity
+   fades in and out — keeps the loop compositor-only (no box-shadow
+   animation repaints with up to 18 plots on screen). */
+.grove-mastered-pill::after {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 16px rgba(229, 185, 94, 1);
+  opacity: 0;
+  pointer-events: none;
+  animation: mastered-glow 3.5s ease-in-out infinite;
+}
+
+@keyframes mastered-glow {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---- footer ---------------------------------------------------------------- */
+
+.forest-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.forest-reset {
+  background: none;
+  border: none;
+  color: #5a5a5a;
+  font-size: 13px;
+  text-decoration: underline;
+  padding: 6px 8px;
+}
+
+.forest-reset:hover {
+  color: var(--orange);
+}
+
+/* ---- reduced motion --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .grove-cloud--a,
+  .grove-cloud--b,
+  .plot-halo,
+  .plot-wilt-cloud,
+  .grove-mastered-pill::after {
+    animation: none !important;
+  }
+
+  /* keep a steady (non-pulsing) glow on the mastered pill */
+  .grove-mastered-pill::after {
+    opacity: 0.6;
+  }
+
+  /* park the sky clouds somewhere visible instead of off-canvas */
+  .grove-cloud--a {
+    left: 12%;
+  }
+  .grove-cloud--b {
+    left: 58%;
+  }
+
+  .plot-sparkle {
+    animation: none !important;
+    display: none;
+  }
+}

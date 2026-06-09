@@ -1,0 +1,98 @@
+/* SpeciesPicker — black panel with one mini-tree option card per species
+   in the language palette. Selected card gets the orange ring. */
+
+.species-picker {
+  padding: 18px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.species-picker-title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.species-options {
+  display: flex;
+  gap: 12px;
+}
+
+.species-option {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 8px 8px;
+  background: #1c1c1c;
+  color: #fff;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 18px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.species-option:hover {
+  border-color: var(--amber, #e5b95e);
+  transform: translateY(-2px);
+}
+
+.species-option:focus-visible {
+  outline: 2.5px solid var(--amber, #e5b95e);
+  outline-offset: 2px;
+}
+
+.species-option.is-selected {
+  border-color: var(--orange, #ff4500);
+  box-shadow: 0 0 0 2.5px var(--orange, #ff4500);
+}
+
+/* live mature mini-tree preview; <Tree /> is bottom-center anchored */
+.species-preview {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 122px; /* fits the 92px-wide (≈115px-tall) preview trees */
+  line-height: 0;
+  pointer-events: none;
+}
+
+.species-name {
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.species-option.is-selected .species-name {
+  color: var(--amber, #e5b95e);
+}
+
+.species-hint {
+  margin: 0;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 11.5px;
+  color: #9a9a9a;
+}
+
+/* one-line replacement once growth is locked in */
+.species-locked-note {
+  margin: 0;
+  padding: 9px 22px;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--panel, #0d0d0d);
+  border: 1.5px solid var(--ink, #111);
+  color: var(--amber, #e5b95e);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 13px;
+  text-align: center;
+}
+
+.species-locked-kind {
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}

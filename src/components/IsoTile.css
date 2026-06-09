@@ -1,0 +1,39 @@
+/* IsoTile — a single mini isometric ground tile (grass top + soil block). */
+
+.cs-iso-tile {
+  position: relative;
+  aspect-ratio: 200 / 170; /* matches the tile viewBox */
+  line-height: 0;
+}
+
+.cs-iso-tile__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cs-iso-tile__grass.is-highlighted {
+  stroke: var(--orange, #ff4500);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgba(255, 69, 0, 0.55));
+}
+
+/* Children stand with their bottom-center on the grass diamond's center:
+   x = 50%, y = 79/170 from the top (53.53% up from the bottom). */
+.cs-iso-tile__stage {
+  position: absolute;
+  left: 50%;
+  bottom: 53.53%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.cs-iso-tile__stage > * {
+  pointer-events: auto;
+}

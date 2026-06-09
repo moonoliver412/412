@@ -1,0 +1,157 @@
+.playground .cs-page-title {
+  margin-bottom: 16px;
+}
+
+/* Language tabs: HTML / CSS / JS pills, orange when active. */
+.pg-lang-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.pg-lang-tab {
+  font-size: 17px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 9px 32px;
+}
+
+.pg-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.pg-plot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pg-plot-wrap {
+  position: relative;
+  align-self: center;
+  width: 100%;
+}
+
+.pg-plot-col .cs-iso-plot {
+  align-self: center;
+  width: 100%;
+}
+
+/* Small discoverability pill: opens the TreeInspector for the selected tree. */
+.pg-inspect-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 14px;
+  padding: 7px 18px;
+}
+
+/* "✨ Fully grown!" toast shown during the mastery time-lapse, fades on its own. */
+.pg-mastery-toast {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  background: var(--panel);
+  color: var(--amber);
+  border: 1.5px solid var(--amber);
+  border-radius: var(--radius-pill);
+  padding: 8px 22px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 1px;
+  pointer-events: none;
+  transform: translate(-50%, 0);
+  animation: pg-toast 4s ease forwards;
+}
+
+@keyframes pg-toast {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+}
+
+/* --- Session rain: watering effect over the tree being grown -------------- */
+/* Wrapper keeps the tree's bottom-center anchoring (shrink-wraps the tree). */
+.rain-overlay {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+.rain-drops {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rain-drop {
+  position: absolute;
+  top: -12px;
+  left: var(--rain-left, 50%);
+  width: 2px;
+  height: 8px;
+  border-radius: 2px;
+  background: #9fc3d8;
+  opacity: 0;
+  animation: rain-fall var(--rain-dur, 1.2s) linear infinite;
+  animation-delay: var(--rain-delay, 0s);
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  78% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(190px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rain-drops {
+    display: none;
+  }
+
+  .pg-mastery-toast {
+    animation: none;
+  }
+}
+
+.pg-plot-col .timer-panel,
+.pg-plot-col .species-picker,
+.pg-plot-col .species-locked-note {
+  align-self: center;
+  width: min(420px, 100%);
+}
+
+@media (max-width: 960px) {
+  .pg-layout {
+    grid-template-columns: 1fr;
+  }
+}

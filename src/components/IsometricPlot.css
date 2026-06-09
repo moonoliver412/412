@@ -1,0 +1,511 @@
+/* IsometricPlot — rounded sky card with a gridded isometric grass/soil plot,
+   ambient clouds, and slot stands on an adaptive K×K grid of cells. */
+
+.cs-iso-plot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 880 / 560; /* matches the ground viewBox exactly */
+  /* pale blue-gray zenith → warm cream near the horizon */
+  background: linear-gradient(180deg, #ccd6d3 0%, #dcdcd0 34%, #ece3c9 52%, #d9d9d9 66%);
+  border: 1.5px solid var(--ink, #111);
+  border-radius: var(--radius-xl, 28px);
+  overflow: hidden; /* soil block clips into the rounded bottom corners */
+}
+
+/* ---- ambient sky -------------------------------------------------------- */
+
+.cs-iso-plot__sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cs-iso-sun {
+  position: absolute;
+  top: 22px;
+  left: 30px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #f0d27d;
+  border: 1.5px solid var(--ink, #111);
+  box-shadow: 0 0 0 8px rgba(240, 210, 125, 0.35);
+}
+
+.cs-iso-cloud {
+  position: absolute;
+  display: block;
+  animation: cs-iso-drift linear infinite;
+}
+
+.cs-iso-cloud--1 {
+  top: 5%;
+  left: 14%;
+  width: 17%;
+  animation-duration: 85s;
+  animation-delay: -30s;
+}
+
+.cs-iso-cloud--2 {
+  top: 16%;
+  left: 52%;
+  width: 12%;
+  animation-duration: 115s;
+  animation-delay: -82s;
+  opacity: 0.9;
+}
+
+.cs-iso-cloud--3 {
+  top: 2%;
+  left: 76%;
+  width: 9%;
+  animation-duration: 65s;
+  animation-delay: -12s;
+  opacity: 0.8;
+}
+
+@keyframes cs-iso-drift {
+  from {
+    left: -20%;
+  }
+  to {
+    left: 104%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-iso-cloud {
+    animation: none;
+  }
+}
+
+/* ---- ground ------------------------------------------------------------- */
+
+.cs-iso-plot__ground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none; /* only the slot cells take clicks */
+}
+
+.cs-iso-cell {
+  fill: transparent;
+  stroke: transparent;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.15s ease;
+}
+
+.cs-iso-cell.is-clickable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.cs-iso-cell.is-clickable:hover {
+  fill: rgba(255, 255, 255, 0.12);
+}
+
+.cs-iso-cell.is-highlighted {
+  fill: rgba(255, 244, 230, 0.22);
+  stroke: var(--orange, #ff4500);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 7px rgba(255, 69, 0, 0.55));
+}
+
+/* ---- slots: things standing on the cells -------------------------------- */
+
+.cs-iso-plot__slots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cs-iso-plot__slot {
+  position: absolute;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.cs-iso-slot__stand {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  line-height: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  /* The button's rectangular box would swallow clicks meant for neighbours
+     behind it — only the PAINTED parts of the tree take clicks (they bubble
+     up to the button), so transparent areas pass through to cells/labels. */
+  pointer-events: none;
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.cs-iso-slot__stand.is-clickable svg * {
+  pointer-events: visiblePainted;
+}
+
+.cs-iso-slot__stand.is-clickable {
+  cursor: pointer;
+}
+
+.cs-iso-slot__stand.is-clickable:hover {
+  transform: translateY(-5px);
+  filter: brightness(1.06);
+}
+
+.cs-iso-slot__stand.is-clickable:focus-visible {
+  outline: 2.5px solid var(--orange, #ff4500);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+/* caption pill sits just in front of the cell, below the tree's feet */
+.cs-iso-slot__label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 4px 14px 5px;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--bg, #c5d2c2);
+  border: 1.5px solid var(--ink, #111);
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1.15;
+  font: inherit;
+  color: inherit;
+}
+
+/* clickable caption pills are real buttons — a reliable big-hit-area target */
+button.cs-iso-slot__label {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+button.cs-iso-slot__label:hover {
+  background: #e8e8e8;
+}
+
+button.cs-iso-slot__label.is-highlighted:hover {
+  background: var(--orange, #ff4500);
+}
+
+button.cs-iso-slot__label:focus-visible {
+  outline: 2.5px solid var(--orange, #ff4500);
+  outline-offset: 2px;
+}
+
+.cs-iso-slot__label.is-highlighted {
+  background: var(--orange, #ff4500);
+  color: #fff;
+}
+
+.cs-iso-slot__caption {
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.cs-iso-slot__sub {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* dense grids (K > 3): smaller caption pills so neighbours don't collide */
+.cs-iso-plot--dense .cs-iso-slot__label {
+  padding: 2px 9px 3px;
+  top: calc(100% + 5px);
+}
+
+.cs-iso-plot--dense .cs-iso-slot__caption {
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+.cs-iso-plot--dense .cs-iso-slot__sub {
+  font-size: 9px;
+}
+
+/* ---- scene: sky gradient, hills, pollen ---------------------------------- */
+
+/* The label badge was replaced by the in-scene wooden signpost. */
+
+.cs-iso-hills {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: block;
+}
+
+.cs-iso-hills--far {
+  top: 26%;
+  height: 23%;
+  opacity: 0.55; /* haze */
+}
+
+.cs-iso-hills--near {
+  top: 33%;
+  height: 20%;
+  opacity: 0.75;
+}
+
+.cs-iso-pollen {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.cs-iso-mote {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f3e4ae;
+  opacity: 0;
+  animation: cs-iso-mote-drift 14s linear infinite;
+}
+
+.cs-iso-mote:nth-child(1) { top: 12%; left: 9%;  animation-delay: 0s; }
+.cs-iso-mote:nth-child(2) { top: 8%;  left: 15%; animation-delay: -3s; animation-duration: 17s; }
+.cs-iso-mote:nth-child(3) { top: 16%; left: 6%;  animation-delay: -6s; animation-duration: 12s; }
+.cs-iso-mote:nth-child(4) { top: 5%;  left: 22%; animation-delay: -9s; }
+.cs-iso-mote:nth-child(5) { top: 20%; left: 13%; animation-delay: -11s; animation-duration: 16s; }
+.cs-iso-mote:nth-child(6) { top: 10%; left: 28%; animation-delay: -5s;  animation-duration: 19s; }
+.cs-iso-mote:nth-child(7) { top: 24%; left: 20%; animation-delay: -8s; }
+.cs-iso-mote:nth-child(8) { top: 14%; left: 33%; animation-delay: -13s; animation-duration: 15s; }
+
+@keyframes cs-iso-mote-drift {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  12%  { opacity: 0.85; }
+  70%  { opacity: 0.5; }
+  100% { transform: translate(150px, 110px); opacity: 0; }
+}
+
+/* sun halo pulse (on a pseudo-element so the box-shadow itself is static) */
+.cs-iso-sun::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 210, 125, 0.5) 0%, rgba(240, 210, 125, 0) 70%);
+  animation: cs-iso-sun-pulse 7s ease-in-out infinite;
+}
+
+@keyframes cs-iso-sun-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.18); }
+}
+
+/* ---- pond shimmer --------------------------------------------------------- */
+
+.cs-iso-shimmer {
+  animation: cs-iso-shimmer 5s ease-in-out infinite;
+}
+
+.cs-iso-shimmer--2 {
+  animation-delay: -2.4s;
+  animation-duration: 6.5s;
+}
+
+@keyframes cs-iso-shimmer {
+  0%, 100% { opacity: 0.25; transform: translateX(0); }
+  50%      { opacity: 0.85; transform: translateX(6px); }
+}
+
+/* ---- wind gust ------------------------------------------------------------ */
+/* A shared 22s rhythm: grass (here) and trees (Tree.css) run their own
+   transform-only gust keyframes with the same period, so the whole scene
+   bends together without any style recalc (animating an inherited custom
+   property proved to re-style every tree node per frame). */
+
+.cs-iso-tuft {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: cs-iso-tuft-gust 22s ease-in-out infinite;
+}
+
+@keyframes cs-iso-tuft-gust {
+  0%, 84% { transform: skewX(0deg); }
+  88%     { transform: skewX(-10deg); }
+  91%     { transform: skewX(3deg); }
+  94%     { transform: skewX(-7deg); }
+  100%    { transform: skewX(0deg); }
+}
+
+/* ---- ambient life: butterflies, bee, bird --------------------------------- */
+
+.cs-iso-plot__life {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 40; /* above slot stands */
+}
+
+.cs-iso-butterfly {
+  position: absolute;
+  width: 16px;
+  height: 12px;
+  animation: cs-iso-flutter-1 34s ease-in-out infinite;
+}
+
+.cs-iso-butterfly--1 { top: 38%; left: 24%; }
+
+.cs-iso-butterfly--2 {
+  top: 46%;
+  left: 64%;
+  animation-name: cs-iso-flutter-2;
+  animation-duration: 27s;
+  animation-delay: -9s;
+}
+
+.cs-iso-wing {
+  position: absolute;
+  top: 1px;
+  width: 7px;
+  height: 10px;
+  border-radius: 60% 60% 45% 45%;
+  background: #e8964f;
+  border: 1px solid #111;
+  animation: cs-iso-flap 0.35s ease-in-out infinite alternate;
+}
+
+.cs-iso-butterfly--2 .cs-iso-wing { background: #b7cae0; }
+
+.cs-iso-wing--l { left: 0; transform-origin: 100% 50%; }
+.cs-iso-wing--r { right: 0; transform-origin: 0% 50%; animation-delay: -0.35s; }
+
+.cs-iso-body {
+  position: absolute;
+  left: 6.5px;
+  top: 0;
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: #2c2c2c;
+}
+
+@keyframes cs-iso-flap {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0.35); }
+}
+
+@keyframes cs-iso-flutter-1 {
+  0%   { transform: translate(0, 0); }
+  18%  { transform: translate(140px, -60px); }
+  38%  { transform: translate(290px, 10px); }
+  56%  { transform: translate(180px, 90px); }
+  76%  { transform: translate(40px, 50px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes cs-iso-flutter-2 {
+  0%   { transform: translate(0, 0); }
+  22%  { transform: translate(-160px, 50px); }
+  44%  { transform: translate(-300px, -30px); }
+  64%  { transform: translate(-130px, -90px); }
+  84%  { transform: translate(30px, -40px); }
+  100% { transform: translate(0, 0); }
+}
+
+.cs-iso-bee {
+  position: absolute;
+  bottom: 26%;
+  left: 38%;
+  width: 10px;
+  height: 8px;
+  animation: cs-iso-bee-route 13s ease-in-out infinite;
+}
+
+.cs-iso-bee-body {
+  position: absolute;
+  inset: 1px 0;
+  border-radius: 50% / 60%;
+  background: repeating-linear-gradient(90deg, #e5b95e 0 2.5px, #2c2c2c 2.5px 4.5px);
+  border: 1px solid #111;
+}
+
+.cs-iso-bee-wing {
+  position: absolute;
+  top: -3px;
+  left: 2.5px;
+  width: 5px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  transform-origin: 50% 100%;
+  animation: cs-iso-flap 0.12s linear infinite alternate;
+}
+
+@keyframes cs-iso-bee-route {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(60px, -14px); }
+  35%  { transform: translate(54px, -10px); } /* hover at a flower */
+  55%  { transform: translate(-40px, -26px); }
+  68%  { transform: translate(-44px, -22px); } /* hover */
+  100% { transform: translate(0, 0); }
+}
+
+.cs-iso-bird {
+  position: absolute;
+  top: 14%;
+  left: -6%;
+  width: 30px;
+  height: 15px;
+  opacity: 0;
+  animation: cs-iso-bird-flight 41s linear infinite;
+}
+
+.cs-iso-bird-wings {
+  transform-box: fill-box;
+  transform-origin: 50% 60%;
+  animation: cs-iso-bird-flap 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes cs-iso-bird-flap {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0.35) translateY(3px); }
+}
+
+@keyframes cs-iso-bird-flight {
+  0%, 86%  { transform: translate(0, 0); opacity: 0; }
+  87%      { opacity: 0.9; }
+  92%      { transform: translate(56vw, -34px); opacity: 0.9; }
+  97.5%    { transform: translate(102vw, -10px); opacity: 0.9; }
+  98%      { transform: translate(104vw, -10px); opacity: 0; }
+  100%     { transform: translate(104vw, -10px); opacity: 0; }
+}
+
+/* reduced motion: park the whole scene */
+@media (prefers-reduced-motion: reduce) {
+  .cs-iso-plot,
+  .cs-iso-tuft,
+  .cs-iso-mote,
+  .cs-iso-sun::after,
+  .cs-iso-shimmer,
+  .cs-iso-butterfly,
+  .cs-iso-wing,
+  .cs-iso-bee,
+  .cs-iso-bee-wing,
+  .cs-iso-bird,
+  .cs-iso-bird-wings {
+    animation: none;
+  }
+
+  .cs-iso-bird { display: none; }
+  .cs-iso-mote { opacity: 0.4; }
+}

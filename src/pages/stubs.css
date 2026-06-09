@@ -1,0 +1,372 @@
+/* Shared styles for the on-brand stub pages
+   (Home, Learn, Challenges, Achievements, Leaderboard) */
+
+/* circular badge beside page titles (mockup style) */
+.stub-badge {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.stub-muted {
+  color: #4a4a4a;
+  font-size: 15px;
+}
+
+/* generic empty gray placeholder card */
+.stub-placeholder {
+  display: grid;
+  place-items: center;
+  color: #6b6b6b;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.5px;
+  min-height: 150px;
+}
+
+/* ---- Home -------------------------------------------------------------- */
+
+.home-hero {
+  padding: 56px 48px;
+  margin: 16px 0 28px;
+}
+
+.home-hero h1 {
+  font-size: 64px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.home-hero h1 .home-hero-accent {
+  color: var(--orange);
+}
+
+.home-hero p {
+  max-width: 560px;
+  font-size: 17px;
+  margin: 0 0 28px;
+}
+
+.home-hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.home-hero-actions a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.home-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.home-feature {
+  padding: 26px 28px;
+}
+
+.home-feature h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.home-feature p {
+  margin: 0;
+  font-size: 14.5px;
+  color: #3b3b3b;
+}
+
+.home-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 32px;
+  flex-wrap: wrap;
+}
+
+.home-strip .cs-panel-title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.home-strip a {
+  text-decoration: none;
+}
+
+/* ---- Learn ------------------------------------------------------------- */
+
+.learn-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.learn-header .cs-page-title {
+  margin: 0;
+}
+
+.learn-chips {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.learn-chip {
+  font-size: 14px;
+  padding: 8px 20px;
+}
+
+.learn-featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 26px;
+}
+
+.learn-featured .stub-placeholder {
+  min-height: 170px;
+}
+
+.learn-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.learn-filter-label {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.learn-search {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-pill);
+  height: 38px;
+  width: 200px;
+  padding: 0 12px;
+  color: #555;
+}
+
+.learn-filter-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-left: auto;
+  font-weight: 600;
+}
+
+.learn-filter-links a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.learn-filter-links .learn-filter-active {
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius-pill);
+  padding: 7px 22px;
+  background: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-display);
+}
+
+.learn-courses {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  padding: 26px;
+}
+
+.learn-course {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--ink);
+  background: #e7e7e3;
+  border-radius: 22px;
+  border: 1.5px solid var(--ink);
+  transition: transform 0.12s ease;
+}
+
+.learn-course:hover {
+  transform: translateY(-3px);
+}
+
+.learn-course-body {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 150px;
+}
+
+.learn-course-name {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.learn-course-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.learn-course-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--grass);
+  color: #fff;
+  font-family: var(--font-display);
+  padding: 10px 16px;
+  font-size: 16px;
+  border-top: 1.5px solid var(--ink);
+}
+
+/* ---- Challenges ---------------------------------------------------------- */
+
+.challenges-big-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.challenges-big-row .stub-placeholder {
+  min-height: 240px;
+  font-size: 30px;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.challenges-bottom-row {
+  display: flex;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.challenge-slim {
+  flex: 1;
+  min-height: 340px;
+  border-radius: 36px;
+}
+
+.challenges-panel {
+  flex: 5.5;
+  display: flex;
+  gap: 20px;
+  padding: 18px;
+  min-height: 340px;
+}
+
+.challenges-panel-main {
+  flex: 2.2;
+  border-radius: 20px;
+}
+
+.challenges-panel-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.challenges-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border-radius: var(--radius-pill);
+  height: 42px;
+  padding: 0 14px;
+  color: #555;
+}
+
+.challenges-no {
+  align-self: flex-end;
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0 8px 4px 0;
+}
+
+/* ---- Achievements / Leaderboard ----------------------------------------- */
+
+.stub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.leaderboard-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 24px;
+  min-height: 0;
+}
+
+.leaderboard-rank {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  width: 44px;
+}
+
+.leaderboard-bar {
+  flex: 1;
+  height: 16px;
+  border-radius: var(--radius-pill);
+  background: #c2c2c2;
+}
+
+@media (max-width: 980px) {
+  .home-features,
+  .learn-courses,
+  .challenges-big-row,
+  .stub-grid {
+    grid-template-columns: 1fr;
+  }
+  .learn-featured {
+    grid-template-columns: 1fr;
+  }
+  .challenges-bottom-row {
+    flex-wrap: wrap;
+  }
+}
