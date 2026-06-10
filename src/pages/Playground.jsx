@@ -27,9 +27,12 @@ function hashId(str) {
 
 /** Trees shrink as the plot gets denser. */
 function treeSizeFor(topicCount) {
-  if (topicCount <= 3) return 200;
-  if (topicCount <= 6) return 150;
-  return 115;
+  // Forest density: mature canopies should nearly touch (~80% of cell width)
+  // so a full language reads as a FOREST, not scattered saplings.
+  if (topicCount <= 3) return 210;
+  if (topicCount <= 6) return 188;
+  if (topicCount <= 9) return 176;
+  return 168;
 }
 
 /** One-shot time-lapse length when a tree is freshly mastered. */

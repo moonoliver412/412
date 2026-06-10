@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
+import { LANGUAGES, STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
 
 // ---------------------------------------------------------------------------
 // Progress state — the contract every feature codes against.
@@ -23,7 +23,27 @@ import { STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY = 'codesprout-progress-v1';
+const LANGKIND_KEY = 'codesprout-langkinds-v1';
 const DEFAULT_DURATION_MIN = 25;
+
+// One species per LANGUAGE: pick oak for HTML and the whole HTML plot is an
+// oak forest. Migrates any legacy per-topic choices (first found wins).
+function loadLangKinds(progress) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(LANGKIND_KEY));
+    if (stored) return stored;
+  } catch {
+    /* fall through to migration */
+  }
+  const migrated = {};
+  for (const lang of LANGUAGES) {
+    const chosen = lang.topics
+      .map((t) => progress[t.id]?.kind)
+      .find((k) => k && lang.species.includes(k));
+    if (chosen) migrated[lang.id] = chosen;
+  }
+  return migrated;
+}
 
 const ProgressContext = createContext(null);
 
@@ -41,11 +61,16 @@ function emptyTopic() {
 
 export function ProgressProvider({ children }) {
   const [progress, setProgress] = useState(loadProgress);
+  const [langKinds, setLangKinds] = useState(() => loadLangKinds(loadProgress()));
   const [session, setSession] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   }, [progress]);
+
+  useEffect(() => {
+    localStorage.setItem(LANGKIND_KEY, JSON.stringify(langKinds));
+  }, [langKinds]);
 
   const getTopicProgress = useCallback(
     (topicId) => progress[topicId] ?? emptyTopic(),
@@ -145,34 +170,44 @@ export function ProgressProvider({ children }) {
     [progress, updateTopic]
   );
 
-  /**
-   * Pick the topic's tree species from its language palette.
-   * Only allowed while nothing is locked in yet (lockedStage === 0) —
-   * once the tree starts growing, the species is fixed.
-   */
-  const setTreeKind = useCallback(
-    (topicId, kind) => {
-      const entry = findTopic(topicId);
-      const prev = progress[topicId] ?? emptyTopic();
-      if (!entry || prev.lockedStage > 0) return;
-      if (!entry.language.species.includes(kind)) return;
-      updateTopic(topicId, { kind });
-    },
-    [progress, updateTopic]
-  );
-
-  /** Effective species for a topic's tree: user choice, else topic default. */
-  const getTreeKind = useCallback(
-    (topicId) => {
-      const chosen = progress[topicId]?.kind;
-      if (chosen) return chosen;
-      return findTopic(topicId)?.topic.treeKind ?? 'oak';
+  /** True once ANY tree of the language has locked growth — species is then fixed. */
+  const isLangLocked = useCallback(
+    (langId) => {
+      const lang = LANGUAGES.find((l) => l.id === langId);
+      if (!lang) return true;
+      return lang.topics.some((t) => (progress[t.id]?.lockedStage ?? 0) > 0);
     },
     [progress]
   );
 
+  /**
+   * Pick the LANGUAGE's forest species from its palette — every topic tree
+   * of that language grows as this species (an oak forest, a cherry forest…).
+   * Only allowed while no tree of the language has started growing.
+   */
+  const setTreeKind = useCallback(
+    (langId, kind) => {
+      const lang = LANGUAGES.find((l) => l.id === langId);
+      if (!lang || !lang.species.includes(kind)) return;
+      if (isLangLocked(langId)) return;
+      setLangKinds((prev) => ({ ...prev, [langId]: kind }));
+    },
+    [isLangLocked]
+  );
+
+  /** Effective species for a topic's tree: its language's chosen forest species. */
+  const getTreeKind = useCallback(
+    (topicId) => {
+      const entry = findTopic(topicId);
+      if (!entry) return 'oak';
+      return langKinds[entry.language.id] ?? entry.language.species[0];
+    },
+    [langKinds]
+  );
+
   const resetAll = useCallback(() => {
     setProgress({});
+    setLangKinds({});
     setSession(null);
   }, []);
 
@@ -191,6 +226,7 @@ export function ProgressProvider({ children }) {
       completeLesson,
       setTreeKind,
       getTreeKind,
+      isLangLocked,
       resetAll,
     }),
     [
@@ -207,6 +243,7 @@ export function ProgressProvider({ children }) {
       completeLesson,
       setTreeKind,
       getTreeKind,
+      isLangLocked,
       resetAll,
     ]
   );

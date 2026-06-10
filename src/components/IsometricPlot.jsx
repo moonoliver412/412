@@ -186,19 +186,8 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
   );
   const scatter = useMemo(() => makeScatter(K, occupied), [K, occupied]);
 
-  // Decorative features land on FREE cells only (deterministic row order);
-  // dense plots without free cells simply skip them.
-  const freeCells = useMemo(() => {
-    const free = [];
-    for (let j = 0; j < K; j++)
-      for (let i = 0; i < K; i++)
-        if (!occupied.has(`${i},${j}`)) free.push({ i, j });
-    return free;
-  }, [K, occupied]);
-  const pondCell = freeCells[0];
-  const benchCell = freeCells[1];
-  const rockCell = freeCells[2];
-  const fs = 3 / K; // feature scale: shrink props as the grid densifies
+  // Free cells stay PURE GRASS — every cell is a tree or a future tree.
+  // (Pond/bench/rock props removed by user request: "I want it to all be trees.")
 
   // Pair each slot with its cell + screen anchor; render back-to-front.
   const placed = shown.map((s, idx) => {
@@ -362,7 +351,7 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
               key={m}
               points={cellPoints(i, j, K)}
               fill="#7b9894"
-              opacity={0.55}
+              opacity={0.26}
             />
           );
         })}
@@ -427,8 +416,8 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
             x2={iso(k / K, 1)[0]}
             y2={iso(k / K, 1)[1]}
             stroke="#9fbcb7"
-            strokeWidth={1.4}
-            opacity={0.8}
+            strokeWidth={1.1}
+            opacity={0.32}
             vectorEffect="non-scaling-stroke"
           />
         ))}
@@ -440,8 +429,8 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
             x2={iso(1, k / K)[0]}
             y2={iso(1, k / K)[1]}
             stroke="#9fbcb7"
-            strokeWidth={1.4}
-            opacity={0.8}
+            strokeWidth={1.1}
+            opacity={0.32}
             vectorEffect="non-scaling-stroke"
           />
         ))}
@@ -491,28 +480,6 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
           </g>
         ))}
 
-        {/* pond on the first free cell: sandy ring, water, shimmer, reeds, lily pad */}
-        {pondCell && (() => {
-          const [px, py] = iso((pondCell.i + 0.5) / K, (pondCell.j + 0.5) / K);
-          return (
-            <g>
-              <ellipse cx={px} cy={py} rx={92 * fs} ry={31 * fs} fill="#8a7a55" stroke="#6f6140" strokeWidth={1.2} vectorEffect="non-scaling-stroke" />
-              <ellipse cx={px} cy={py - 1.5 * fs} rx={80 * fs} ry={25 * fs} fill="#5f8d96" stroke="#111" strokeWidth={1.4} vectorEffect="non-scaling-stroke" />
-              <ellipse className="cs-iso-shimmer cs-iso-shimmer--1" cx={px - 26 * fs} cy={py - 6 * fs} rx={20 * fs} ry={4.5 * fs} fill="#9fc6cc" />
-              <ellipse className="cs-iso-shimmer cs-iso-shimmer--2" cx={px + 22 * fs} cy={py + 5 * fs} rx={14 * fs} ry={3.5 * fs} fill="#bcdade" />
-              {/* lily pad with a notch */}
-              <ellipse cx={px + 34 * fs} cy={py - 8 * fs} rx={10 * fs} ry={4.6 * fs} fill="#5a8456" stroke="#111" strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
-              <path d={`M${px + 34 * fs},${py - 8 * fs} l${10 * fs},${-2.6 * fs} l${-1.5 * fs},${4.6 * fs} Z`} fill="#5f8d96" />
-              {/* reeds at the back edge */}
-              {[-58, -46, -36].map((dx, q) => (
-                <g key={q} transform={`translate(${px + dx * fs} ${py - 12 * fs})`}>
-                  <path d={`M0,0 q${q % 2 ? 2 : -2},-12 ${q % 2 ? 1 : -1},-20`} fill="none" stroke="#4d6b40" strokeWidth={1.8} strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-                  <ellipse cx={q % 2 ? 1 : -1} cy={-21} rx={2.1} ry={5} fill="#7a5634" stroke="#111" strokeWidth={0.9} vectorEffect="non-scaling-stroke" />
-                </g>
-              ))}
-            </g>
-          );
-        })()}
 
         {/* stepping-stone path meandering in from the front vertex */}
         {[0.86, 0.78, 0.7, 0.62, 0.55, 0.485].map((t, m) => {
@@ -526,35 +493,7 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
           );
         })}
 
-        {/* bench on the second free cell */}
-        {benchCell && (() => {
-          const [bx, by] = iso((benchCell.i + 0.5) / K, (benchCell.j + 0.5) / K);
-          return (
-            <g transform={`translate(${bx} ${by}) scale(${fs})`}>
-              <ellipse cx={0} cy={6} rx={30} ry={7} fill="rgba(0,0,0,0.13)" />
-              <rect x={-26} y={-10} width={52} height={7} rx={2.5} fill="#9a7544" stroke="#111" strokeWidth={1.3} vectorEffect="non-scaling-stroke" />
-              <rect x={-26} y={-26} width={52} height={6} rx={2.5} fill="#8a6a3e" stroke="#111" strokeWidth={1.3} vectorEffect="non-scaling-stroke" />
-              <rect x={-23} y={-26} width={4} height={22} fill="#7a5634" stroke="#111" strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
-              <rect x={19} y={-26} width={4} height={22} fill="#7a5634" stroke="#111" strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
-              <rect x={-21} y={-3} width={4.5} height={9} fill="#6b4a2b" stroke="#111" strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
-              <rect x={16.5} y={-3} width={4.5} height={9} fill="#6b4a2b" stroke="#111" strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
-            </g>
-          );
-        })()}
 
-        {/* mossy rocks on the third free cell */}
-        {rockCell && (() => {
-          const [rx0, ry0] = iso((rockCell.i + 0.5) / K, (rockCell.j + 0.5) / K);
-          return (
-            <g transform={`translate(${rx0} ${ry0}) scale(${fs})`}>
-              <ellipse cx={2} cy={10} rx={34} ry={8} fill="rgba(0,0,0,0.12)" />
-              <polygon points="-30,6 -22,-12 -6,-16 4,-4 -2,7 -22,9" fill="#7d7868" stroke="#111" strokeWidth={1.4} vectorEffect="non-scaling-stroke" />
-              <path d="M-24,-10 Q-14,-20 -4,-15 Q-12,-12 -18,-8 Z" fill="#6f8f5e" stroke="#3f5c34" strokeWidth={1} vectorEffect="non-scaling-stroke" />
-              <polygon points="8,8 14,-5 26,-7 32,3 24,9" fill="#8c8675" stroke="#111" strokeWidth={1.3} vectorEffect="non-scaling-stroke" />
-              <path d="M12,-4 Q20,-11 28,-6 Q20,-5 14,-2 Z" fill="#7aa765" stroke="#3f5c34" strokeWidth={1} vectorEffect="non-scaling-stroke" />
-            </g>
-          );
-        })()}
 
         {/* crisp diamond rim back on top of the details */}
         <polygon points={diamond} fill="none" {...OUTLINE} />

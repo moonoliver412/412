@@ -1329,7 +1329,7 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
   const grow = (birth, span = 0.55) => clamp((s - birth) / span, 0, 1);
 
   // --- structural growth schedule ---------------------------------------
-  const moundScale = (0.4 + 0.6 * clamp(s, 0, 1)) * clamp((1.8 - s) / 0.8, 0, 1);
+  const moundScale = (0.72 + 0.38 * clamp(s, 0, 1)) * clamp((1.8 - s) / 0.8, 0, 1); // fresh plots read as planted mounds, not empty cells
   const sproutScale = clamp((s - 0.3) / 0.7, 0, 1) * clamp((2.4 - s) / 0.5, 0, 1);
   const cotOpen = clamp((s - 0.45) / 0.75, 0, 1); // cotyledon pair unfurls
   const trueLeafK = clamp((s - 1.05) / 0.7, 0, 1); // first true leaves
