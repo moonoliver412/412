@@ -32,7 +32,7 @@ function treeSizeFor(topicCount) {
   if (topicCount <= 3) return 210;
   if (topicCount <= 6) return 188;
   if (topicCount <= 9) return 176;
-  return 168;
+  return 158;
 }
 
 /** One-shot time-lapse length when a tree is freshly mastered. */

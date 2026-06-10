@@ -190,12 +190,23 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
   // (Pond/bench/rock props removed by user request: "I want it to all be trees.")
 
   // Pair each slot with its cell + screen anchor; render back-to-front.
+  // Anchors get a small deterministic jitter so the planting reads organic,
+  // not parking-lot — clicks still go to the (unjittered) cell polygon.
   const placed = shown.map((s, idx) => {
     const cell = cells[idx];
-    const [x, y] = iso((cell.i + 0.5) / K, (cell.j + 0.5) / K);
+    let [x, y] = iso((cell.i + 0.5) / K, (cell.j + 0.5) / K);
+    let h = 2166136261;
+    const id = String(s.id ?? idx);
+    for (let c = 0; c < id.length; c++) h = Math.imul(h ^ id.charCodeAt(c), 16777619);
+    x += (((h >>> 8) % 100) / 100 - 0.5) * (HW / K) * 0.22;
+    y += (((h >>> 16) % 100) / 100 - 0.5) * (HH / K) * 0.3;
     return { slot: s, cell, x, y, key: s.id ?? idx };
   });
   const byDepth = [...placed].sort((a, b) => a.y - b.y);
+  // Depth cue: trees farther back render smaller, nearer larger.
+  const ys = placed.map((p) => p.y);
+  const yMin = Math.min(...ys), ySpan = Math.max(...ys) - yMin || 1;
+  const depthScale = (y) => 0.86 + ((y - yMin) / ySpan) * 0.22;
 
   const showPatch = PATCH_SPOTS.every(
     ([u, v]) => !occupied.has(`${Math.floor(u * K)},${Math.floor(v * K)}`)
@@ -542,6 +553,8 @@ export default function IsometricPlot({ slots = [], width = 880, label }) {
               style={{
                 left: `${((x / W) * 100).toFixed(3)}%`,
                 bottom: `${(((H - y) / H) * 100).toFixed(3)}%`,
+                transform: `translateX(-50%) scale(${depthScale(y).toFixed(3)})`,
+                transformOrigin: '50% 100%',
                 // Selected slot jumps in front so its label/tree never hide
                 // behind a taller foreground neighbour.
                 zIndex: order + 1 + (s.highlighted ? n : 0),
