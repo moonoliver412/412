@@ -1,14 +1,19 @@
+import { useState } from 'react';
 import { useProgress } from '../state/useProgress';
 import { findTopic, STAGES_PER_TOPIC } from '../data/curriculum';
+import { getLesson } from '../data/lessons';
+import LessonPanel from './LessonPanel';
 import './LessonList.css';
 
 /**
  * Black sidebar (mockup slide 2): amber uppercase title, one light-gray
- * pill row per lesson. Completing the next lesson is only possible while
- * a focus session is running for this topic.
+ * pill row per lesson. Lessons WITH authored content open the LessonPanel
+ * (its exercise gates completion); lessons without content keep the
+ * honor-system button, explicitly labeled as a preview.
  */
 export default function LessonList({ topicId }) {
   const { session, getTopicProgress, completeLesson } = useProgress();
+  const [openLessonId, setOpenLessonId] = useState(null);
   const found = findTopic(topicId);
   if (!found) return null;
 
@@ -17,6 +22,9 @@ export default function LessonList({ topicId }) {
   const runningHere =
     !!session && session.topicId === topicId && session.running;
   const mastered = lockedStage >= STAGES_PER_TOPIC;
+  const openLesson = openLessonId ? getLesson(openLessonId) : null;
+  const openLessonName =
+    topic.lessons.find((l) => l.id === openLessonId)?.name;
 
   return (
     <aside className="cs-panel lesson-list">
@@ -43,21 +51,31 @@ export default function LessonList({ topicId }) {
                   ✓
                 </span>
               )}
-              {isNext && (
-                <button
-                  type="button"
-                  className="lesson-complete-btn"
-                  disabled={!runningHere}
-                  title={
-                    runningHere
-                      ? 'Lock in the next growth stage'
-                      : 'Start a focus session for this topic first'
-                  }
-                  onClick={() => completeLesson(topicId)}
-                >
-                  Complete lesson
-                </button>
-              )}
+              {isNext &&
+                (getLesson(lesson.id) ? (
+                  <button
+                    type="button"
+                    className="lesson-complete-btn"
+                    title="Open the lesson — the exercise unlocks completion"
+                    onClick={() => setOpenLessonId(lesson.id)}
+                  >
+                    Open lesson
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="lesson-complete-btn"
+                    disabled={!runningHere}
+                    title={
+                      runningHere
+                        ? 'No authored content yet — completes on trust'
+                        : 'Start a focus session for this topic first'
+                    }
+                    onClick={() => completeLesson(topicId)}
+                  >
+                    Quick-complete (preview)
+                  </button>
+                ))}
               {locked && (
                 <span className="lesson-lock" aria-label="Locked">
                   Locked
@@ -72,6 +90,15 @@ export default function LessonList({ topicId }) {
         <p className="lesson-mastered" role="status">
           Topic mastered — tree fully grown!
         </p>
+      )}
+
+      {openLesson && (
+        <LessonPanel
+          topicId={topicId}
+          lesson={openLesson}
+          title={openLessonName}
+          onClose={() => setOpenLessonId(null)}
+        />
       )}
     </aside>
   );

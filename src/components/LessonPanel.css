@@ -1,0 +1,296 @@
+/* LessonPanel — full-screen lesson modal: dimmed backdrop, big black panel,
+   teaching content on the left, live code lab on the right. */
+
+.lp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(13, 13, 13, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: lp-fade 160ms ease-out;
+}
+
+@keyframes lp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.lp-dialog {
+  width: min(1180px, 94vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px 28px 28px;
+  border: 1.5px solid #2c2c2c;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lp-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lp-title {
+  margin: 0;
+  font-size: 30px;
+}
+
+.lp-close {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: 1.5px solid #4a4a4a;
+  border-radius: var(--radius-pill);
+  color: var(--card);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.lp-close:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+/* Two columns: teaching content | code lab. Stacks below 900px. */
+.lp-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+}
+
+/* ---- Left column: content blocks ---- */
+
+.lp-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lp-p {
+  margin: 0;
+  color: #d6d6d6;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.lp-code {
+  margin: 0;
+  background: #161616;
+  border: 1.5px solid #2c2c2c;
+  border-radius: 14px;
+  padding: 12px 16px;
+  overflow-x: auto;
+}
+
+.lp-code code {
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas,
+    Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e3ddcc;
+}
+
+.lp-tip {
+  margin: 0;
+  display: flex;
+  gap: 10px;
+  background: rgba(229, 185, 94, 0.12);
+  border: 1.5px solid rgba(229, 185, 94, 0.45);
+  border-radius: 14px;
+  padding: 10px 14px;
+  color: var(--amber);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lp-tip-bulb {
+  flex: none;
+}
+
+.lp-instructions {
+  background: rgba(110, 140, 138, 0.16);
+  border: 1.5px solid var(--grass);
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+.lp-instructions-title {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #9fc0bd;
+}
+
+.lp-instructions p {
+  margin: 0;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* ---- Right column: the code lab ---- */
+
+.lp-lab {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lp-lab-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lp-lab-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8f8f8f;
+}
+
+.lp-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #8f8f8f;
+  font-size: 12.5px;
+  text-decoration: underline;
+}
+
+.lp-reset:hover {
+  color: var(--amber);
+}
+
+.lp-editor {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  background: #161616;
+  color: #e8e8e8;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas,
+    Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+.lp-editor:focus {
+  outline: none;
+  border-color: var(--amber);
+}
+
+.lp-preview {
+  width: 100%;
+  height: 200px;
+  background: #fff;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 14px;
+}
+
+.lp-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lp-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8f8f8f;
+}
+
+.lp-check.is-pass {
+  color: #fff;
+}
+
+.lp-check-mark {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid #4a4a4a;
+  border-radius: 50%;
+  font-size: 12px;
+  color: #8f8f8f;
+}
+
+.lp-check.is-pass .lp-check-mark {
+  border-color: #7aa05f;
+  color: #7aa05f;
+}
+
+/* ---- Footer ---- */
+
+.lp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1.5px solid #2c2c2c;
+  padding-top: 16px;
+}
+
+.lp-footer-note {
+  margin: 0;
+  font-size: 13.5px;
+  color: #8f8f8f;
+}
+
+.lp-footer-note.is-ready {
+  color: #7aa05f;
+}
+
+.lp-complete-btn {
+  font-size: 16px;
+  padding: 9px 26px;
+}
+
+.lp-complete-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  .lp-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-overlay {
+    animation: none;
+  }
+}
