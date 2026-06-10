@@ -48,10 +48,30 @@
   animation: cs-tree-sway 5.3s ease-in-out -1.2s infinite alternate-reverse;
 }
 
-/* willow fronds: slow pendulum from their attachment point */
-.cs-tree__frond {
-  animation: cs-tree-frond 6s ease-in-out infinite alternate;
+/* pine apex tiers: same rhythm as --front but ~35% amplitude, so the sway
+   tapers off toward the stiff leader (iteration-2 sway-taper rule) */
+.cs-tree__layer--tip {
+  animation: cs-tree-sway-tip 5.3s ease-in-out -0.8s infinite alternate;
 }
+
+/* willow curtain fronds: slightly LONGER period than the crown layers with an
+   ease-out profile, so the heavy curtains trail the crown like a pendulum
+   catching up (panel: "pendulum lag feel"). Duration/delay set per-frond. */
+.cs-tree__frond {
+  animation: cs-tree-frond 7.4s ease-out infinite alternate;
+  transition: transform 900ms ease; /* smooth limp-sag when wilting */
+}
+
+/* bamboo: every culm sways on its OWN pivot (transform-origin is set inline
+   at each culm's base) — small amplitude, 3–4s, per-culm stagger via inline
+   animation-delay + nth-of-type duration detune. Culms do NOT ride the
+   3-layer canopy sway; only their leaf tufts do. */
+.cs-tree__culm {
+  animation: cs-tree-culm 3.6s ease-in-out infinite alternate;
+  transition: transform 800ms ease; /* smooth coherent lean when wilting */
+}
+.cs-tree__culm:nth-of-type(2n) { animation-duration: 3.15s; }
+.cs-tree__culm:nth-of-type(3n) { animation-duration: 3.95s; }
 
 /* shimmering rim-light highlights */
 .cs-tree__rims {
@@ -81,9 +101,10 @@
   animation: cs-tree-sparkle 5.5s ease-in-out infinite;
 }
 
-/* wilted trees go still */
+/* wilted trees go still (culms stop their per-culm sway too) */
 .cs-tree--wilted .cs-tree__layer,
 .cs-tree--wilted .cs-tree__frond,
+.cs-tree--wilted .cs-tree__culm,
 .cs-tree--wilted .cs-tree__rims,
 .cs-tree--wilted .cs-tree__fall,
 .cs-tree--wilted .cs-tree__sparkle {
@@ -100,9 +121,19 @@
   to { transform: rotate(0.8deg); }
 }
 
+@keyframes cs-tree-sway-tip {
+  from { transform: rotate(-0.45deg); }
+  to { transform: rotate(0.45deg); }
+}
+
 @keyframes cs-tree-frond {
   from { transform: rotate(-2.6deg); }
   to { transform: rotate(2.4deg); }
+}
+
+@keyframes cs-tree-culm {
+  from { transform: rotate(-1.5deg); }
+  to { transform: rotate(1.5deg); }
 }
 
 /* Wind gust: trees standing on the plot bend with the grass on the shared
@@ -172,6 +203,7 @@
   .cs-tree__leaf { transition-duration: 1ms; }
   .cs-tree__layer,
   .cs-tree__frond,
+  .cs-tree__culm,
   .cs-tree__rims,
   .cs-tree__fall,
   .cs-tree__glow,
