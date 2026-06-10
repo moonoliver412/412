@@ -109,12 +109,12 @@
 
 .cs-iso-cell.is-highlighted {
   fill: rgba(255, 244, 230, 0.22);
-  /* red-coral, not brand orange — panel: must stay distinct from maple's
-     amber canopy and cherry's warm bark when those species are selected */
-  stroke: #f02e1d;
+  /* red-coral, not brand orange — panel (twice): must stay unambiguous
+     against maple's amber canopy and cherry's warm bark when selected */
+  stroke: #e0452a;
   stroke-width: 3;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 7px rgba(240, 46, 29, 0.55));
+  filter: drop-shadow(0 0 7px rgba(224, 69, 42, 0.55));
 }
 
 /* ---- slots: things standing on the cells -------------------------------- */

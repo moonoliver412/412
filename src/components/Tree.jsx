@@ -124,7 +124,7 @@ const KINDS = {
   // oak: classic 3-green cloud dome, caramel trunk — the band anchor
   oak: { seed: 11, trunk: '#c79a63', trunkDk: '#9a7244', back: '#4f8f51', mid: '#79b865', front: '#a3d385', rim: '#cdeaa9' },
   // birch: pale birch-white trunk (signature), yellow-lime column canopy
-  birch: { seed: 23, trunk: '#f4f0e4', trunkDk: '#c9c2ad', back: '#7e9a52', mid: '#9ab86a', front: '#b8d47e', rim: '#d8e8a4' },
+  birch: { seed: 23, trunk: '#f4f0e4', trunkDk: '#c9c2ad', back: '#79944f', mid: '#8fae66', front: '#aac57e', rim: '#c8dba0' },
   // pine: deep conifer hue kept, mids nudged toward the shared green band
   pine: { seed: 37, trunk: '#937352', trunkDk: '#74573c', back: '#455f44', mid: '#6f9466', front: '#8aaa7c', rim: '#b5c99c' },
   // maple: autumn fire kept — rust → soft scarlet → apricot → creamy gold
@@ -495,7 +495,7 @@ function buildBirch(rng, pal) {
   // with 2–3 BOLD dark lenticel glyphs (#3a3020) readable at 80px. Base
   // thickened for tile presence. Wilt thins late foliage to expose sparse
   // branches instead of a uniform sag (wiltThin flag, used at render time).
-  const h = 100, bw = 9.5, tw = 4.8;
+  const h = 88, bw = 10.5, tw = 5.2;
   const trunkD = [
     `M ${R(-bw - 4.5)} 0 Q ${R(-bw)} -6 ${R(-bw * 0.85)} ${R(-h * 0.3)}`,
     `Q ${R(-bw * 0.6)} ${R(-h * 0.6)} ${R(-tw + 1.5)} ${-h} L ${R(tw + 2)} ${-h}`,
@@ -511,7 +511,7 @@ function buildBirch(rng, pal) {
   const goldTip = mix(pal.front, '#d8c060', 0.5); // s5 golden shift
   const clusters = [
     // s2.4 signal: bark mark is already on the bole + ONE leaf tuft pops
-    clump(rng, -9, -24, 9, 7, pal.mid, 'mid', 2.35, 7),
+    clump(rng, -9, -24, 12, 9, pal.mid, 'mid', 2.3, 7),
     // lower lobe texture
     clump(rng, 9, -34, 10, 8, pal.front, 'front', 3.0, 8),
     clump(rng, -11, -38, 9, 7, pal.back, 'back', 3.2, 7),
@@ -542,8 +542,8 @@ function buildBirch(rng, pal) {
     ],
     // two tight stacked ovals — column silhouette, gap at y≈-52
     sils: [
-      silo(rng, 0, -30, 24, 19, 9, 2.7),
-      silo(rng, 2, -76, 21, 17, 9, 3.4),
+      silo(rng, 0, -32, 27, 21, 9, 2.7),
+      silo(rng, 2, -78, 24, 19, 9, 3.4),
     ],
     leaves: [
       ...scatter(rng, pal, { cx: 0, cy: -30, rx: 26, ry: 19, count: 48, rMin: 2.8, rMax: 5.2, birthMin: 2.6, birthMax: 4.4, round: 0.85 }),
@@ -578,12 +578,12 @@ function buildBirch(rng, pal) {
 function swagTier(rng, y, hw, droop) {
   const th = hw * 0.5 + 7;
   let d = `M ${R(-hw)} ${R(y + droop)}`;
-  const n = Math.max(6, Math.round(hw / 7));
+  const n = Math.max(4, Math.round(hw / 11)); // panel: fewer, rounder scallops
   let px = -hw, py = y + droop;
   for (let i = 1; i <= n; i++) {
     const x = -hw + (2 * hw * i) / n;
-    const yy = y + droop * Math.pow(Math.abs(x) / hw, 1.6) - rng() * 1.5;
-    d += ` Q ${R((px + x) / 2)} ${R((py + yy) / 2 + 3.2 + rng() * 2)} ${R(x)} ${R(yy)}`;
+    const yy = y + droop * Math.pow(Math.abs(x) / hw, 1.6) - rng() * 0.7;
+    d += ` Q ${R((px + x) / 2)} ${R((py + yy) / 2 + 2.1 + rng() * 1.1)} ${R(x)} ${R(yy)}`;
     px = x; py = yy;
   }
   d += ` Q ${R(hw * 0.6)} ${R(y - th * 0.3)} ${R(hw * 0.16)} ${R(y - th * 0.82)}`;
@@ -618,7 +618,7 @@ function buildPine(rng, pal) {
   // Iteration 2: NO per-needle strokes on tier edges — the swag scallops are
   // soft self-edged boundaries only. Lit caps switch to an explicit cooler
   // blue-green (#6a9e7a, ~+20 L*) drawn bolder so they read at tile size.
-  const PINE_CAP = '#6a9e7a';
+  const PINE_CAP = '#8ec2a0'; // panel: cap must read at scene scale
   const tiers = specs.map(([y, hw, droop, birth, band], i) => {
     const fill = i % 2 ? pal.mid : pal.back;
     const speckles = Array.from({ length: hw > 30 ? 8 : 5 }, () => [
@@ -709,18 +709,18 @@ function buildMaple(rng, pal) {
     // deep-red shadow clusters — flat bottom row + the wide outer shoulders
     clump(rng, -22, -18, 16, 11, deepRed, 'back', 2.6),
     clump(rng, 20, -17, 16, 11, deepRed, 'back', 2.7),
-    clump(rng, -54, -26, 17, 12, deepRed, 'back', 2.95),
-    clump(rng, 52, -25, 16, 12, deepRed, 'back', 3.05),
-    clump(rng, -76, -36, 13, 10, deepRed, 'back', 3.55),
-    clump(rng, 74, -35, 13, 10, deepRed, 'back', 3.65),
-    clump(rng, -68, -50, 12, 10, pal.back, 'back', 3.85),
-    clump(rng, 66, -48, 12, 10, pal.back, 'back', 3.95),
+    clump(rng, -60, -27, 17, 12, deepRed, 'back', 2.95),
+    clump(rng, 58, -26, 16, 12, deepRed, 'back', 3.05),
+    clump(rng, -86, -38, 14, 11, deepRed, 'back', 3.55),
+    clump(rng, 84, -37, 14, 11, deepRed, 'back', 3.65),
+    clump(rng, -76, -54, 12, 10, pal.back, 'back', 3.85),
+    clump(rng, 74, -52, 12, 10, pal.back, 'back', 3.95),
     // scarlet mid clusters
     clump(rng, -4, -34, 15, 12, pal.mid, 'mid', 2.75),
     clump(rng, -36, -42, 15, 12, pal.mid, 'mid', 3.0),
     clump(rng, 34, -42, 15, 12, pal.mid, 'mid', 3.15),
     clump(rng, 6, -50, 13, 11, pal.mid, 'mid', 3.3),
-    clump(rng, -18, -48, 12, 10, darkScarlet, 'mid', 3.45),
+    clump(rng, -20, -50, 8, 7, darkScarlet, 'mid', 3.45),
     clump(rng, -60, -44, 12, 10, darkScarlet, 'mid', 3.75),
     clump(rng, 58, -43, 12, 10, darkScarlet, 'mid', 3.85),
     // vivid orange uppers — they round off each of the four lobes
@@ -843,12 +843,15 @@ function buildWillow(rng, pal) {
     `Q ${R(bw * 0.9)} ${R(-h * 0.6)} ${R(bw)} ${R(-h * 0.28)}`,
     `Q ${R(bw + 1)} -6 ${R(bw + 5)} 0 Z`,
   ].join(' ');
-  const CURTAIN = '#4a7c3f'; // deep forest green, distinctly darker than crown
-  const curtainWilt = (c) => mix(c, '#8f8a6e', 0.73); // keeps ~27% green-gray
+  // Panel final pass: THREE broad merged curtain masses (not five slabs),
+  // 15–20% darker for terrain contrast — the curtain dominates the crown.
+  const CURTAIN = '#3f6b35';
+  const curtainWilt = (c) => mix(c, '#8f8a6e', 0.68); // keeps ~32% green-gray
   // [anchor x, anchor y, length, half-width, tip drift]
   const curtainSpecs = [
-    [-36, -22, 56, 5.4, -7], [-19, -16, 68, 6.4, -3], [0, -14, 76, 7, 2],
-    [19, -17, 66, 6.2, 4], [36, -23, 54, 5.2, 8],
+    [-27, -19, 64, 9.6, -6],
+    [0, -14, 80, 11.2, 1],
+    [27, -20, 62, 9.2, 7],
   ];
   const fronds = curtainSpecs.map(([ax, ay, len, w, drift], i) => {
     const lw = w * (0.95 + rng() * 0.15);
@@ -908,8 +911,8 @@ function buildWillow(rng, pal) {
     ],
     // narrower CLEAR dome — value-split from the dark curtain below it
     sils: [
-      silo(rng, 4, -38, 30, 22, 10, 2.75),
-      silo(rng, 2, -56, 22, 15, 9, 3.45),
+      silo(rng, 4, -38, 26, 19, 10, 2.75),
+      silo(rng, 2, -54, 19, 13, 9, 3.45),
     ],
     leaves: scatter(rng, pal, { cx: 2, cy: -44, rx: 27, ry: 19, count: 40, rMin: 4.5, rMax: 7.5, birthMin: 2.7, birthMax: 4.4 }),
     clusters: [
@@ -969,11 +972,12 @@ function buildCherry(rng, pal) {
     clump(rng, 11, -72, 13, 11, pal.front, 'front', 3.5),
     clump(rng, 13, -88, 11, 9, pal.front, 'front', 4.0),
     // s4.3→s5: denser bloom — late popcorn fills the shoulders
-    clump(rng, -30, -34, 10, 8, pal.front, 'front', 4.55),
-    clump(rng, 28, -30, 9, 8, pal.front, 'front', 4.65),
+    clump(rng, -30, -34, 12, 10, pal.front, 'front', 4.55),
+    clump(rng, -4, -60, 13, 11, pal.mid, 'front', 4.7), // s5 in-fill: poms fuse lush
+    clump(rng, 28, -30, 11, 10, pal.front, 'front', 4.65),
   ];
   // wilt: ~25% greyed-pink kept, slightly darker/cooler than iteration 1
-  const pinkWilt = (c) => mix(c, '#857270', 0.74);
+  const pinkWilt = (c) => mix(c, '#8d7472', 0.62); // warm: ~38% rose survives
   rewilt(clusters, pinkWilt);
   const leaves = scatter(rng, pal, { cx: 0, cy: -42, rx: 38, ry: 32, count: 48, rMin: 3, rMax: 5.5, birthMin: 2.7, birthMax: 4.8, round: 0.9 });
   rewilt(leaves, pinkWilt);
@@ -1046,7 +1050,7 @@ function buildBamboo(rng, pal) {
   const INK = '#191c12';
   const culmSpecs = [
     // x, height, width, birth, tuft layer, lean — symmetric around center
-    { x: -7, ch: 46, w: 4.8, birth: 2.4, layer: 'back', lean: -0.8 }, // s2.4 shoot
+    { x: -7, ch: 52, w: 4.8, birth: 2.05, layer: 'back', lean: -0.8 }, // visible BY s2.4
     { x: 7, ch: 80, w: 5.2, birth: 2.85, layer: 'back', lean: 0.8 },
     { x: -14, ch: 64, w: 4.6, birth: 3.3, layer: 'back', lean: -1.4 },
     { x: 1, ch: 150, w: 6.2, birth: 3.7, layer: 'mid', lean: 0.3 },
@@ -1080,8 +1084,8 @@ function buildBamboo(rng, pal) {
       ring: mix(tone, '#1c2a16', 0.58), wring: wiltLeaf(mix(tone, '#1c2a16', 0.58)),
       ink: INK,
       swayDelay: R(ci * 0.45), // 0.3–0.7s apart, per-culm
-      wiltLean: R(-5.2 - ci * 0.35), // coherent grove-wide lean
-      snap: ci === 3 || ci === 5, // two snapped canes keep the wilt character
+      wiltLean: R(-4.2 - ci * 0.3), // coherent grove-wide lean
+      snap: false, // panel: gentle lean only — snapped canes read punitive
     });
     // blade tufts sprouting from the top two nodes of each culm
     for (let nd = 1; nd <= 2 && nd < n; nd++) {
@@ -1160,7 +1164,7 @@ function buildSunflower(rng, pal) {
     petals.push({
       x: R(Math.cos(a) * (discR - 3)), y: R(Math.sin(a) * (discR - 3)),
       rot: R((a * 180) / Math.PI + 90), s: R(1.15 + rng() * 0.2), v: (i + 1) % 2,
-      fill: i % 2 ? pal.front : mix(pal.front, pal.rim, 0.6),
+      fill: i % 2 ? pal.mid : mix(pal.front, pal.mid, 0.55), // orange-gold, off the UI amber
       birth: R(3.85 + (i % 6) * 0.1 + rng() * 0.05), // fully open by 5
     });
   }
@@ -1269,9 +1273,9 @@ function Fruit({ kind }) {
     case 'bamboo': // s5 signature: golden lantern glow riding a culm tip
       return (
         <g>
-          <circle cx="0" cy="0" r="6.5" fill={BAMBOO_GOLD} opacity="0.3" />
-          <ellipse cx="0" cy="0" rx="2.8" ry="3.6" fill={BAMBOO_GOLD} stroke="#9a8350" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-          <ellipse cx="-0.8" cy="-1" rx="1" ry="1.4" fill="#efe2c2" />
+          <circle cx="0" cy="0" r="9.8" fill={BAMBOO_GOLD} opacity="0.32" />
+          <ellipse cx="0" cy="0" rx="4.2" ry="5.4" fill={BAMBOO_GOLD} stroke="#9a8350" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+          <ellipse cx="-1.2" cy="-1.5" rx="1.5" ry="2.1" fill="#efe2c2" />
         </g>
       );
     case 'sunflower': // dew-glint sparkling at the petal tips
@@ -1795,7 +1799,9 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
                         />
                       );
                     })}
-                    <g className="cs-tree__grow" style={{ transform: `rotate(${tilt}deg)`, transformOrigin: '0px 2px' }}>
+                    {/* wilt: bow ~80° AND foreshorten the disc (scaleY) so the
+                        head reads face-down, not just rotated in-plane */}
+                    <g className="cs-tree__grow" style={{ transform: `rotate(${tilt}deg) scale(${wilted ? '0.9, 0.55' : '1, 1'})`, transformOrigin: '0px 2px' }}>
                       <g
                         className="cs-tree__leaf"
                         style={{ transform: `translate(0px, ${H.y}px) scale(${Math.max(hk, 0.001)})`, opacity: hk > 0.02 ? 1 : 0 }}
