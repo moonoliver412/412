@@ -10,6 +10,12 @@ import htmlTablesLists from './html/html-tables-lists';
 import htmlFormsMedia from './html/html-forms-media';
 import htmlSemantic from './html/html-semantic';
 import htmlA11y from './html/html-a11y';
+import htmlImages from './html/html-images';
+import htmlEmbeds from './html/html-embeds';
+import htmlMetaSeo from './html/html-meta-seo';
+import htmlSvg from './html/html-svg';
+import htmlFormValidation from './html/html-form-validation';
+import htmlDebugging from './html/html-debugging';
 
 const topics = [
   htmlStructure,
@@ -18,6 +24,12 @@ const topics = [
   htmlFormsMedia,
   htmlSemantic,
   htmlA11y,
+  htmlImages,
+  htmlEmbeds,
+  htmlMetaSeo,
+  htmlSvg,
+  htmlFormValidation,
+  htmlDebugging,
 ];
 
 const lessonsById = new Map();
