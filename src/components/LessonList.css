@@ -150,12 +150,51 @@
   text-transform: uppercase;
 }
 
+/* Thirsty mastered topic: wilt-tinted call to review. */
+.lesson-thirsty {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(154, 143, 106, 0.18);
+  border: 1.5px solid var(--wilt);
+  border-radius: 18px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.lesson-thirsty-note {
+  margin: 0;
+  color: #e3ddcc;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.lesson-water-btn {
+  align-self: center;
+  background: var(--grass);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 8px 20px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  transition: transform var(--mo-fast) var(--ease-out),
+    filter var(--mo-fast) var(--ease-out);
+}
+
+.lesson-water-btn:hover {
+  transform: scale(1.05);
+  filter: brightness(1.12);
+}
+
 /* Reduced motion = instant, not absent. */
 @media (prefers-reduced-motion: reduce) {
   .lesson-row,
   .lesson-row::after,
   .lesson-check,
-  .lesson-complete-btn {
+  .lesson-complete-btn,
+  .lesson-water-btn {
     animation: none !important;
     transition: none !important;
   }

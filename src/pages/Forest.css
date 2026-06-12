@@ -429,6 +429,11 @@
   font-weight: 600;
 }
 
+.grove-mastered-pill.grove-pill--thirsty {
+  background: var(--wilt);
+  color: #fff;
+}
+
 .grove-mastered-pill {
   position: relative;
   background: var(--amber);

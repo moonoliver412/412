@@ -52,15 +52,15 @@ CodeSprout's wedge — one sentence:
 |---|---|---|---|
 | 1 | Research | Codecademy + competitor teardowns | DONE |
 | 2 | Master plan | this file | DONE |
-| 3 | CSS track | 9 topics × 5 lessons in `src/data/lessons/css/`; `styleIncludes` check type | next |
-| 4 | JS track | 8 topics × 5 lessons; JS-capable check types (console/DOM-result) | queued |
-| 5 | Economy + streaks + achievements | `useGame` state slice: sprouts (coins), XP, daily streak + Rain Cloud freeze, achievements engine, day-1 Seedling badge, species shop prices | queued |
-| 6 | Home + Learn redesign | Home = dashboard (streak flame, daily goal, next-lesson CTA, forest peek); Learn = real catalog (per-language progress, ghost/locked topic trees as pull) | queued |
-| 7 | Challenges + Leaderboard | blank-page "Clear Field" challenges (anti-tutorial-hell gate, sprout rewards); local league vs simulated rivals seeded from focus minutes | queued |
-| 8 | Focus History diary | session log (date/topic/minutes/outcome) + GitHub-style heat calendar on Forest page | queued |
-| 9 | Forest share card | canvas → PNG: tree count, species, streak, longest session | queued |
-| 10 | Knowledge decay (stretch) | mastered topics wilt after N days unreviewed; "Water" = 5-question review quiz restoring freshness; simplified SM-2 intervals | stretch |
-| 11 | Production hardening | error boundary, storage versioning/migration, responsive, a11y, meta/SEO/OG, README, perf, full screenshot walkthrough | final |
+| 3 | CSS track | 9 topics × 5 lessons in `src/data/lessons/css/`; `styleIncludes` check type | DONE |
+| 4 | JS track | 8 topics × 5 lessons; sandboxed JS runner (`src/lib/jsRunner.js`) with console capture | DONE |
+| 5 | Economy + streaks + achievements | `useGame`: sprouts, XP, daily streak + freeze, 12 achievements + toasts, species shop (escalating prices) | DONE |
+| 6 | Home + Learn redesign | Home = live dashboard; Learn = real catalog with ghost topics + deep links | DONE |
+| 7 | Challenges + Leaderboard | 8 blank-page "Clear Field" challenges (+15🌱); local league vs simulated rivals | DONE |
+| 8 | Focus History diary | heat calendar + session rows on Forest | DONE |
+| 9 | Forest share card | canvas → PNG/clipboard with per-species tree painters | DONE |
+| 10 | Knowledge decay | mastered topics go thirsty after 7 untended days → wilt; "Water" = pass a rotating review lesson (+5🌱, Rainmaker badge) | DONE |
+| 11 | Production hardening | ErrorBoundary, SEO/OG meta, favicon, README, e2e walkthrough — all verified headless | DONE |
 
 ## Mechanics spec (research-grounded decisions)
 

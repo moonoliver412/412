@@ -42,6 +42,7 @@ const REWARDS = {
   topicMastered: { sprouts: 25, xp: 50 },
   sessionFinished: { sprouts: 5, xp: null }, // xp = session minutes
   challenge: { sprouts: 15, xp: 30 },
+  water: { sprouts: 5, xp: 10 },
 };
 
 function todayStr(now = new Date()) {

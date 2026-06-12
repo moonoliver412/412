@@ -62,8 +62,9 @@ function Block({ block, index }) {
   );
 }
 
-// T3 macro celebration: the stage that just locked, as pips + leaf burst.
-function Ceremony({ stage, kind, onClose }) {
+// T3 macro celebration: the stage that just locked (or a watering refresh),
+// as pips + leaf burst.
+function Ceremony({ stage, kind, water, onClose }) {
   const mastered = stage >= STAGES_PER_TOPIC;
   return (
     <div className="lp-ceremony" role="status">
@@ -77,21 +78,23 @@ function Ceremony({ stage, kind, onClose }) {
           <span
             key={i}
             className={`lp-pip${i < stage ? ' is-lit' : ''}${
-              i === stage - 1 ? ' is-new' : ''
+              i === stage - 1 && !water ? ' is-new' : ''
             }`}
           />
         ))}
       </div>
       <p className="lp-ceremony-kicker lp-enter" style={{ '--i': 1 }}>
-        Growth locked
+        {water ? 'Tree watered' : 'Growth locked'}
       </p>
       <h3 className="lp-ceremony-title lp-enter" style={{ '--i': 2 }}>
-        Stage {stage} of {STAGES_PER_TOPIC}
+        {water ? 'Refreshed' : `Stage ${stage} of ${STAGES_PER_TOPIC}`}
       </h3>
       <p className="lp-ceremony-sub lp-enter" style={{ '--i': 3 }}>
-        {mastered
-          ? `Topic mastered — your ${kind} stands fully grown.`
-          : `Your ${kind} just grew taller.`}
+        {water
+          ? `Your ${kind} drinks deep — the knowledge stays green.`
+          : mastered
+            ? `Topic mastered — your ${kind} stands fully grown.`
+            : `Your ${kind} just grew taller.`}
       </p>
       <button
         type="button"
@@ -105,9 +108,19 @@ function Ceremony({ stage, kind, onClose }) {
   );
 }
 
-export default function LessonPanel({ topicId, lesson, title, onClose }) {
+export default function LessonPanel({
+  topicId,
+  lesson,
+  title,
+  onClose,
+  mode = 'learn',
+  onWatered,
+}) {
   const { session, completeLesson, getTopicProgress, getTreeKind } =
     useProgress();
+  // Review mode ("water the tree"): no focus-session gate, no stage lock —
+  // passing the exercise refreshes a thirsty mastered topic via onWatered.
+  const isReview = mode === 'review';
   const dialogRef = useRef(null);
 
   const exercise = lesson?.exercise ?? {};
@@ -211,7 +224,7 @@ export default function LessonPanel({ topicId, lesson, title, onClose }) {
   const ready = allPass(results);
   const runningHere =
     !!session && session.running && session.topicId === topicId;
-  const canComplete = ready && runningHere;
+  const canComplete = ready && (isReview || runningHere);
 
   // T3 micro celebration fires only on a check's false→true edge: diff the
   // pass list against the previous run, flag flipped indices briefly.
@@ -235,15 +248,23 @@ export default function LessonPanel({ topicId, lesson, title, onClose }) {
 
   const reasons = [];
   if (!ready) reasons.push('Pass every check');
-  if (!runningHere) reasons.push('Start a focus session for this topic');
+  if (!isReview && !runningHere)
+    reasons.push('Start a focus session for this topic');
   const note = reasons.length
     ? reasons.join(' · ')
-    : 'All checks pass — lock it in!';
+    : isReview
+      ? 'All checks pass — water the tree!'
+      : 'All checks pass — lock it in!';
 
   const heading = title ?? lesson?.name ?? 'Lesson';
   const onLab = step >= labIndex;
 
   const handleComplete = () => {
+    if (isReview) {
+      onWatered?.();
+      setCeremony({ stage: STAGES_PER_TOPIC, water: true });
+      return;
+    }
     const next = Math.min(
       getTopicProgress(topicId).lockedStage + 1,
       STAGES_PER_TOPIC
@@ -302,6 +323,7 @@ export default function LessonPanel({ topicId, lesson, title, onClose }) {
             <Ceremony
               stage={ceremony.stage}
               kind={getTreeKind(topicId)}
+              water={ceremony.water}
               onClose={onClose}
             />
           ) : !onLab ? (
@@ -427,9 +449,17 @@ export default function LessonPanel({ topicId, lesson, title, onClose }) {
             ) : (
               <>
                 <div className="lp-status">
-                  <span className={`lp-live${runningHere ? ' is-on' : ''}`}>
+                  <span
+                    className={`lp-live${
+                      isReview || runningHere ? ' is-on' : ''
+                    }`}
+                  >
                     <span className="lp-live-dot" aria-hidden="true" />
-                    {runningHere ? 'Focus session live' : 'No focus session'}
+                    {isReview
+                      ? 'Review — keep it green'
+                      : runningHere
+                        ? 'Focus session live'
+                        : 'No focus session'}
                   </span>
                   <p
                     className={`lp-footer-note${canComplete ? ' is-ready' : ''}`}
@@ -446,7 +476,7 @@ export default function LessonPanel({ topicId, lesson, title, onClose }) {
                   disabled={!canComplete}
                   onClick={handleComplete}
                 >
-                  Lock in growth
+                  {isReview ? 'Water the tree' : 'Lock in growth'}
                 </button>
               </>
             )}

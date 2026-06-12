@@ -99,6 +99,13 @@ export const ACHIEVEMENTS = [
     test: ({ game }) => game.sprouts >= 100,
   },
   {
+    id: 'rainmaker',
+    name: 'Rainmaker',
+    blurb: 'Watered a thirsty tree back to health',
+    icon: '💧',
+    test: ({ event }) => event.type === 'water',
+  },
+  {
     id: 'whole-grove',
     name: 'The Whole Grove',
     blurb: 'Mastered every topic — a complete forest',

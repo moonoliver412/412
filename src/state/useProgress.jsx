@@ -57,7 +57,30 @@ function loadProgress() {
 }
 
 function emptyTopic() {
-  return { lockedStage: 0, wilted: false, focusMinutes: 0, kind: null };
+  return {
+    lockedStage: 0,
+    wilted: false,
+    focusMinutes: 0,
+    kind: null,
+    tendedAt: null, // last time this topic was tended (lesson/session/water)
+  };
+}
+
+/** Days a MASTERED topic stays fresh without being tended. */
+export const THIRST_DAYS = 7;
+
+/**
+ * Knowledge decay (docs/MASTERPLAN.md phase 10): a mastered tree goes
+ * thirsty when untended for THIRST_DAYS — it renders wilted until watered
+ * (a passed review exercise). Topics still being learned never decay.
+ */
+// eslint-disable-next-line react-refresh/only-export-components -- pure helper colocated with the state contract
+export function isThirsty(topicProgress, now = Date.now()) {
+  return (
+    topicProgress.lockedStage >= STAGES_PER_TOPIC &&
+    topicProgress.tendedAt != null &&
+    now - topicProgress.tendedAt > THIRST_DAYS * 86_400_000
+  );
 }
 
 export function ProgressProvider({ children }) {
@@ -162,7 +185,7 @@ export function ProgressProvider({ children }) {
     if (session) {
       const prev = progress[session.topicId] ?? emptyTopic();
       const focusMinutes = prev.focusMinutes + session.durationMin;
-      updateTopic(session.topicId, { focusMinutes });
+      updateTopic(session.topicId, { focusMinutes, tendedAt: Date.now() });
       recordEvent(
         {
           type: 'sessionFinished',
@@ -183,7 +206,11 @@ export function ProgressProvider({ children }) {
     (topicId) => {
       const prev = progress[topicId] ?? emptyTopic();
       const nextStage = Math.min(prev.lockedStage + 1, STAGES_PER_TOPIC);
-      updateTopic(topicId, { lockedStage: nextStage, wilted: false });
+      updateTopic(topicId, {
+        lockedStage: nextStage,
+        wilted: false,
+        tendedAt: Date.now(),
+      });
       const snapshot = {
         ...progress,
         [topicId]: { ...emptyTopic(), ...prev, lockedStage: nextStage },
@@ -194,6 +221,15 @@ export function ProgressProvider({ children }) {
       }
     },
     [progress, updateTopic, recordEvent]
+  );
+
+  /** Water a thirsty mastered tree: a passed review exercise refreshes it. */
+  const waterTopic = useCallback(
+    (topicId) => {
+      updateTopic(topicId, { tendedAt: Date.now(), wilted: false });
+      recordEvent({ type: 'water', topicId }, progress);
+    },
+    [updateTopic, recordEvent, progress]
   );
 
   /** True once ANY tree of the language has locked growth — species is then fixed. */
@@ -250,6 +286,7 @@ export function ProgressProvider({ children }) {
       abandonSession,
       finishSession,
       completeLesson,
+      waterTopic,
       setTreeKind,
       getTreeKind,
       isLangLocked,
@@ -267,6 +304,7 @@ export function ProgressProvider({ children }) {
       abandonSession,
       finishSession,
       completeLesson,
+      waterTopic,
       setTreeKind,
       getTreeKind,
       isLangLocked,

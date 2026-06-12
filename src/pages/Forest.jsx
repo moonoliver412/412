@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { LANGUAGES, STAGES_PER_TOPIC } from '../data/curriculum';
-import { useProgress } from '../state/useProgress';
+import { isThirsty, useProgress } from '../state/useProgress';
 import Tree from '../components/Tree';
 import IsoTile from '../components/IsoTile';
 import FocusDiary from '../components/FocusDiary';
@@ -115,7 +115,9 @@ function GrovePlot({ topic, progress, kind }) {
   const { lockedStage, wilted } = progress;
   const empty = lockedStage === 0;
   const mastered = lockedStage >= STAGES_PER_TOPIC;
-  const showWilt = wilted && !empty;
+  const thirsty = isThirsty(progress);
+  const drawWilted = wilted || thirsty;
+  const showWilt = drawWilted && !empty;
 
   return (
     <div
@@ -139,7 +141,7 @@ function GrovePlot({ topic, progress, kind }) {
               ) : (
                 <Tree
                   stage={lockedStage}
-                  wilted={wilted}
+                  wilted={drawWilted}
                   kind={kind}
                   size={120}
                   seed={hashSeed(topic.id)}
@@ -152,7 +154,13 @@ function GrovePlot({ topic, progress, kind }) {
       <div className="grove-plot-label">
         <span className="grove-plot-name">{topic.name}</span>
         {mastered ? (
-          <span className="grove-mastered-pill">Mastered</span>
+          thirsty ? (
+            <span className="grove-mastered-pill grove-pill--thirsty">
+              💧 Thirsty — water it
+            </span>
+          ) : (
+            <span className="grove-mastered-pill">Mastered</span>
+          )
         ) : (
           <span className="grove-plot-progress">
             {lockedStage}/{STAGES_PER_TOPIC} lessons

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { LANGUAGES, STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
-import { useProgress, visualStage } from '../state/useProgress';
+import { isThirsty, useProgress, visualStage } from '../state/useProgress';
 import IsometricPlot from '../components/IsometricPlot';
 import Tree from '../components/Tree';
 import TimerPanel from '../components/TimerPanel';
@@ -127,13 +127,14 @@ export default function Playground() {
         ? masteryReplay.stage
         : liveStage;
     const mastered = topicProgress.lockedStage >= STAGES_PER_TOPIC;
+    const thirsty = isThirsty(topicProgress);
     const raining =
       !!session && session.running && session.topicId === t.id;
 
     const tree = (
       <Tree
         stage={stage}
-        wilted={topicProgress.wilted}
+        wilted={topicProgress.wilted || thirsty}
         kind={getTreeKind(t.id)}
         size={treeSize}
         seed={hashId(t.id)}
@@ -164,7 +165,9 @@ export default function Playground() {
       ),
       caption: t.name,
       sub: mastered
-        ? 'MASTERED'
+        ? thirsty
+          ? 'NEEDS WATER'
+          : 'MASTERED'
         : `${topicProgress.lockedStage}/${STAGES_PER_TOPIC} lessons`,
       highlighted: t.id === topicId,
       onClick: () => {
