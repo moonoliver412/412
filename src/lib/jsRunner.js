@@ -30,8 +30,27 @@ function escapeScript(code) {
   return String(code ?? '').replace(/<\/script/gi, '<\\/script');
 }
 
-export function buildJsRunDoc({ code, html, checks, nonce }) {
+/**
+ * Build a runnable iframe document for an executed-code exercise.
+ * Options beyond the JS basics let TypeScript/Node/React reuse this path:
+ *   preamble   — JS injected BEFORE the learner code (e.g. Node mocks)
+ *   source     — the ORIGINAL learner source, for sourceIncludes/sourceMatches
+ *                checks (the `code` may be a transformed/stripped version)
+ *   headScripts — extra <script> markup for <head> (e.g. React UMD libs)
+ *   settleMs   — delay before checks run (React/async need a touch more)
+ */
+export function buildJsRunDoc({
+  code,
+  html,
+  checks,
+  nonce,
+  preamble = '',
+  source = null,
+  headScripts = '',
+  settleMs = 250,
+}) {
   const checksJson = escapeScript(JSON.stringify(checks ?? []));
+  const sourceJson = escapeScript(JSON.stringify(source ?? code ?? ''));
   return `<!doctype html>
 <html>
 <head>
@@ -39,12 +58,14 @@ export function buildJsRunDoc({ code, html, checks, nonce }) {
 <style>
   body { margin: 12px; font: 14px/1.5 -apple-system, system-ui, sans-serif; color: #222; }
 </style>
+${headScripts}
 </head>
 <body>
 ${html ?? ''}
 <script>
   window.__csLogs = [];
   window.__csError = null;
+  window.__csSource = ${sourceJson};
   (function () {
     var orig = console.log;
     console.log = function () {
@@ -61,15 +82,19 @@ ${html ?? ''}
   })();
 </script>
 <script>
+${escapeScript(preamble)}
+</script>
+<script>
 ${escapeScript(code)}
 </script>
 <script>
-  // Checks run 250ms after the learner script so short async work (zero-ish
-  // setTimeout, resolved promises) settles first. Async exercises must be
-  // authored to settle within that window.
+  // Checks run after the learner script so short async work (zero-ish
+  // setTimeout, resolved promises, a React render) settles first.
   setTimeout(function () {
     var checks = ${checksJson};
     var logs = window.__csLogs;
+    var source = window.__csSource;
+    function norm(s){ return String(s == null ? '' : s).replace(/\\s+/g, ' '); }
     var results = checks.map(function (c) {
       try {
         if (c.type === 'logIncludes') {
@@ -86,8 +111,17 @@ ${escapeScript(code)}
         if (c.type === 'textIncludes') {
           var root = c.selector ? document.querySelector(c.selector) : document.body;
           if (!root) return false;
-          var norm = root.textContent.replace(/\\s+/g, ' ').toLowerCase();
-          return norm.indexOf(String(c.text).toLowerCase()) !== -1;
+          var t = root.textContent.replace(/\\s+/g, ' ').toLowerCase();
+          return t.indexOf(String(c.text).toLowerCase()) !== -1;
+        }
+        if (c.type === 'sourceIncludes') {
+          var hay = c.flex ? norm(source).replace(/\\s/g, '') : norm(source);
+          var nd = c.flex ? norm(c.text).replace(/\\s/g, '') : norm(c.text);
+          if (!c.caseSensitive) { hay = hay.toLowerCase(); nd = nd.toLowerCase(); }
+          return nd.length > 0 && hay.indexOf(nd) !== -1;
+        }
+        if (c.type === 'sourceMatches') {
+          return new RegExp(c.pattern, c.flags || '').test(String(source || ''));
         }
         return false;
       } catch (e) {
@@ -98,7 +132,7 @@ ${escapeScript(code)}
       { type: 'cs-js-run', nonce: ${JSON.stringify(nonce)}, logs: logs, error: window.__csError, results: results },
       '*'
     );
-  }, 250);
+  }, ${settleMs});
 </script>
 </body>
 </html>`;

@@ -467,6 +467,13 @@
   line-height: 1.6;
 }
 
+/* Console-only languages (SQL/Python/terminal) have no preview, so the
+   output panel takes the freed space. */
+.lp-console--tall {
+  max-height: 340px;
+  flex: 1;
+}
+
 .lp-console-line {
   margin: 0;
   color: #9fd08c;

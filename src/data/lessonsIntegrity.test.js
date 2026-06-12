@@ -5,22 +5,46 @@ import { describe, expect, it } from 'vitest';
 import { LANGUAGES, STAGES_PER_TOPIC } from './curriculum';
 import { getLesson } from './lessons';
 
-const JS_CHECK_TYPES = new Set([
-  'logIncludes',
-  'exprTruthy',
-  'selectorExists',
-  'textIncludes',
-]);
-const DOM_CHECK_TYPES = new Set([
-  'selectorExists',
-  'selectorCount',
-  'attrEquals',
-  'textIncludes',
-  'styleIncludes',
-]);
+const SOURCE = ['sourceIncludes', 'sourceMatches'];
+const CHECK_TYPES_BY_KIND = {
+  dom: new Set([
+    'selectorExists',
+    'selectorCount',
+    'attrEquals',
+    'textIncludes',
+    'styleIncludes',
+  ]),
+  js: new Set(['logIncludes', 'exprTruthy', 'selectorExists', 'textIncludes', ...SOURCE]),
+  ts: new Set(['logIncludes', 'exprTruthy', ...SOURCE]),
+  node: new Set(['logIncludes', 'exprTruthy', ...SOURCE]),
+  react: new Set(['selectorExists', 'textIncludes', 'logIncludes', ...SOURCE]),
+  sql: new Set([
+    'queryRowCount',
+    'queryHasColumns',
+    'queryReturns',
+    'queryCellIncludes',
+    'verifyRowCount',
+    ...SOURCE,
+  ]),
+  python: new Set(['logIncludes', 'exprTruthy', ...SOURCE]),
+  terminal: new Set([
+    'output',
+    'fileExists',
+    'dirExists',
+    'fileContains',
+    'gitInited',
+    'gitStaged',
+    'gitCommits',
+    'gitBranch',
+    'gitRemote',
+    ...SOURCE,
+  ]),
+  quiz: new Set([]),
+};
+const VALID_KINDS = new Set(Object.keys(CHECK_TYPES_BY_KIND));
 
 const allTopics = LANGUAGES.flatMap((lang) =>
-  lang.topics.map((t) => ({ lang: lang.id, topic: t }))
+  lang.topics.map((t) => ({ language: lang, lang: lang.id, topic: t }))
 );
 
 describe('curriculum structure', () => {
@@ -39,18 +63,24 @@ describe('curriculum structure', () => {
 });
 
 describe('authored lesson content', () => {
-  it('every curriculum lesson has authored content', () => {
-    for (const { topic } of allTopics) {
+  it('the HTML/CSS/JS core tracks are fully authored', () => {
+    // Newer tracks (TS/React/SQL/CLI/Python/Node) are authored incrementally
+    // and shown as "Coming soon" until ready; the original three must stay
+    // complete.
+    const core = new Set(['html', 'css', 'js']);
+    for (const { language, topic } of allTopics) {
+      if (!core.has(language.id)) continue;
       for (const lesson of topic.lessons) {
         expect(getLesson(lesson.id), lesson.id).not.toBeNull();
       }
     }
   });
 
-  it('every lesson has teaching blocks and a graded exercise', () => {
-    for (const { lang, topic } of allTopics) {
+  it('every AUTHORED lesson has teaching blocks and a graded exercise', () => {
+    for (const { topic } of allTopics) {
       for (const { id } of topic.lessons) {
         const lesson = getLesson(id);
+        if (!lesson) continue; // not yet authored — fine
         expect(lesson.blocks.length, id).toBeGreaterThanOrEqual(2);
         for (const block of lesson.blocks) {
           expect(['p', 'code', 'tip', 'quiz'], `${id} block type`).toContain(
@@ -96,11 +126,16 @@ describe('authored lesson content', () => {
           expect(ex.solution.length, `${id} empty solution`).toBeGreaterThan(0);
         }
 
-        const validTypes = lang === 'js' ? JS_CHECK_TYPES : DOM_CHECK_TYPES;
+        // The exercise kind must be known, and its checks must use types
+        // valid for that kind's runner.
+        const kind = ex.kind ?? 'dom';
+        expect(VALID_KINDS.has(kind), `${id} unknown kind ${kind}`).toBe(true);
+        const validTypes = CHECK_TYPES_BY_KIND[kind];
         for (const check of ex.checks) {
-          expect(validTypes.has(check.type), `${id} check ${check.type}`).toBe(
-            true
-          );
+          expect(
+            validTypes.has(check.type),
+            `${id} (${kind}) bad check ${check.type}`
+          ).toBe(true);
           expect(typeof check.label, `${id} check label`).toBe('string');
           if (check.hint !== undefined) {
             expect(typeof check.hint, `${id} check hint`).toBe('string');
@@ -108,12 +143,6 @@ describe('authored lesson content', () => {
               0
             );
           }
-        }
-
-        if (lang === 'js') {
-          expect(ex.kind, `${id} must be kind:'js'`).toBe('js');
-        } else {
-          expect(ex.kind, `${id} must not be kind:'js'`).toBeUndefined();
         }
       }
     }

@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useProgress } from '../state/useProgress';
 import { STAGES_PER_TOPIC } from '../data/curriculum';
-import { allPass, checkExercise } from '../lib/checkExercise';
-import { buildJsRunDoc, labelJsResults } from '../lib/jsRunner';
+import { allPass } from '../lib/checkExercise';
+import {
+  buildIframeDoc,
+  exerciseMode,
+  labelJsResults,
+  runConsole,
+  runDom,
+  showsPreview,
+} from '../lib/runExercise';
 import { play } from '../lib/sound';
 import QuizBlock from './QuizBlock';
 import './LessonPanel.css';
@@ -36,6 +43,14 @@ function chunkBlocks(blocks) {
   }
   if (current.length) steps.push(current);
   return steps;
+}
+
+/** Placeholder line for the output panel, per language. */
+function consolePlaceholder(kind) {
+  if (kind === 'sql') return '-- query results appear here';
+  if (kind === 'python') return '# print() output appears here';
+  if (kind === 'terminal') return '$ output appears here';
+  return '// console.log output appears here';
 }
 
 // Stuck-help escalation thresholds (distinct graded code snapshots).
@@ -133,7 +148,7 @@ export default function LessonPanel({
   const isReview = mode === 'review';
   const dialogRef = useRef(null);
 
-  const exercise = lesson?.exercise ?? {};
+  const exercise = useMemo(() => lesson?.exercise ?? {}, [lesson]);
   const starter = exercise.starter ?? '';
   const checks = exercise.checks;
 
@@ -219,27 +234,26 @@ export default function LessonPanel({
     return () => clearTimeout(id);
   }, [code]);
 
-  // JS exercises (exercise.kind === 'js') run in a sandboxed iframe; the
-  // runner posts logs + check results back. HTML/CSS exercises stay on the
-  // pure DOM grader.
-  const isJs = exercise.kind === 'js';
-  const [jsRun, setJsRun] = useState({ logs: [], error: null, results: [] });
+  // Grading mode by exercise.kind: 'iframe' (js/ts/node/react) runs in a
+  // sandboxed iframe and posts results back; 'console' (sql/python/terminal)
+  // runs in-page; 'dom' (HTML/CSS) parses markup; 'quiz' is handled above.
+  const runMode = exerciseMode(exercise);
+  const hasPreview = showsPreview(exercise);
+  const [run, setRun] = useState({ logs: [], error: null, results: [] });
   const runNonce = useMemo(() => codeNonce(debouncedCode), [debouncedCode]);
-  const previewDoc = useMemo(() => {
-    if (!isJs) return debouncedCode;
-    return buildJsRunDoc({
-      code: debouncedCode,
-      html: exercise.html,
-      checks,
-      nonce: runNonce,
-    });
-  }, [isJs, debouncedCode, exercise.html, checks, runNonce]);
 
+  // iframe languages: the doc the preview <iframe> runs.
+  const previewDoc = useMemo(() => {
+    if (runMode === 'iframe') return buildIframeDoc(exercise, debouncedCode, runNonce);
+    return debouncedCode;
+  }, [runMode, exercise, debouncedCode, runNonce]);
+
+  // iframe languages: collect results posted back by the sandbox.
   useEffect(() => {
-    if (!isJs) return undefined;
+    if (runMode !== 'iframe') return undefined;
     const onMessage = (e) => {
       if (e.data?.type === 'cs-js-run' && e.data.nonce === runNonce) {
-        setJsRun({
+        setRun({
           logs: e.data.logs ?? [],
           error: e.data.error ?? null,
           results: e.data.results ?? [],
@@ -248,7 +262,19 @@ export default function LessonPanel({
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
-  }, [isJs, runNonce]);
+  }, [runMode, runNonce]);
+
+  // console languages: run in-page (async) on each debounced change.
+  useEffect(() => {
+    if (runMode !== 'console') return undefined;
+    let cancelled = false;
+    runConsole(exercise, debouncedCode).then((r) => {
+      if (!cancelled) setRun(r);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [runMode, exercise, debouncedCode]);
 
   const results = useMemo(() => {
     if (isQuiz) {
@@ -257,10 +283,9 @@ export default function LessonPanel({
         pass: !!quizSolved[i],
       }));
     }
-    return isJs
-      ? labelJsResults(checks, jsRun.results)
-      : checkExercise(debouncedCode, checks ?? []);
-  }, [isQuiz, quizQuestions, quizSolved, isJs, jsRun, debouncedCode, checks]);
+    if (runMode === 'dom') return runDom(exercise, debouncedCode);
+    return labelJsResults(checks, run.results);
+  }, [isQuiz, quizQuestions, quizSolved, runMode, exercise, debouncedCode, checks, run]);
   const ready = allPass(results);
   const runningHere =
     !!session && session.running && session.topicId === topicId;
@@ -477,35 +502,40 @@ export default function LessonPanel({
                   )}
                 </div>
                 <div className="lp-lab-col">
-                  <div className="lp-browser">
-                    <div className="lp-browser-bar" aria-hidden="true">
-                      <span className="lp-dot" />
-                      <span className="lp-dot" />
-                      <span className="lp-dot" />
-                      <span className="lp-browser-url">live preview</span>
+                  {hasPreview && (
+                    <div className="lp-browser">
+                      <div className="lp-browser-bar" aria-hidden="true">
+                        <span className="lp-dot" />
+                        <span className="lp-dot" />
+                        <span className="lp-dot" />
+                        <span className="lp-browser-url">live preview</span>
+                      </div>
+                      <iframe
+                        className="lp-preview"
+                        sandbox={runMode === 'iframe' ? 'allow-scripts' : ''}
+                        title="preview"
+                        srcDoc={previewDoc}
+                      />
                     </div>
-                    <iframe
-                      className="lp-preview"
-                      sandbox={isJs ? 'allow-scripts' : ''}
-                      title="preview"
-                      srcDoc={previewDoc}
-                    />
-                  </div>
-                  {isJs && (
-                    <div className="lp-console" aria-label="Console output">
-                      {jsRun.error && (
+                  )}
+                  {runMode !== 'dom' && (
+                    <div
+                      className={`lp-console${hasPreview ? '' : ' lp-console--tall'}`}
+                      aria-label="Output"
+                    >
+                      {run.error && (
                         <p className="lp-console-line lp-console-err">
-                          {jsRun.error}
+                          {run.error}
                         </p>
                       )}
-                      {jsRun.logs.map((line, i) => (
+                      {run.logs.map((line, i) => (
                         <p key={i} className="lp-console-line">
                           {line}
                         </p>
                       ))}
-                      {!jsRun.error && jsRun.logs.length === 0 && (
+                      {!run.error && run.logs.length === 0 && (
                         <p className="lp-console-line lp-console-dim">
-                          // console.log output appears here
+                          {consolePlaceholder(exercise.kind)}
                         </p>
                       )}
                     </div>
