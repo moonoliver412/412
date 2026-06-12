@@ -21,9 +21,22 @@ pomodoro mechanics and Duolingo-grade retention loops — entirely client-side.
   anti-tutorial-hell gate.
 - **Forest page** with focus-diary heat calendar and a canvas-rendered
   shareable forest card (PNG download/clipboard).
-- **Weekly focus league** vs simulated rivals (honest about it — no backend).
+- **Stuck-help in every lesson**: progressive hints, per-check nudges, and a
+  view-solution path that pays half rewards.
+- **Spaced repetition**: mastered trees follow an SM-2-lite watering schedule
+  (intervals grow 3→60 days; lapses shorten them) — knowledge decay is visible.
+- **Daily quests, XP ranks, streak wagers, Growth Chests** (earned triggers,
+  random contents, rarity shown before opening), synthesized sound design,
+  streak-at-risk reminders, first-run onboarding, 5-minute break timer.
+- **Weekly focus league** vs simulated rivals — or real cohorts of 20 when
+  cloud sync is configured.
+- **PWA**: installable, works fully offline (the whole curriculum is bundled).
+- **Settings**: sound, calm-motion override, reminders, save-file
+  export/import, full reset.
 
-All state lives in `localStorage`. No accounts, no server.
+All state lives in `localStorage` by default. Optional cloud sync (Supabase,
+anonymous-first, teens-safe: neutral age screen, no PII on leaderboards) —
+see `.env.example` and `supabase/schema.sql`.
 
 ## Run
 

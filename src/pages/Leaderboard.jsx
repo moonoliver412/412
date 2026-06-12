@@ -1,5 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGame } from '../state/useGame';
+import { fetchLiveLeague } from '../lib/cloudLeague';
+import { cloudEnabled } from '../lib/supabase';
 import './Leaderboard.css';
 
 // ---- ISO week helpers ----
@@ -173,14 +175,34 @@ export default function Leaderboard() {
   [weekKey]
   );
 
+  // Live cohort when the backend is configured; simulated rivals otherwise.
+  const [live, setLive] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    if (!cloudEnabled) return undefined;
+    fetchLiveLeague(yourMinutes).then((result) => {
+      if (!cancelled && result) setLive(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [yourMinutes]);
+
   // Merge + sort descending
   const rows = useMemo(() => {
+    if (live) {
+      return live.rows.map((r) => ({
+        handle: r.display_name,
+        minutes: r.xp,
+        isYou: r.user_id === live.myUserId,
+      }));
+    }
     const all = [
       { handle: 'you', minutes: yourMinutes, isYou: true },
       ...rivals.map((r) => ({ ...r, isYou: false })),
     ];
     return all.sort((a, b) => b.minutes - a.minutes);
-  }, [yourMinutes, rivals]);
+  }, [live, yourMinutes, rivals]);
 
   const maxMinutes = rows[0]?.minutes ?? 1;
   const isEmpty = yourMinutes === 0;
@@ -222,7 +244,9 @@ export default function Leaderboard() {
       )}
 
       <p className="lb-footer-note">
-        Your rivals are simulated — real players will appear when accounts launch.
+        {live
+          ? 'Live league — ranked with real players in your cohort.'
+          : 'Your rivals are simulated — real players appear when cloud sync is on.'}
       </p>
     </main>
   );

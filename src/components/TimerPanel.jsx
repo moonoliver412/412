@@ -5,6 +5,7 @@ import { play } from '../lib/sound';
 import './TimerPanel.css';
 
 const DURATIONS = [10, 25, 50];
+const BREAK_MIN = 5;
 const RING_RADIUS = 52;
 const RING_CIRC = 2 * Math.PI * RING_RADIUS;
 
@@ -35,8 +36,25 @@ export default function TimerPanel({ topicId }) {
   const [pickedDuration, setPickedDuration] = useState(25);
   const [confirmingAbandon, setConfirmingAbandon] = useState(false);
   const [justCompleted, setJustCompleted] = useState(false);
+  const [breakUntil, setBreakUntil] = useState(null); // ms timestamp
+  const [breakLeft, setBreakLeft] = useState(0); // ms remaining (state-driven)
   const [, setTick] = useState(0); // re-render driver while the timer runs
   const finishedRef = useRef(false);
+
+  // Break countdown tick; ends the break with a soft tone.
+  useEffect(() => {
+    if (!breakUntil) return undefined;
+    const id = setInterval(() => {
+      const left = Math.max(0, breakUntil - Date.now());
+      setBreakLeft(left);
+      if (left <= 0) {
+        setBreakUntil(null);
+        setJustCompleted(false);
+        play('start');
+      }
+    }, 500);
+    return () => clearInterval(id);
+  }, [breakUntil]);
 
   // Elapsed is derived, not mirrored into state — the interval below just
   // forces re-renders (and handles natural completion in its callback).
@@ -60,22 +78,53 @@ export default function TimerPanel({ topicId }) {
     return () => clearInterval(id);
   }, [session, getSessionElapsed, finishSession]);
 
-  // --- No session: completion banner or the start form -----------------
+  // --- No session: break, completion banner, or the start form ---------
   if (!session) {
+    if (breakUntil) {
+      return (
+        <section className="cs-panel timer-panel timer-panel--done">
+          <h2 className="cs-panel-title timer-title">Break time</h2>
+          <p className="timer-done-note">
+            Stretch, drink water, look out a window. Back in{' '}
+            {formatMs(breakLeft)}.
+          </p>
+          <button
+            type="button"
+            className="cs-pill-btn timer-btn"
+            onClick={() => setBreakUntil(null)}
+          >
+            Skip the break
+          </button>
+        </section>
+      );
+    }
+
     if (justCompleted) {
       return (
         <section className="cs-panel timer-panel timer-panel--done">
           <h2 className="cs-panel-title timer-title">Session complete!</h2>
           <p className="timer-done-note">
-            Great focus. Finish a lesson next session to grow your tree.
+            Great focus. A short break keeps the next session sharp.
           </p>
-          <button
-            type="button"
-            className="cs-pill-btn cs-pill-btn--orange timer-btn"
-            onClick={() => setJustCompleted(false)}
-          >
-            Nice!
-          </button>
+          <div className="timer-actions">
+            <button
+              type="button"
+              className="cs-pill-btn cs-pill-btn--orange timer-btn"
+              onClick={() => {
+                setBreakLeft(BREAK_MIN * 60_000);
+                setBreakUntil(Date.now() + BREAK_MIN * 60_000);
+              }}
+            >
+              Take a {BREAK_MIN}-min break
+            </button>
+            <button
+              type="button"
+              className="cs-pill-btn timer-btn"
+              onClick={() => setJustCompleted(false)}
+            >
+              Skip
+            </button>
+          </div>
         </section>
       );
     }

@@ -186,3 +186,30 @@
     transition: none !important;
   }
 }
+
+.set-claim {
+  border-top: 1.5px solid #2c2c2c;
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.set-input {
+  background: #161616;
+  border: 1.5px solid #3a3a3a;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  color: #fff;
+  font-size: 13.5px;
+  width: 120px;
+}
+
+.set-input--email {
+  width: 220px;
+}
+
+.set-input:focus {
+  outline: none;
+  border-color: var(--amber);
+}

@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import AchievementToasts from './components/AchievementToasts';
 import Onboarding from './components/Onboarding';
 import StreakGuard from './components/StreakGuard';
+import UpdatePill from './components/UpdatePill';
 import Home from './pages/Home';
 import Playground from './pages/Playground';
 import Forest from './pages/Forest';
@@ -20,6 +21,7 @@ export default function App() {
       <StreakGuard />
       <AchievementToasts />
       <Onboarding />
+      <UpdatePill />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/playground" element={<Playground />} />
