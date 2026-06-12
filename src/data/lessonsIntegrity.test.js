@@ -26,7 +26,7 @@ const CHECK_TYPES_BY_KIND = {
     'verifyRowCount',
     ...SOURCE,
   ]),
-  python: new Set(['logIncludes', 'exprTruthy', ...SOURCE]),
+  python: new Set(['logIncludes', ...SOURCE]),
   terminal: new Set([
     'output',
     'fileExists',

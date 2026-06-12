@@ -12,17 +12,17 @@ import { checkExercise } from './checkExercise.js';
 import { buildJsRunDoc, labelJsResults } from './jsRunner.js';
 import { stripTypes } from './tsStrip.js';
 import { NODE_PREAMBLE } from './runners/node.js';
-import { buildReactDoc } from './runners/react.js';
 import { runTerminal } from './runners/terminal.js';
 import { runSql } from './runners/sql.js';
 import { runPython } from './runners/python.js';
 
-const IFRAME_KINDS = new Set(['js', 'ts', 'node', 'react']);
+const IFRAME_KINDS = new Set(['js', 'ts', 'node']);
 const CONSOLE_KINDS = new Set(['sql', 'python', 'terminal']);
 
 export function exerciseMode(exercise) {
   const kind = exercise?.kind;
   if (kind === 'quiz') return 'quiz';
+  if (kind === 'react') return 'react'; // rendered in-parent (ReactPreview)
   if (IFRAME_KINDS.has(kind)) return 'iframe';
   if (CONSOLE_KINDS.has(kind)) return 'console';
   return 'dom';
@@ -33,7 +33,7 @@ export function showsPreview(exercise) {
   return exerciseMode(exercise) !== 'console';
 }
 
-/** Build the sandboxed-iframe document for js/ts/node/react. */
+/** Build the sandboxed-iframe document for js/ts/node. */
 export function buildIframeDoc(exercise, code, nonce) {
   const checks = exercise.checks ?? [];
   switch (exercise.kind) {
@@ -53,8 +53,6 @@ export function buildIframeDoc(exercise, code, nonce) {
         checks,
         nonce,
       });
-    case 'react':
-      return buildReactDoc({ code, checks, nonce });
     case 'js':
     default:
       return buildJsRunDoc({ code, html: exercise.html, checks, nonce });

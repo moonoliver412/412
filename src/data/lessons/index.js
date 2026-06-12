@@ -33,6 +33,12 @@ import jsAsync from './js/js-async';
 import jsProject from './js/js-project';
 import jsClasses from './js/js-classes';
 import jsDebugging from './js/js-debugging';
+import tsBasics from './ts/ts-basics';
+import nodeBasics from './node/node-basics';
+import reactJsx from './react/react-jsx';
+import sqlSelect from './sql/sql-select';
+import pyBasics from './py/py-basics';
+import cliBasics from './cli/cli-basics';
 
 const topics = [
   htmlStructure,
@@ -64,6 +70,12 @@ const topics = [
   jsProject,
   jsClasses,
   jsDebugging,
+  tsBasics,
+  nodeBasics,
+  reactJsx,
+  sqlSelect,
+  pyBasics,
+  cliBasics,
 ];
 
 const lessonsById = new Map();

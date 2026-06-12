@@ -1,72 +1,69 @@
-// Python runner — real CPython via Pyodide (WASM), loaded from a CDN the
-// first time (cached afterwards). Captures stdout and exposes the final
-// global namespace to expression checks.
+// Python runner — Skulpt, a pure-JavaScript Python 3 interpreter. It runs
+// in-page with no WASM and no network, so Python lessons work offline and are
+// unit-testable. It covers the teaching subset (print, variables, numbers,
+// strings, booleans, if/loops, functions, lists, dicts) — exactly what teens
+// learn first.
 //
 // exercise: { kind:'python', starter:'…', checks }
-// Check types:
-//   { type:'logIncludes', text }        printed output contains text
-//   { type:'exprTruthy', expr:'add(2,3)==5' }   Python expression is truthy
-//   plus sourceIncludes / sourceMatches on the learner code.
+// Check types: logIncludes (printed output), plus sourceIncludes /
+// sourceMatches on the learner code.
 
 import { runSourceCheck, SOURCE_CHECK_TYPES } from '../sourceChecks.js';
 
-const PYODIDE_VERSION = 'v0.26.2';
-const PYODIDE_URL = `https://cdn.jsdelivr.net/pyodide/${PYODIDE_VERSION}/full/`;
+let skPromise = null;
 
-let pyPromise = null;
-
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    if (window.loadPyodide) return resolve();
-    const s = document.createElement('script');
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = () => reject(new Error('offline'));
-    document.head.appendChild(s);
-  });
-}
-
-async function getPyodide() {
-  if (!pyPromise) {
-    pyPromise = (async () => {
-      await loadScript(`${PYODIDE_URL}pyodide.js`);
-      return window.loadPyodide({ indexURL: PYODIDE_URL });
+async function getSk() {
+  if (!skPromise) {
+    skPromise = (async () => {
+      await import('skulpt/dist/skulpt.min.js');
+      await import('skulpt/dist/skulpt-stdlib.js');
+      return globalThis.Sk;
     })();
   }
-  return pyPromise;
+  return skPromise;
 }
 
 export async function runPython(code, checks) {
-  const logs = [];
+  let buffer = '';
   let error = null;
-  let py = null;
+  let Sk;
   try {
-    py = await getPyodide();
+    Sk = await getSk();
   } catch {
     return {
-      logs,
-      error:
-        'Python needs an internet connection the first time so it can download. Try again online.',
+      logs: [],
+      error: 'Python failed to load. Try refreshing.',
       results: (checks ?? []).map(() => false),
     };
   }
 
   try {
-    py.setStdout({ batched: (s) => logs.push(s) });
-    py.setStderr({ batched: (s) => logs.push(s) });
-    await py.runPythonAsync(code);
+    Sk.configure({
+      output: (t) => {
+        buffer += t;
+      },
+      read: (f) => {
+        if (!Sk.builtinFiles || Sk.builtinFiles.files[f] === undefined) {
+          throw new Error(`File not found: ${f}`);
+        }
+        return Sk.builtinFiles.files[f];
+      },
+      __future__: Sk.python3,
+      execLimit: 5000,
+    });
+    await Sk.misceval.asyncToPromise(() =>
+      Sk.importMainWithBody('<stdin>', false, String(code ?? ''), true)
+    );
   } catch (e) {
-    error = String(e?.message ?? e).split('\n').slice(-3).join('\n');
+    error = String(e?.toString ? e.toString() : e);
   }
 
+  const logs = buffer.split('\n').filter((l) => l.length > 0);
   const results = (checks ?? []).map((c) => {
     try {
       if (c.type === 'logIncludes') {
         const want = String(c.text).toLowerCase();
-        return logs.some((l) => String(l).toLowerCase().includes(want));
-      }
-      if (c.type === 'exprTruthy') {
-        return !!py.runPython(`bool(${c.expr})`);
+        return logs.some((l) => l.toLowerCase().includes(want));
       }
       if (SOURCE_CHECK_TYPES.has(c.type)) return runSourceCheck(c, code);
       return false;

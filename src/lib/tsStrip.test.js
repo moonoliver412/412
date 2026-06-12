@@ -31,7 +31,6 @@ describe('stripTypes', () => {
   it('produces runnable JS for a simple typed function', () => {
     const js = stripTypes('function greet(name: string): string { return "hi " + name; }\nconsole.log(greet("Ada"));');
     let logged = '';
-    // eslint-disable-next-line no-new-func -- test-only evaluation of stripped output
     new Function('console', js)({ log: (s) => (logged = s) });
     expect(logged).toBe('hi Ada');
   });

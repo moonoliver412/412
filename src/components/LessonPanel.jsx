@@ -12,6 +12,7 @@ import {
 } from '../lib/runExercise';
 import { play } from '../lib/sound';
 import QuizBlock from './QuizBlock';
+import ReactPreview from './ReactPreview';
 import './LessonPanel.css';
 
 // Stepped lesson experience (choreography per .claude/skills/motion-graphics):
@@ -502,23 +503,30 @@ export default function LessonPanel({
                   )}
                 </div>
                 <div className="lp-lab-col">
-                  {hasPreview && (
-                    <div className="lp-browser">
-                      <div className="lp-browser-bar" aria-hidden="true">
-                        <span className="lp-dot" />
-                        <span className="lp-dot" />
-                        <span className="lp-dot" />
-                        <span className="lp-browser-url">live preview</span>
-                      </div>
-                      <iframe
-                        className="lp-preview"
-                        sandbox={runMode === 'iframe' ? 'allow-scripts' : ''}
-                        title="preview"
-                        srcDoc={previewDoc}
+                  {hasPreview &&
+                    (runMode === 'react' ? (
+                      <ReactPreview
+                        code={debouncedCode}
+                        checks={checks}
+                        onResult={setRun}
                       />
-                    </div>
-                  )}
-                  {runMode !== 'dom' && (
+                    ) : (
+                      <div className="lp-browser">
+                        <div className="lp-browser-bar" aria-hidden="true">
+                          <span className="lp-dot" />
+                          <span className="lp-dot" />
+                          <span className="lp-dot" />
+                          <span className="lp-browser-url">live preview</span>
+                        </div>
+                        <iframe
+                          className="lp-preview"
+                          sandbox={runMode === 'iframe' ? 'allow-scripts' : ''}
+                          title="preview"
+                          srcDoc={previewDoc}
+                        />
+                      </div>
+                    ))}
+                  {(runMode === 'iframe' || runMode === 'console') && (
                     <div
                       className={`lp-console${hasPreview ? '' : ' lp-console--tall'}`}
                       aria-label="Output"
