@@ -53,16 +53,48 @@ describe('authored lesson content', () => {
         const lesson = getLesson(id);
         expect(lesson.blocks.length, id).toBeGreaterThanOrEqual(2);
         for (const block of lesson.blocks) {
-          expect(['p', 'code', 'tip'], `${id} block type`).toContain(
+          expect(['p', 'code', 'tip', 'quiz'], `${id} block type`).toContain(
             block.type
           );
-          expect(typeof block.text, `${id} block text`).toBe('string');
-          expect(block.text.length, `${id} empty block`).toBeGreaterThan(0);
+          if (block.type === 'quiz') {
+            expect(typeof block.question, `${id} quiz question`).toBe('string');
+            expect(Array.isArray(block.options), `${id} quiz options`).toBe(
+              true
+            );
+            expect(
+              block.options.length,
+              `${id} quiz options count`
+            ).toBeGreaterThanOrEqual(2);
+            expect(
+              Number.isInteger(block.answer) &&
+                block.answer >= 0 &&
+                block.answer < block.options.length,
+              `${id} quiz answer index`
+            ).toBe(true);
+          } else {
+            expect(typeof block.text, `${id} block text`).toBe('string');
+            expect(block.text.length, `${id} empty block`).toBeGreaterThan(0);
+          }
         }
         const ex = lesson.exercise;
         expect(typeof ex.instructions, id).toBe('string');
         expect(typeof ex.starter, `${id} starter`).toBe('string');
         expect(ex.checks.length, `${id} checks`).toBeGreaterThanOrEqual(2);
+
+        // Stuck-help schema (optional, validated when present).
+        if (ex.hints !== undefined) {
+          expect(Array.isArray(ex.hints), `${id} hints`).toBe(true);
+          expect(ex.hints.length, `${id} hints count`).toBeGreaterThanOrEqual(1);
+          expect(ex.hints.length, `${id} hints count`).toBeLessThanOrEqual(2);
+          for (const hint of ex.hints) {
+            expect(typeof hint, `${id} hint`).toBe('string');
+            expect(hint.length, `${id} empty hint`).toBeGreaterThan(0);
+          }
+        }
+        if (ex.solution !== undefined) {
+          expect(typeof ex.solution, `${id} solution`).toBe('string');
+          expect(ex.solution.length, `${id} empty solution`).toBeGreaterThan(0);
+        }
 
         const validTypes = lang === 'js' ? JS_CHECK_TYPES : DOM_CHECK_TYPES;
         for (const check of ex.checks) {
@@ -70,6 +102,12 @@ describe('authored lesson content', () => {
             true
           );
           expect(typeof check.label, `${id} check label`).toBe('string');
+          if (check.hint !== undefined) {
+            expect(typeof check.hint, `${id} check hint`).toBe('string');
+            expect(check.hint.length, `${id} empty check hint`).toBeGreaterThan(
+              0
+            );
+          }
         }
 
         if (lang === 'js') {

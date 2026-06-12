@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useGame } from '../state/useGame';
 import { allPass, checkExercise } from '../lib/checkExercise';
 import { buildJsRunDoc, labelJsResults } from '../lib/jsRunner';
+import { play } from '../lib/sound';
 import './ChallengePanel.css';
 
 const DEBOUNCE_MS = 350;
@@ -141,6 +142,7 @@ export default function ChallengePanel({ challenge, onClose }) {
   }, [results]);
 
   const handleClaim = useCallback(() => {
+    play('ceremony');
     completeChallenge(challenge.id, {});
     setCeremony(true);
   }, [challenge.id, completeChallenge]);

@@ -8,7 +8,11 @@ import {
   useState,
 } from 'react';
 import { ACHIEVEMENTS } from '../data/achievements';
-import { advanceStreak, todayStr } from '../lib/streak';
+import { rollChest } from '../data/chests';
+import { QUEST_REWARD_SPROUTS, questsFor } from '../data/quests';
+import { rankFor } from '../data/ranks';
+import { advanceStreak, resolveWager, todayStr } from '../lib/streak';
+import { onStorageKey } from '../lib/storageSync';
 
 // ---------------------------------------------------------------------------
 // Game state — economy, streak, daily goal, achievements, focus history.
@@ -44,6 +48,7 @@ const REWARDS = {
   sessionFinished: { sprouts: 5, xp: null }, // xp = session minutes
   challenge: { sprouts: 15, xp: 30 },
   water: { sprouts: 5, xp: 10 },
+  practice: { sprouts: 3, xp: 8 },
 };
 
 function emptyGame() {
@@ -56,8 +61,15 @@ function emptyGame() {
     owned: { species: [] },
     completedChallenges: [],
     history: [],
+    quests: { date: null, progress: {}, done: [] },
+    wager: null, // { startDay, stake } while a streak wager is live
+    stumps: 0, // lost wagers leave permanent stumps in the forest
+    chests: [], // earned Growth Chests, opened or not (data/chests.js)
   };
 }
+
+export const WAGER_STAKE = 50;
+export const WAGER_PAYOUT = 150;
 
 function loadGame() {
   try {
@@ -71,6 +83,7 @@ function loadGame() {
       streak: { ...base.streak, ...stored.streak },
       goal: { ...base.goal, ...stored.goal },
       owned: { ...base.owned, ...stored.owned },
+      quests: { ...base.quests, ...stored.quests },
     };
   } catch {
     return emptyGame();
@@ -97,6 +110,16 @@ export function GameProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(GAME_KEY, JSON.stringify(game));
   }, [game]);
+
+  // Another tab wrote the game state: adopt it (storage events never fire
+  // in the writing tab, so this cannot loop).
+  useEffect(() => {
+    return onStorageKey(GAME_KEY, () => {
+      const next = loadGame();
+      gameRef.current = next;
+      setGame(next);
+    });
+  }, []);
 
   const recordEvent = useCallback(
     (event, progressSnapshot = {}) => {
@@ -126,33 +149,165 @@ export function GameProvider({ children }) {
       next.goal = goal;
 
       const reward = REWARDS[event.type];
+      let xpGained = 0;
       if (reward) {
-        next.sprouts = prev.sprouts + reward.sprouts;
-        next.xp = prev.xp + (reward.xp ?? event.minutes ?? 0);
+        // Completing via a revealed solution pays half — honest economy.
+        const scale = event.half ? 0.5 : 1;
+        xpGained = Math.round((reward.xp ?? event.minutes ?? 0) * scale);
+        next.sprouts = prev.sprouts + Math.round(reward.sprouts * scale);
+        next.xp = prev.xp + xpGained;
         next.streak = advanceStreak(prev.streak, today);
       }
 
+      const newToasts = [];
+      const awardChest = (reason, boost = 0) => {
+        const chest = rollChest(reason, boost);
+        next.chests = [...(next.chests ?? []), chest];
+        newToasts.push({
+          kicker: 'Chest earned',
+          icon: '🎁',
+          name: `A ${chest.rarity} growth chest`,
+          blurb: 'Open it from Home',
+        });
+      };
+
+      // Daily quests: roll the day, accumulate, pay on the completion edge.
+      if (reward) {
+        const fresh =
+          prev.quests.date === today
+            ? { ...prev.quests, progress: { ...prev.quests.progress } }
+            : { date: today, progress: {}, done: [] };
+        let done = [...(fresh.done ?? [])];
+        for (const quest of questsFor(today)) {
+          if (done.includes(quest.id)) continue;
+          const inc = quest.count(event, { xpGained });
+          if (!inc) continue;
+          const progressed = (fresh.progress[quest.id] ?? 0) + inc;
+          fresh.progress[quest.id] = progressed;
+          if (progressed >= quest.target) {
+            done.push(quest.id);
+            next.sprouts += QUEST_REWARD_SPROUTS;
+            newToasts.push({
+              kicker: 'Quest complete',
+              icon: quest.icon,
+              name: quest.blurb,
+              blurb: `+${QUEST_REWARD_SPROUTS} sprouts`,
+            });
+            if (done.length === 3) {
+              awardChest('Daily quest sweep');
+            }
+          }
+        }
+        next.quests = { ...fresh, done };
+      }
+
+      // Earned chest triggers: mastery (rarity-boosted) + every 7th streak day.
+      if (event.type === 'topicMastered') awardChest('Topic mastered', 1);
+      if (
+        reward &&
+        next.streak.current > 0 &&
+        next.streak.current % 7 === 0 &&
+        next.streak.lastActiveDay !== prev.streak.lastActiveDay
+      ) {
+        awardChest(`${next.streak.current}-day streak`);
+      }
+
+      // Streak wager: resolve against the post-advance streak.
+      if (next.wager && reward) {
+        const verdict = resolveWager(next.wager, next.streak, today);
+        if (verdict === 'won') {
+          next.sprouts += WAGER_PAYOUT;
+          newToasts.push({
+            kicker: 'Wager won',
+            icon: '🌳',
+            name: 'Seven days strong',
+            blurb: `Your wager paid out ${WAGER_PAYOUT} sprouts`,
+          });
+          next.wager = null;
+        } else if (verdict === 'lost') {
+          next.wager = null;
+          next.stumps = (prev.stumps ?? 0) + 1;
+          newToasts.push({
+            kicker: 'Wager lost',
+            icon: '🪵',
+            name: 'The wager wilted',
+            blurb: 'A stump marks the spot. Plant another when ready.',
+          });
+        }
+      }
+
+      // Rank-up on the xp edge.
+      const prevRank = rankFor(prev.xp);
+      const newRank = rankFor(next.xp);
+      if (newRank !== prevRank) {
+        newToasts.push({
+          kicker: 'Rank up',
+          icon: newRank.icon,
+          name: newRank.name,
+          blurb: `Your forest rank grew to ${newRank.name}`,
+        });
+      }
+
       const ctx = { game: next, progress: progressSnapshot, event, now: new Date() };
-      const unlocked = [];
       const achievements = { ...prev.achievements };
       for (const def of ACHIEVEMENTS) {
         if (!achievements[def.id] && def.test(ctx)) {
           achievements[def.id] = Date.now();
-          unlocked.push(def);
+          newToasts.push(def);
         }
       }
       next.achievements = achievements;
 
       commit(next);
-      if (unlocked.length) {
+      if (newToasts.length) {
         setToasts((cur) => [
           ...cur,
-          ...unlocked.map((def) => ({ ...def, key: `${def.id}-${Date.now()}` })),
+          ...newToasts.map((t, i) => ({
+            ...t,
+            key: `${t.id ?? t.kicker}-${Date.now()}-${i}`,
+          })),
         ]);
       }
     },
     [commit]
   );
+
+  /** Open an earned chest: applies its contents, stamps it opened.
+   *  Returns the chest (for the reveal ceremony) or null. */
+  const openChest = useCallback(
+    (chestId) => {
+      const prev = gameRef.current;
+      const chest = (prev.chests ?? []).find(
+        (c) => c.id === chestId && !c.openedAt
+      );
+      if (!chest) return null;
+      commit({
+        ...prev,
+        sprouts: prev.sprouts + chest.sprouts,
+        streak: {
+          ...prev.streak,
+          freezes: prev.streak.freezes + (chest.freezes ?? 0),
+        },
+        chests: prev.chests.map((c) =>
+          c.id === chestId ? { ...c, openedAt: Date.now() } : c
+        ),
+      });
+      return chest;
+    },
+    [commit]
+  );
+
+  /** Stake sprouts on holding a 7-day streak. False = can't afford/active. */
+  const plantWager = useCallback(() => {
+    const prev = gameRef.current;
+    if (prev.wager || prev.sprouts < WAGER_STAKE) return false;
+    commit({
+      ...prev,
+      sprouts: prev.sprouts - WAGER_STAKE,
+      wager: { startDay: todayStr(), stake: WAGER_STAKE },
+    });
+    return true;
+  }, [commit]);
 
   /** Spend sprouts; false (and no change) when balance is short. */
   const spendSprouts = useCallback(
@@ -222,6 +377,8 @@ export function GameProvider({ children }) {
       spendSprouts,
       unlockSpecies,
       completeChallenge,
+      plantWager,
+      openChest,
       setGoalTarget,
       dismissToast,
       resetGame,
@@ -233,6 +390,8 @@ export function GameProvider({ children }) {
       spendSprouts,
       unlockSpecies,
       completeChallenge,
+      plantWager,
+      openChest,
       setGoalTarget,
       dismissToast,
       resetGame,

@@ -24,13 +24,20 @@ const lessons = [
     exercise: {
       instructions:
         'Style the .banner so it has a background-color of #2d5a27, set background-repeat to no-repeat, and set background-position to center.',
+      hints: [
+        'All three rules go inside the .banner { } block — they are background-color, background-repeat, and background-position.',
+        'Set background-color: #2d5a27, background-repeat: no-repeat, and background-position: center on .banner.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .banner {\n        height: 200px;\n        /* your background rules here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="banner">Forest canopy</div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .banner {\n        height: 200px;\n        background-color: #2d5a27;\n        background-repeat: no-repeat;\n        background-position: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="banner">Forest canopy</div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'background-color:#2d5a27',
           label: 'Background color is #2d5a27',
+          hint: 'Use background-color: #2d5a27 inside .banner.',
         },
         {
           type: 'styleIncludes',
@@ -41,6 +48,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'background-position:center',
           label: 'Background is centered',
+          hint: 'Set background-position: center on .banner.',
         },
       ],
     },
@@ -68,13 +76,20 @@ const lessons = [
     exercise: {
       instructions:
         'Give the .panel a linear-gradient background going from top to bottom, starting with #e8f5e9 and ending with #4caf50.',
+      hints: [
+        'Use the background property and the linear-gradient() function to define a color blend.',
+        'Set background: linear-gradient(to bottom, #e8f5e9, #4caf50) on .panel.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .panel {\n        height: 180px;\n        /* your gradient here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="panel">Seedling panel</div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .panel {\n        height: 180px;\n        background: linear-gradient(to bottom, #e8f5e9, #4caf50);\n      }\n    </style>\n  </head>\n  <body>\n    <div class="panel">Seedling panel</div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'linear-gradient(',
           label: 'A linear-gradient is used',
+          hint: 'Use background: linear-gradient(...) on .panel.',
         },
         {
           type: 'styleIncludes',
@@ -85,6 +100,7 @@ const lessons = [
           type: 'styleIncludes',
           text: '#4caf50',
           label: 'The gradient ends with #4caf50',
+          hint: 'The second color stop in your gradient should be #4caf50.',
         },
       ],
     },
@@ -112,18 +128,26 @@ const lessons = [
     exercise: {
       instructions:
         'Style the .card with a 2px solid border of color #5a9e6f and a border-radius of 8px.',
+      hints: [
+        'The border shorthand takes three values in order: width, style, then color.',
+        'Set border: 2px solid #5a9e6f and border-radius: 8px on .card.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        padding: 1rem;\n        /* your border rules here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">Sprout card</div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        padding: 1rem;\n        border: 2px solid #5a9e6f;\n        border-radius: 8px;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">Sprout card</div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'border:2pxsolid#5a9e6f',
           label: 'A 2px solid green border is set',
+          hint: 'Write border: 2px solid #5a9e6f — all three parts together.',
         },
         {
           type: 'styleIncludes',
           text: 'border-radius:8px',
           label: 'Corners are rounded to 8px',
+          hint: 'Add border-radius: 8px to .card.',
         },
       ],
     },
@@ -151,13 +175,20 @@ const lessons = [
     exercise: {
       instructions:
         'Give the .card a box-shadow with 0px horizontal offset, 4px vertical offset, 12px blur, and the color rgba(0,0,0,0.15).',
+      hints: [
+        'box-shadow takes values in this order: horizontal offset, vertical offset, blur radius, color.',
+        'Set box-shadow: 0px 4px 12px rgba(0,0,0,0.15) on .card.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        padding: 1.5rem;\n        background: #fff;\n        border-radius: 8px;\n        /* your box-shadow here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">Root system overview</div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        padding: 1.5rem;\n        background: #fff;\n        border-radius: 8px;\n        box-shadow: 0px 4px 12px rgba(0,0,0,0.15);\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">Root system overview</div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'box-shadow:',
           label: 'box-shadow is declared',
+          hint: 'Add box-shadow: ... to the .card rule.',
         },
         {
           type: 'styleIncludes',
@@ -168,6 +199,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'rgba(',
           label: 'The shadow color uses rgba()',
+          hint: 'Use rgba(0,0,0,0.15) as the color in your box-shadow.',
         },
       ],
     },
@@ -191,13 +223,20 @@ const lessons = [
     exercise: {
       instructions:
         'Build a hero banner: give .hero a linear-gradient background using any two green or earthy colors, a box-shadow, and a border-radius of at least 8px. Set the h1 inside it to white with a text-shadow.',
+      hints: [
+        'You need four things: a linear-gradient on .hero, a box-shadow on .hero, a border-radius on .hero, and color + text-shadow on .hero h1.',
+        'Try background: linear-gradient(to bottom, #2d5a27, #4caf50) on .hero, then add box-shadow, border-radius: 8px, and on .hero h1 set color: white and text-shadow: 0 2px 8px rgba(0,0,0,0.4).',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .hero {\n        padding: 3rem 2rem;\n        /* your background, shadow, radius here */\n      }\n      .hero h1 {\n        /* color and text-shadow here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="hero">\n      <h1>The Old-Growth Grove</h1>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .hero {\n        padding: 3rem 2rem;\n        background: linear-gradient(to bottom, #2d5a27, #4caf50);\n        box-shadow: 0 8px 32px rgba(0,0,0,0.25);\n        border-radius: 8px;\n      }\n      .hero h1 {\n        color: white;\n        text-shadow: 0 2px 8px rgba(0,0,0,0.4);\n      }\n    </style>\n  </head>\n  <body>\n    <div class="hero">\n      <h1>The Old-Growth Grove</h1>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'linear-gradient(',
           label: 'The hero uses a linear-gradient background',
+          hint: 'Set background: linear-gradient(...) on .hero.',
         },
         {
           type: 'styleIncludes',
@@ -208,6 +247,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'border-radius:',
           label: 'Corners are rounded',
+          hint: 'Add border-radius: 8px (or larger) to .hero.',
         },
         {
           type: 'styleIncludes',

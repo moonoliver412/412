@@ -24,6 +24,12 @@ const lessons = [
     exercise: {
       instructions:
         'Add emphasis to the sentence: wrap the words "every single day" in <strong>, and wrap the word "thirsty" in <em>.',
+      hints: [
+        '<strong> and <em> are inline elements — they wrap words inside a sentence without breaking the line.',
+        'Change the sentence so it reads: …are <em>thirsty</em> and need water <strong>every single day</strong>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <p>Seedlings are <em>thirsty</em> and need water <strong>every single day</strong>.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <p>Seedlings are thirsty and need water every single day.</p>\n  </body>\n</html>',
       checks: [
@@ -31,11 +37,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'p strong',
           label: 'The important words are wrapped in <strong>',
+          hint: 'Wrap the words "every single day" in a <strong> element inside the <p>.',
         },
         {
           type: 'selectorExists',
           selector: 'p em',
           label: 'One word gets stress with <em>',
+          hint: 'Wrap the word "thirsty" in an <em> element inside the <p>.',
         },
       ],
     },
@@ -63,6 +71,12 @@ const lessons = [
     exercise: {
       instructions:
         'The body holds two bare sentences. Wrap each sentence in its own <p> so they become two stacked blocks, then wrap the single word "canopy" in a <span> so you have an inline wrapper to style later.',
+      hints: [
+        'Block elements like <p> stack on top of each other. Inline elements like <span> sit inside a sentence without breaking it.',
+        'Wrap each sentence in <p>…</p>, so you have exactly two. Then inside the first <p>, wrap just the word "canopy" in <span>canopy</span>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <p>The <span>canopy</span> filters sunlight into soft shade.</p>\n    <p>Beneath it, seedlings wait their turn.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    The canopy filters sunlight into soft shade.\n    Beneath it, seedlings wait their turn.\n  </body>\n</html>',
       checks: [
@@ -71,11 +85,13 @@ const lessons = [
           selector: 'p',
           count: 2,
           label: 'Each sentence lives in its own <p> (two in total)',
+          hint: 'The page needs exactly two <p> elements — one per sentence.',
         },
         {
           type: 'selectorExists',
           selector: 'p span',
           label: 'The word "canopy" is wrapped in a <span>',
+          hint: 'Add a <span> inside one of the <p> elements, wrapping the word "canopy".',
         },
       ],
     },
@@ -103,6 +119,12 @@ const lessons = [
     exercise: {
       instructions:
         'Under the paragraph, add a link: an <a> element whose href is https://example.com and whose text reads "Visit Example".',
+      hints: [
+        'The <a> element creates links. The href attribute says where the link goes — it is what brings the link to life.',
+        'Add <a href="https://example.com">Visit Example</a> below the paragraph.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <p>My favorite practice website:</p>\n    <a href="https://example.com">Visit Example</a>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <p>My favorite practice website:</p>\n    <!-- your link goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -110,6 +132,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'a',
           label: 'Your page has a link',
+          hint: 'Add an <a> element to the page.',
         },
         {
           type: 'attrEquals',
@@ -117,6 +140,7 @@ const lessons = [
           attr: 'href',
           value: 'https://example.com',
           label: 'The link points to https://example.com',
+          hint: 'Set the href attribute to exactly https://example.com (include the https://).',
         },
       ],
     },
@@ -144,6 +168,12 @@ const lessons = [
     exercise: {
       instructions:
         'Add a captioned photo: a <figure> containing an <img> with src="oak.png" and a short alt description, followed by a <figcaption> with your caption.',
+      hints: [
+        'A <figure> is a container for an image and its caption. Put the <img> and the <figcaption> inside it.',
+        'Write <figure><img src="oak.png" alt="your description here"><figcaption>Your caption</figcaption></figure>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Growth log</h1>\n    <figure>\n      <img src="oak.png" alt="A young oak sapling in a clay pot">\n      <figcaption>Day 40: first real branch.</figcaption>\n    </figure>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Growth log</h1>\n    <!-- your figure goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -151,11 +181,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'figure img',
           label: 'A <figure> holds your image',
+          hint: 'Wrap your <img> inside a <figure> element.',
         },
         {
           type: 'selectorExists',
           selector: 'img[alt]',
           label: 'The image has alt text',
+          hint: 'Add an alt attribute to your <img> with a description of the photo.',
         },
         {
           type: 'selectorExists',
@@ -188,6 +220,12 @@ const lessons = [
     exercise: {
       instructions:
         'Finish the field notes inside <main>: write a <p> with one phrase wrapped in <strong>, add an <a> linking to https://example.com, and add a <figure> with an <img> (src="oak.png", with alt text) plus a <figcaption>.',
+      hints: [
+        'You need three things inside <main>: a paragraph with a <strong> phrase, an <a> link, and a <figure> with an image and caption.',
+        'Add <p>The oak grew <strong>two feet</strong> this season.</p>, then <a href="https://example.com">Tree society</a>, then a <figure> with an <img src="oak.png" alt="…"> and a <figcaption>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Field Notes: The Old Oak</h1>\n    </header>\n    <main>\n      <p>The oak grew <strong>two feet</strong> this season.</p>\n      <a href="https://example.com">Tree society</a>\n      <figure>\n        <img src="oak.png" alt="The old oak in full leaf">\n        <figcaption>The old oak, summer 2026.</figcaption>\n      </figure>\n\n    </main>\n    <footer>Spring 2026</footer>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Field Notes: The Old Oak</h1>\n    </header>\n    <main>\n      <!-- paragraph, link, then figure -->\n\n    </main>\n    <footer>Spring 2026</footer>\n  </body>\n</html>',
       checks: [
@@ -195,11 +233,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'p strong',
           label: 'A paragraph bolds its key phrase with <strong>',
+          hint: 'Add a <p> containing a <strong> element around one phrase.',
         },
         {
           type: 'selectorExists',
           selector: 'a[href]',
           label: 'A link leads somewhere (href is set)',
+          hint: 'Add an <a> element with an href attribute.',
         },
         {
           type: 'selectorExists',

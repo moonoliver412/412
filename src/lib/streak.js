@@ -15,6 +15,20 @@ export function dayGap(fromDay, toDay) {
   return Math.round((Date.parse(toDay) - Date.parse(fromDay)) / 86_400_000);
 }
 
+/**
+ * Resolve a streak wager { startDay, stake } against the streak AFTER
+ * today's advance. 'won' after holding 7 consecutive days, 'lost' the
+ * moment a day went unmaintained (freezes count as maintained — they're
+ * insurance), 'pending' otherwise.
+ */
+export function resolveWager(wager, streak, today) {
+  const elapsed = dayGap(wager.startDay, today);
+  const maintained =
+    streak.lastActiveDay === today && streak.current >= elapsed + 1;
+  if (!maintained) return 'lost';
+  return elapsed >= 6 ? 'won' : 'pending';
+}
+
 export function advanceStreak(streak, today) {
   if (streak.lastActiveDay === today) return streak;
   let { current, freezes } = streak;

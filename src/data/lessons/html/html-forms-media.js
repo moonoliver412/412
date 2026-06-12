@@ -24,6 +24,12 @@ const lessons = [
     exercise: {
       instructions:
         'Start a nursery survey: add a <form>, and inside it an <input> with type="text", a name of "plant", and a placeholder inviting people to type their favorite plant.',
+      hints: [
+        'A <form> is the container for all form controls. The <input> goes inside it and needs a name attribute so its data is sent correctly.',
+        'Add <form> containing <input type="text" name="plant" placeholder="e.g. silver birch">.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Nursery survey</h1>\n    <form>\n      <input type="text" name="plant" placeholder="e.g. silver birch">\n    </form>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Nursery survey</h1>\n    <!-- your form goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -31,11 +37,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'form',
           label: 'Your page has a <form>',
+          hint: 'Add a <form> element to the page.',
         },
         {
           type: 'selectorExists',
           selector: 'form input[name]',
           label: 'An input inside it has a name attribute',
+          hint: 'Your <input> needs a name attribute — without it, its data never gets sent.',
         },
       ],
     },
@@ -63,6 +71,12 @@ const lessons = [
     exercise: {
       instructions:
         'Finish the order form: add a <label> with for="grower" above the input, a <select> containing at least two <option> tree choices, and a <button> that says "Order".',
+      hints: [
+        'A <label> connects to its input using for (on the label) and id (on the input) — they must be the same value. A <select> holds <option> elements as its choices.',
+        'Add <label for="grower">Grower name</label> above the input, then a <select> with two <option> elements, then <button>Order</button>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="grower">Grower name</label>\n      <input id="grower" type="text">\n      <select>\n        <option>Oak</option>\n        <option>Maple</option>\n      </select>\n      <button>Order</button>\n\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <!-- 1. a <label> for the input below -->\n      <input id="grower" type="text">\n      <!-- 2. a <select> with two <option>s -->\n      <!-- 3. a <button> -->\n\n    </form>\n  </body>\n</html>',
       checks: [
@@ -72,11 +86,13 @@ const lessons = [
           attr: 'for',
           value: 'grower',
           label: 'Your <label> is connected to the input (for="grower")',
+          hint: 'Add a <label> with for="grower" — this must match the input\'s id exactly.',
         },
         {
           type: 'selectorExists',
           selector: 'select option',
           label: 'A drop-down offers <option> choices',
+          hint: 'Add a <select> element with at least two <option> elements inside it.',
         },
         {
           type: 'selectorExists',
@@ -108,7 +124,13 @@ const lessons = [
     ],
     exercise: {
       instructions:
-        'Add guardrails to this sign-up form: change the first input’s type to "email" and make it required, then give the password input a minlength of 8.',
+        'Add guardrails to this sign-up form: change the first input\'s type to "email" and make it required, then give the password input a minlength of 8.',
+      hints: [
+        'type="email" tells the browser to validate for an email shape. required blocks submission if the field is empty. minlength sets how short a value can be.',
+        'On the email input: change type="text" to type="email" and add required. On the password input: add minlength="8".',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="email">Email</label>\n      <input id="email" type="email" name="email" required>\n      <label for="pw">Password</label>\n      <input id="pw" type="password" name="pw" minlength="8">\n      <button>Sign up</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="email">Email</label>\n      <input id="email" type="text" name="email">\n      <label for="pw">Password</label>\n      <input id="pw" type="password" name="pw">\n      <button>Sign up</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -116,11 +138,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'input[type="email"]',
           label: 'The email field has type="email"',
+          hint: 'Change type="text" to type="email" on the email input.',
         },
         {
           type: 'selectorExists',
           selector: 'input[required]',
           label: 'The email field is required',
+          hint: 'Add the required attribute to the email input (no value needed).',
         },
         {
           type: 'selectorExists',
@@ -153,6 +177,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build the nature-cam page: add a <video> with src="garden.mp4" and the controls attribute, then an <audio> player with src="birdsong.mp3" and controls.',
+      hints: [
+        '<video> and <audio> both use src for the file and controls to show the play button. Without controls, visitors have no way to start playback.',
+        'Add <video src="garden.mp4" controls></video> then <audio src="birdsong.mp3" controls></audio>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Garden nature cam</h1>\n    <video src="garden.mp4" controls></video>\n    <audio src="birdsong.mp3" controls></audio>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Garden nature cam</h1>\n    <!-- video player, then audio player -->\n\n  </body>\n</html>',
       checks: [
@@ -160,11 +190,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'video[controls]',
           label: 'A <video> player has visible controls',
+          hint: 'Add a <video> element with src="garden.mp4" and the controls attribute.',
         },
         {
           type: 'selectorExists',
           selector: 'audio[controls]',
           label: 'An <audio> player has visible controls',
+          hint: 'Add an <audio> element with src="birdsong.mp3" and the controls attribute.',
         },
       ],
     },
@@ -192,6 +224,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build the contact form: a labelled text input for the name, a labelled <input> with type="email" and required, a labelled <textarea> for the message, and a <button> that says "Send". Use matching for/id pairs on every field.',
+      hints: [
+        'Every field needs a <label> connected by for/id. Build field by field: label first, then the control, ids must match the fors exactly.',
+        'Add three field pairs: <label for="name">Name</label><input id="name" type="text">, <label for="email">Email</label><input id="email" type="email" required>, <label for="message">Message</label><textarea id="message"></textarea>, then <button>Send</button>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Contact the nursery</h1>\n      <form>\n        <label for="name">Name</label>\n        <input id="name" type="text">\n        <label for="email">Email</label>\n        <input id="email" type="email" required>\n        <label for="message">Message</label>\n        <textarea id="message"></textarea>\n        <button>Send</button>\n\n      </form>\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Contact the nursery</h1>\n      <form>\n        <!-- name field (label + input) -->\n        <!-- email field (label + input, required) -->\n        <!-- message (label + textarea) -->\n        <!-- send button -->\n\n      </form>\n    </main>\n  </body>\n</html>',
       checks: [
@@ -199,11 +237,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'label[for]',
           label: 'Fields have connected <label>s',
+          hint: 'Each <label> needs a for attribute that matches its input\'s id.',
         },
         {
           type: 'selectorExists',
           selector: 'input[type="email"][required]',
           label: 'The email field is email-typed and required',
+          hint: 'One <input> needs both type="email" and required.',
         },
         {
           type: 'selectorExists',

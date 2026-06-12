@@ -29,6 +29,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Declare a const called species set to the name of any tree, and a let called rings set to any number. Then log both of them.',
+      hints: [
+        'A variable needs a keyword (const or let), a name, an = sign, and a value. Strings go in quotes; numbers do not.',
+        'Declare const species = "Oak"; then let rings = 5; then console.log(species, rings) at the end.',
+      ],
       starter:
         '// Declare your variables here\n// your code here\n\n// Log them\n',
       checks: [
@@ -36,11 +40,13 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof species === "string" && species.length > 0',
           label: 'species is declared as a non-empty string',
+          hint: 'Assign any tree name string to a const called species.',
         },
         {
           type: 'exprTruthy',
           expr: 'typeof rings === "number"',
           label: 'rings is declared as a number',
+          hint: 'Assign any number to a let called rings.',
         },
         {
           type: 'logIncludes',
@@ -48,6 +54,8 @@ const lessons = [
           label: 'Both values are logged to the console',
         },
       ],
+      solution:
+        'const species = "Oak";\nlet rings = 5;\n\nconsole.log(species, rings);\n',
     },
   },
   {
@@ -74,6 +82,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Declare a number called diameter and a string called bark. Then use a template literal to log a sentence that includes both — something like "Bark: rough, diameter: 12cm".',
+      hints: [
+        'A template literal uses backticks (`). Inside it, wrap any variable in ${} to drop its value into the text.',
+        'Write console.log(`Bark: ${bark}, diameter: ${diameter}cm`); using the two variables already declared.',
+      ],
       starter:
         'const diameter = 12;\nconst bark = "rough";\n\n// Log a sentence using a template literal\n// your code here\n',
       checks: [
@@ -91,8 +103,11 @@ const lessons = [
           type: 'logIncludes',
           text: '12',
           label: 'The logged sentence includes the diameter value',
+          hint: 'Use ${diameter} inside your template literal so the number 12 appears in the output.',
         },
       ],
+      solution:
+        'const diameter = 12;\nconst bark = "rough";\n\nconsole.log(`Bark: ${bark}, diameter: ${diameter}cm`);\n',
     },
   },
   {
@@ -119,6 +134,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Declare a const called seedCount set to any number. Then declare a const called hasSprouted that is true if seedCount is greater than 0. Log hasSprouted.',
+      hints: [
+        'A comparison like seedCount > 0 gives you true or false. You can store that result directly in a const.',
+        'Write const hasSprouted = seedCount > 0; — the > operator produces the boolean you need.',
+      ],
       starter:
         'const seedCount = 5;\n\n// Declare hasSprouted using a comparison\n// your code here\n\nconsole.log(hasSprouted);\n',
       checks: [
@@ -126,6 +145,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof hasSprouted === "boolean"',
           label: 'hasSprouted is a boolean',
+          hint: 'Set hasSprouted equal to the result of the comparison seedCount > 0.',
         },
         {
           type: 'exprTruthy',
@@ -138,6 +158,8 @@ const lessons = [
           label: 'true is logged to the console',
         },
       ],
+      solution:
+        'const seedCount = 5;\n\nconst hasSprouted = seedCount > 0;\n\nconsole.log(hasSprouted);\n',
     },
   },
   {
@@ -164,6 +186,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'The variable heightStr holds a height as a string. Convert it to a number, add 10 to it, and log the result. Then log the type of your converted number to confirm it.',
+      hints: [
+        'Number() converts a string to a number. Pass the string variable inside the parentheses and store the result.',
+        'Write const h = Number(heightStr); then console.log(h + 10); and console.log(typeof h);',
+      ],
       starter:
         'const heightStr = "28";\n\n// Convert to number and add 10\n// your code here\n\n// Log typeof to confirm\n// your code here\n',
       checks: [
@@ -171,13 +197,17 @@ const lessons = [
           type: 'logIncludes',
           text: '38',
           label: 'The result 38 is logged',
+          hint: 'Convert heightStr with Number(), then add 10 before logging.',
         },
         {
           type: 'logIncludes',
           text: 'number',
           label: '"number" is logged from typeof',
+          hint: 'Log typeof applied to your converted variable to print "number".',
         },
       ],
+      solution:
+        'const heightStr = "28";\n\nconst h = Number(heightStr);\nconsole.log(h + 10);\n\nconsole.log(typeof h);\n',
     },
   },
   {
@@ -204,6 +234,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Build a tiny calculator: given the two numbers below, compute and log their sum, difference, product, and remainder (using %). Format each result as a readable sentence using template literals.',
+      hints: [
+        'You need four operations: + for sum, - for difference, * for product, and % for remainder. Store each in its own const.',
+        'Declare const sum = x + y; const diff = x - y; const product = x * y; const rem = x % y; then console.log each in a template literal.',
+      ],
       starter:
         'const x = 17;\nconst y = 5;\n\n// Compute and log sum, difference, product, and remainder\n// your code here\n',
       checks: [
@@ -211,6 +245,7 @@ const lessons = [
           type: 'logIncludes',
           text: '22',
           label: 'The sum (22) is logged',
+          hint: 'x + y equals 22 — log it in any sentence.',
         },
         {
           type: 'logIncludes',
@@ -228,6 +263,8 @@ const lessons = [
           label: 'The remainder (2) is logged',
         },
       ],
+      solution:
+        'const x = 17;\nconst y = 5;\n\nconst sum = x + y;\nconst diff = x - y;\nconst product = x * y;\nconst rem = x % y;\n\nconsole.log(`${x} + ${y} = ${sum}`);\nconsole.log(`${x} - ${y} = ${diff}`);\nconsole.log(`${x} * ${y} = ${product}`);\nconsole.log(`${x} % ${y} = ${rem}`);\n',
     },
   },
 ];

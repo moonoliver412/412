@@ -29,6 +29,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Log "starting" right away. Then use setTimeout with a 50ms delay to log "done". The checks run at 250ms, so your timer will finish in plenty of time.',
+      hints: [
+        'setTimeout takes two arguments: a callback function and a delay in milliseconds. The callback runs after the delay.',
+        'Write setTimeout(function() { console.log("done"); }, 50); after the first console.log.',
+      ],
       starter:
         'console.log("starting");\n\n// schedule a log of "done" after 50ms\n// your code here',
       checks: [
@@ -41,8 +45,11 @@ const lessons = [
           type: 'logIncludes',
           text: 'done',
           label: '"done" is logged after the timer fires',
+          hint: 'Pass a callback to setTimeout that logs "done", with 50 as the delay.',
         },
       ],
+      solution:
+        'console.log("starting");\n\nsetTimeout(function() {\n  console.log("done");\n}, 50);\n',
     },
   },
   {
@@ -73,6 +80,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Create a Promise that resolves with the string "sprouted" after 30ms. Chain a .then() that logs the resolved value.',
+      hints: [
+        'Inside the Promise callback, call setTimeout and inside that callback call resolve("sprouted"). Then chain .then(value => console.log(value)) on the promise.',
+        'Write setTimeout(() => resolve("sprouted"), 30); inside the Promise constructor, then grow.then(v => console.log(v)); after.',
+      ],
       starter:
         'const grow = new Promise((resolve) => {\n  // resolve with "sprouted" after 30ms\n  // your code here\n});\n\n// chain .then() to log the value\n// your code here',
       checks: [
@@ -80,13 +91,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'sprouted',
           label: '"sprouted" is logged when the promise resolves',
+          hint: 'Call resolve("sprouted") inside your setTimeout and chain .then(v => console.log(v)) on grow.',
         },
         {
           type: 'exprTruthy',
           expr: 'grow instanceof Promise',
           label: 'grow is defined as a Promise',
+          hint: 'Make sure const grow = new Promise(...) is at the top level so it is visible to the check.',
         },
       ],
+      solution:
+        'const grow = new Promise((resolve) => {\n  setTimeout(() => resolve("sprouted"), 30);\n});\n\ngrow.then(v => console.log(v));\n',
     },
   },
   {
@@ -117,6 +132,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write an async function called harvest. Inside it, await Promise.resolve("berries") and log the result. Call harvest() after you define it.',
+      hints: [
+        'await pauses the async function until the promise settles and gives you the resolved value. Store it in a const, then log it.',
+        'Write const result = await Promise.resolve("berries"); console.log(result); inside the harvest function body.',
+      ],
       starter:
         'async function harvest() {\n  // await Promise.resolve("berries") and log it\n  // your code here\n}\n\nharvest();',
       checks: [
@@ -124,6 +143,7 @@ const lessons = [
           type: 'logIncludes',
           text: 'berries',
           label: '"berries" is logged from inside harvest',
+          hint: 'Use const result = await Promise.resolve("berries"); then console.log(result);',
         },
         {
           type: 'exprTruthy',
@@ -131,6 +151,8 @@ const lessons = [
           label: 'harvest is defined',
         },
       ],
+      solution:
+        'async function harvest() {\n  const result = await Promise.resolve("berries");\n  console.log(result);\n}\n\nharvest();\n',
     },
   },
   {
@@ -157,6 +179,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write an async function called getTree. Inside it, await Promise.resolve({ name: "maple", height: 12 }). Log the tree\'s name and height as two separate console.log calls. Call getTree() after you define it.',
+      hints: [
+        'await gives you the resolved object. Store it in a const and then access .name and .height properties to log each one.',
+        'Write const tree = await Promise.resolve({ name: "maple", height: 12 }); console.log(tree.name); console.log(tree.height);',
+      ],
       starter:
         'async function getTree() {\n  // await the mock data object and log name, then height\n  // your code here\n}\n\ngetTree();',
       checks: [
@@ -164,13 +190,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'maple',
           label: 'The tree name "maple" is logged to the console',
+          hint: 'After awaiting, log tree.name to print "maple".',
         },
         {
           type: 'logIncludes',
           text: '12',
           label: 'The height 12 is logged to the console',
+          hint: 'After awaiting, log tree.height to print 12.',
         },
       ],
+      solution:
+        'async function getTree() {\n  const tree = await Promise.resolve({ name: "maple", height: 12 });\n  console.log(tree.name);\n  console.log(tree.height);\n}\n\ngetTree();\n',
     },
   },
   {
@@ -198,6 +228,10 @@ const lessons = [
       html: '<div id="weather"></div>',
       instructions:
         'Write an async function loadWeather. First set the #weather element\'s text to "loading…". Then await Promise.resolve({ city: "Sprout City", temp: 22 }). Finally set the text to a string that includes both the city name and the temperature. Call loadWeather() after you define it.',
+      hints: [
+        'await the mock data into a const, then set out.textContent to a template literal that includes data.city and data.temp.',
+        'Write const data = await Promise.resolve({ city: "Sprout City", temp: 22 }); out.textContent = `${data.city}: ${data.temp}°C`;',
+      ],
       starter:
         'async function loadWeather() {\n  const out = document.getElementById("weather");\n  out.textContent = "loading…";\n\n  // await the mock data and update out.textContent\n  // your code here\n}\n\nloadWeather();',
       checks: [
@@ -206,12 +240,14 @@ const lessons = [
           text: 'Sprout City',
           selector: '#weather',
           label: 'The city name shows up in the weather widget',
+          hint: 'Include data.city in the string you assign to out.textContent.',
         },
         {
           type: 'textIncludes',
           text: '22',
           selector: '#weather',
           label: 'The temperature shows up in the weather widget',
+          hint: 'Include data.temp in the string you assign to out.textContent.',
         },
         {
           type: 'exprTruthy',
@@ -219,6 +255,8 @@ const lessons = [
           label: 'loadWeather is defined as a function',
         },
       ],
+      solution:
+        'async function loadWeather() {\n  const out = document.getElementById("weather");\n  out.textContent = "loading…";\n\n  const data = await Promise.resolve({ city: "Sprout City", temp: 22 });\n  out.textContent = `${data.city}: ${data.temp}°C`;\n}\n\nloadWeather();\n',
     },
   },
 ];

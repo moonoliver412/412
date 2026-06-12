@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { LANGUAGES, STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
+import { onStorageKey } from '../lib/storageSync';
+import { advanceReview, initReview } from '../lib/srs';
 import { useGame } from './useGame';
 
 // ---------------------------------------------------------------------------
@@ -25,7 +27,29 @@ import { useGame } from './useGame';
 
 const STORAGE_KEY = 'codesprout-progress-v1';
 const LANGKIND_KEY = 'codesprout-langkinds-v1';
+const SESSION_KEY = 'codesprout-session-v1';
 const DEFAULT_DURATION_MIN = 25;
+
+/** Rehydrate a persisted session PAUSED: running time since the last save is
+ *  folded into pausedElapsed, so a refresh never burns or loses focus time.
+ *  TimerPanel offers Resume (or Finish, when the timer already ran out). */
+function loadSession() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SESSION_KEY));
+    if (!s || typeof s.startedAt !== 'number') return null;
+    const elapsed = s.running
+      ? s.pausedElapsed + (Date.now() - s.startedAt) * (s.speed ?? 1)
+      : s.pausedElapsed;
+    return {
+      ...s,
+      running: false,
+      pausedElapsed: elapsed,
+      startedAt: Date.now(),
+    };
+  } catch {
+    return null;
+  }
+}
 
 // One species per LANGUAGE: pick oak for HTML and the whole HTML plot is an
 // oak forest. Migrates any legacy per-topic choices (first found wins).
@@ -63,21 +87,36 @@ function emptyTopic() {
     focusMinutes: 0,
     kind: null,
     tendedAt: null, // last time this topic was tended (lesson/session/water)
+    review: null, // SM-2-lite schedule { interval, ease, due } once mastered
   };
 }
 
-/** Days a MASTERED topic stays fresh without being tended. */
+/** Legacy fallback for mastered saves that predate SRS schedules. */
 export const THIRST_DAYS = 7;
 
 /**
- * Knowledge decay (docs/MASTERPLAN.md phase 10): a mastered tree goes
- * thirsty when untended for THIRST_DAYS — it renders wilted until watered
- * (a passed review exercise). Topics still being learned never decay.
+ * Knowledge decay: a mastered tree goes thirsty once its spaced-repetition
+ * review is due (src/lib/srs.js) — it renders wilted until watered (a passed
+ * review exercise). Topics still being learned never decay. Mastered saves
+ * from before SRS fall back to the old fixed 7-day window until first
+ * watered.
  */
+/** In-progress topic untended for 3+ days — worth a practice nudge. */
+// eslint-disable-next-line react-refresh/only-export-components -- pure helper colocated with the state contract
+export function needsPractice(topicProgress, now = Date.now()) {
+  return (
+    topicProgress.lockedStage > 0 &&
+    topicProgress.lockedStage < STAGES_PER_TOPIC &&
+    (topicProgress.tendedAt == null ||
+      now - topicProgress.tendedAt > 3 * 86_400_000)
+  );
+}
+
 // eslint-disable-next-line react-refresh/only-export-components -- pure helper colocated with the state contract
 export function isThirsty(topicProgress, now = Date.now()) {
+  if (topicProgress.lockedStage < STAGES_PER_TOPIC) return false;
+  if (topicProgress.review) return now > topicProgress.review.due;
   return (
-    topicProgress.lockedStage >= STAGES_PER_TOPIC &&
     topicProgress.tendedAt != null &&
     now - topicProgress.tendedAt > THIRST_DAYS * 86_400_000
   );
@@ -86,7 +125,7 @@ export function isThirsty(topicProgress, now = Date.now()) {
 export function ProgressProvider({ children }) {
   const [progress, setProgress] = useState(loadProgress);
   const [langKinds, setLangKinds] = useState(() => loadLangKinds(loadProgress()));
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState(loadSession);
   // Economy/streak/achievements live in GameProvider (which wraps us);
   // progress reports learning events upward.
   const { recordEvent } = useGame();
@@ -98,6 +137,30 @@ export function ProgressProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(LANGKIND_KEY, JSON.stringify(langKinds));
   }, [langKinds]);
+
+  useEffect(() => {
+    if (session) localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    else localStorage.removeItem(SESSION_KEY);
+  }, [session]);
+
+  // Another tab wrote our keys: adopt its state. Sessions arrive paused
+  // (loadSession), so two tabs can never tick one timer simultaneously.
+  useEffect(() => {
+    const offProgress = onStorageKey(STORAGE_KEY, () =>
+      setProgress(loadProgress())
+    );
+    const offKinds = onStorageKey(LANGKIND_KEY, () =>
+      setLangKinds(loadLangKinds(loadProgress()))
+    );
+    const offSession = onStorageKey(SESSION_KEY, () =>
+      setSession(loadSession())
+    );
+    return () => {
+      offProgress();
+      offKinds();
+      offSession();
+    };
+  }, []);
 
   const getTopicProgress = useCallback(
     (topicId) => progress[topicId] ?? emptyTopic(),
@@ -201,33 +264,51 @@ export function ProgressProvider({ children }) {
     setSession(null);
   }, [session, progress, updateTopic, recordEvent]);
 
-  /** Lock in the next growth stage. Clears wilt. */
+  /** Lock in the next growth stage. Clears wilt. `half` pays half rewards
+   *  (the learner completed via the revealed solution). */
   const completeLesson = useCallback(
-    (topicId) => {
+    (topicId, { half = false } = {}) => {
       const prev = progress[topicId] ?? emptyTopic();
       const nextStage = Math.min(prev.lockedStage + 1, STAGES_PER_TOPIC);
+      const justMastered =
+        nextStage >= STAGES_PER_TOPIC && prev.lockedStage < STAGES_PER_TOPIC;
       updateTopic(topicId, {
         lockedStage: nextStage,
         wilted: false,
         tendedAt: Date.now(),
+        // Mastery starts the spaced-repetition clock.
+        ...(justMastered ? { review: initReview() } : {}),
       });
       const snapshot = {
         ...progress,
         [topicId]: { ...emptyTopic(), ...prev, lockedStage: nextStage },
       };
-      recordEvent({ type: 'lesson', topicId }, snapshot);
-      if (nextStage >= STAGES_PER_TOPIC && prev.lockedStage < STAGES_PER_TOPIC) {
+      recordEvent({ type: 'lesson', topicId, half }, snapshot);
+      if (justMastered) {
         recordEvent({ type: 'topicMastered', topicId }, snapshot);
       }
     },
     [progress, updateTopic, recordEvent]
   );
 
-  /** Water a thirsty mastered tree: a passed review exercise refreshes it. */
+  /** Water a thirsty mastered tree: a passed review exercise refreshes it
+   *  and advances its spaced-repetition schedule (lapse-aware). */
   const waterTopic = useCallback(
     (topicId) => {
-      updateTopic(topicId, { tendedAt: Date.now(), wilted: false });
+      const prev = progress[topicId] ?? emptyTopic();
+      const review = advanceReview(prev.review ?? initReview());
+      updateTopic(topicId, { tendedAt: Date.now(), wilted: false, review });
       recordEvent({ type: 'water', topicId }, progress);
+    },
+    [progress, updateTopic, recordEvent]
+  );
+
+  /** Practice an in-progress topic (re-do a completed lesson): freshens the
+   *  tree, pays a small reward — grinding can't out-earn real progress. */
+  const practiceTopic = useCallback(
+    (topicId) => {
+      updateTopic(topicId, { tendedAt: Date.now(), wilted: false });
+      recordEvent({ type: 'practice', topicId }, progress);
     },
     [updateTopic, recordEvent, progress]
   );
@@ -287,6 +368,7 @@ export function ProgressProvider({ children }) {
       finishSession,
       completeLesson,
       waterTopic,
+      practiceTopic,
       setTreeKind,
       getTreeKind,
       isLangLocked,
@@ -305,6 +387,7 @@ export function ProgressProvider({ children }) {
       finishSession,
       completeLesson,
       waterTopic,
+      practiceTopic,
       setTreeKind,
       getTreeKind,
       isLangLocked,

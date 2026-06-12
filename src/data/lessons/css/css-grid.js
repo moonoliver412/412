@@ -24,18 +24,26 @@ const lessons = [
     exercise: {
       instructions:
         'Turn the .grove into a 3-column grid using repeat(3, 1fr) for grid-template-columns, and set a gap of "16px".',
+      hints: [
+        'Grid starts with display: grid on the container, just like Flexbox starts with display: flex.',
+        'Add display: grid, grid-template-columns: repeat(3, 1fr), and gap: 16px to .grove.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .grove {\n        /* your css here */\n      }\n      .tree {\n        background: #c8e6c9;\n        padding: 16px;\n        border-radius: 8px;\n        text-align: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="grove">\n      <div class="tree">Willow</div>\n      <div class="tree">Birch</div>\n      <div class="tree">Pine</div>\n      <div class="tree">Bamboo</div>\n      <div class="tree">Cherry</div>\n      <div class="tree">Oak</div>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .grove {\n        display: grid;\n        grid-template-columns: repeat(3, 1fr);\n        gap: 16px;\n      }\n      .tree {\n        background: #c8e6c9;\n        padding: 16px;\n        border-radius: 8px;\n        text-align: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="grove">\n      <div class="tree">Willow</div>\n      <div class="tree">Birch</div>\n      <div class="tree">Pine</div>\n      <div class="tree">Bamboo</div>\n      <div class="tree">Cherry</div>\n      <div class="tree">Oak</div>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'display:grid',
           label: 'The grove is a grid container',
+          hint: 'Add display: grid to .grove.',
         },
         {
           type: 'styleIncludes',
           text: 'grid-template-columns:repeat(3,1fr)',
           label: 'Three equal columns are defined',
+          hint: 'Set grid-template-columns: repeat(3, 1fr) on .grove.',
         },
         {
           type: 'styleIncludes',
@@ -68,18 +76,26 @@ const lessons = [
     exercise: {
       instructions:
         'Make the .featured card span 2 columns by setting grid-column to "span 2". The grid already has 3 columns defined.',
+      hints: [
+        'Use the grid-column property on a grid item (not the container) to control how many columns it takes up.',
+        'Add grid-column: span 2 to .featured.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .grove {\n        display: grid;\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n      }\n      .tree {\n        background: #c8e6c9;\n        padding: 16px;\n        border-radius: 8px;\n        text-align: center;\n      }\n      .featured {\n        background: #388e3c;\n        color: white;\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="grove">\n      <div class="tree featured">Ancient Willow</div>\n      <div class="tree">Birch</div>\n      <div class="tree">Pine</div>\n      <div class="tree">Bamboo</div>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .grove {\n        display: grid;\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n      }\n      .tree {\n        background: #c8e6c9;\n        padding: 16px;\n        border-radius: 8px;\n        text-align: center;\n      }\n      .featured {\n        background: #388e3c;\n        color: white;\n        grid-column: span 2;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="grove">\n      <div class="tree featured">Ancient Willow</div>\n      <div class="tree">Birch</div>\n      <div class="tree">Pine</div>\n      <div class="tree">Bamboo</div>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'grid-column:',
           label: 'You set the grid-column property',
+          hint: 'Add grid-column: span 2 to .featured.',
         },
         {
           type: 'styleIncludes',
           text: 'grid-column:span2',
           label: 'The featured card spans 2 columns',
+          hint: 'The value must be span 2 — two words.',
         },
       ],
     },
@@ -107,13 +123,20 @@ const lessons = [
     exercise: {
       instructions:
         'Assign each element its grid-area name: give .site-header grid-area "header", .site-nav grid-area "sidebar", .site-main grid-area "main", and .site-footer grid-area "footer". The container\'s template areas are already defined.',
+      hints: [
+        'Each element needs a grid-area property whose value matches a name from the grid-template-areas map.',
+        'Add grid-area: header to .site-header, grid-area: sidebar to .site-nav, grid-area: main to .site-main, and grid-area: footer to .site-footer.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .page {\n        display: grid;\n        grid-template-areas:\n          "header header"\n          "sidebar main"\n          "footer footer";\n        grid-template-columns: 160px 1fr;\n        grid-template-rows: auto 1fr auto;\n        gap: 8px;\n        height: 300px;\n      }\n      .site-header { background:#a5d6a7; padding:8px; /* your css here */ }\n      .site-nav    { background:#c8e6c9; padding:8px; /* your css here */ }\n      .site-main   { background:#f1f8f1; padding:8px; /* your css here */ }\n      .site-footer { background:#a5d6a7; padding:8px; /* your css here */ }\n    </style>\n  </head>\n  <body>\n    <div class="page">\n      <header class="site-header">Sprout Garden</header>\n      <nav class="site-nav">Trees | Shrubs</nav>\n      <main class="site-main">Select a plant to begin.</main>\n      <footer class="site-footer">© 2026</footer>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .page {\n        display: grid;\n        grid-template-areas:\n          "header header"\n          "sidebar main"\n          "footer footer";\n        grid-template-columns: 160px 1fr;\n        grid-template-rows: auto 1fr auto;\n        gap: 8px;\n        height: 300px;\n      }\n      .site-header { background:#a5d6a7; padding:8px; grid-area: header; }\n      .site-nav    { background:#c8e6c9; padding:8px; grid-area: sidebar; }\n      .site-main   { background:#f1f8f1; padding:8px; grid-area: main; }\n      .site-footer { background:#a5d6a7; padding:8px; grid-area: footer; }\n    </style>\n  </head>\n  <body>\n    <div class="page">\n      <header class="site-header">Sprout Garden</header>\n      <nav class="site-nav">Trees | Shrubs</nav>\n      <main class="site-main">Select a plant to begin.</main>\n      <footer class="site-footer">© 2026</footer>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'grid-area:header',
           label: 'Header is placed in the header area',
+          hint: 'Add grid-area: header to .site-header.',
         },
         {
           type: 'styleIncludes',
@@ -124,6 +147,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'grid-area:main',
           label: 'Main content is placed in the main area',
+          hint: 'Add grid-area: main to .site-main.',
         },
         {
           type: 'styleIncludes',
@@ -156,18 +180,26 @@ const lessons = [
     exercise: {
       instructions:
         'Give the .plant-gallery a grid-template-columns of "repeat(auto-fit, minmax(160px, 1fr))" and a gap of "16px".',
+      hints: [
+        'auto-fit inside repeat() lets the grid decide how many columns fit — you just set the minimum width with minmax().',
+        'Set grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) and gap: 16px on .plant-gallery.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .plant-gallery {\n        display: grid;\n        /* your css here */\n      }\n      .plant {\n        background: #c8e6c9;\n        padding: 20px;\n        border-radius: 10px;\n        text-align: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="plant-gallery">\n      <div class="plant">Fern</div>\n      <div class="plant">Willow</div>\n      <div class="plant">Pine</div>\n      <div class="plant">Cherry</div>\n      <div class="plant">Bamboo</div>\n      <div class="plant">Oak</div>\n      <div class="plant">Birch</div>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .plant-gallery {\n        display: grid;\n        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));\n        gap: 16px;\n      }\n      .plant {\n        background: #c8e6c9;\n        padding: 20px;\n        border-radius: 10px;\n        text-align: center;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="plant-gallery">\n      <div class="plant">Fern</div>\n      <div class="plant">Willow</div>\n      <div class="plant">Pine</div>\n      <div class="plant">Cherry</div>\n      <div class="plant">Bamboo</div>\n      <div class="plant">Oak</div>\n      <div class="plant">Birch</div>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'repeat(auto-fit,minmax(160px,1fr))',
           label: 'The gallery uses auto-fit with minmax',
+          hint: 'Set grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) on .plant-gallery.',
         },
         {
           type: 'styleIncludes',
           text: 'gap:16px',
           label: 'There is a 16px gap between plants',
+          hint: 'Add gap: 16px to .plant-gallery.',
         },
       ],
     },
@@ -191,18 +223,26 @@ const lessons = [
     exercise: {
       instructions:
         'Complete the magazine layout: give the .page grid-template-areas of "title title" / "image story" / "footer footer". Assign .mag-title grid-area "title", .mag-image grid-area "image", .mag-story grid-area "story", and .mag-footer grid-area "footer".',
+      hints: [
+        'Add grid-template-areas to .page with three quoted strings — one per row — then assign a grid-area to each child element.',
+        'Set grid-template-areas: "title title" "image story" "footer footer" on .page, then give each element its matching grid-area name.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .page {\n        display: grid;\n        grid-template-columns: 1fr 2fr;\n        grid-template-rows: auto 1fr auto;\n        gap: 12px;\n        height: 400px;\n        /* add grid-template-areas here */\n      }\n      .mag-title  { background:#388e3c; color:white; padding:12px; /* your css here */ }\n      .mag-image  { background:#a5d6a7; padding:12px; /* your css here */ }\n      .mag-story  { background:#f1f8f1; padding:12px; /* your css here */ }\n      .mag-footer { background:#c8e6c9; padding:8px;  /* your css here */ }\n    </style>\n  </head>\n  <body>\n    <div class="page">\n      <div class="mag-title">Grove Weekly</div>\n      <div class="mag-image">[ photo ]</div>\n      <div class="mag-story">This week in the grove: the ancient willow flowered for the first time in a decade.</div>\n      <div class="mag-footer">Issue 42 · Spring 2026</div>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .page {\n        display: grid;\n        grid-template-columns: 1fr 2fr;\n        grid-template-rows: auto 1fr auto;\n        gap: 12px;\n        height: 400px;\n        grid-template-areas:\n          "title title"\n          "image story"\n          "footer footer";\n      }\n      .mag-title  { background:#388e3c; color:white; padding:12px; grid-area: title; }\n      .mag-image  { background:#a5d6a7; padding:12px; grid-area: image; }\n      .mag-story  { background:#f1f8f1; padding:12px; grid-area: story; }\n      .mag-footer { background:#c8e6c9; padding:8px;  grid-area: footer; }\n    </style>\n  </head>\n  <body>\n    <div class="page">\n      <div class="mag-title">Grove Weekly</div>\n      <div class="mag-image">[ photo ]</div>\n      <div class="mag-story">This week in the grove: the ancient willow flowered for the first time in a decade.</div>\n      <div class="mag-footer">Issue 42 · Spring 2026</div>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'grid-template-areas:',
           label: 'The layout uses named template areas',
+          hint: 'Add grid-template-areas: "title title" "image story" "footer footer" to .page.',
         },
         {
           type: 'styleIncludes',
           text: 'grid-area:title',
           label: 'The title is assigned its area',
+          hint: 'Add grid-area: title to .mag-title.',
         },
         {
           type: 'styleIncludes',

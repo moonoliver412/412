@@ -380,6 +380,79 @@
   background: #fff;
 }
 
+/* ---- Stuck-help: opt-in hints, then the solution (half rewards) ---- */
+
+.lp-stuck {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: lp-rise var(--mo-base) var(--ease-out) both;
+}
+
+.lp-stuck-hint {
+  animation: lp-rise var(--mo-base) var(--ease-out) both;
+}
+
+.lp-stuck-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lp-stuck-btn {
+  background: transparent;
+  border: 1.5px solid rgba(229, 185, 94, 0.5);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    transform var(--mo-fast) var(--ease-out);
+}
+
+.lp-stuck-btn:hover {
+  border-color: var(--amber);
+  transform: translateY(-1px);
+}
+
+.lp-stuck-btn--solution {
+  border-color: #4a4a4a;
+  color: #d6d6d6;
+}
+
+.lp-solution {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: lp-rise var(--mo-base) var(--ease-out) both;
+}
+
+.lp-solution-code {
+  border-color: rgba(229, 185, 94, 0.4);
+}
+
+/* Inline hint under a failing check (unlocks when really stuck). */
+.lp-check-hint {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--amber);
+}
+
+/* Graded quiz exercises: stacked question cards. */
+.lp-quiz-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(640px, 100%);
+  margin: 0 auto;
+}
+
 /* Console panel for JS exercises: a tiny terminal under the preview. */
 .lp-console {
   background: #101010;

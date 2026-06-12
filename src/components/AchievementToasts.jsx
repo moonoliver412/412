@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useGame } from '../state/useGame';
+import { play } from '../lib/sound';
 import './AchievementToasts.css';
 
 // T3 celebration toasts for achievement unlocks (motion-graphics skill):
@@ -10,6 +11,7 @@ const TOAST_MS = 4500;
 
 function Toast({ toast, onDone }) {
   useEffect(() => {
+    play('badge');
     const id = setTimeout(() => onDone(toast.key), TOAST_MS);
     return () => clearTimeout(id);
   }, [toast.key, onDone]);
@@ -20,7 +22,9 @@ function Toast({ toast, onDone }) {
         {toast.icon}
       </span>
       <span className="ach-toast-text">
-        <span className="ach-toast-kicker">Achievement unlocked</span>
+        <span className="ach-toast-kicker">
+          {toast.kicker ?? 'Achievement unlocked'}
+        </span>
         <span className="ach-toast-name">{toast.name}</span>
         <span className="ach-toast-blurb">{toast.blurb}</span>
       </span>

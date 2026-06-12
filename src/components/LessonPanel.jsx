@@ -3,6 +3,8 @@ import { useProgress } from '../state/useProgress';
 import { STAGES_PER_TOPIC } from '../data/curriculum';
 import { allPass, checkExercise } from '../lib/checkExercise';
 import { buildJsRunDoc, labelJsResults } from '../lib/jsRunner';
+import { play } from '../lib/sound';
+import QuizBlock from './QuizBlock';
 import './LessonPanel.css';
 
 // Stepped lesson experience (choreography per .claude/skills/motion-graphics):
@@ -36,8 +38,16 @@ function chunkBlocks(blocks) {
   return steps;
 }
 
+// Stuck-help escalation thresholds (distinct graded code snapshots).
+const HINT1_AT = 3;
+const HINT2_AT = 6;
+const SOLUTION_AT = 9;
+
 function Block({ block, index }) {
   const style = { '--i': index };
+  if (block.type === 'quiz') {
+    return <QuizBlock quiz={block} index={index} />;
+  }
   if (block.type === 'code') {
     return (
       <pre className="lp-code lp-enter" style={style}>
@@ -137,6 +147,32 @@ export default function LessonPanel({
   const [debouncedCode, setDebouncedCode] = useState(starter);
   const [ceremony, setCeremony] = useState(null);
 
+  // Stuck-help: every distinct graded snapshot counts as an attempt; hints
+  // and the solution unlock progressively but stay opt-in buttons.
+  const [attempts, setAttempts] = useState(0);
+  const [hintsShown, setHintsShown] = useState(0);
+  const [solutionShown, setSolutionShown] = useState(false);
+  const [solutionUsed, setSolutionUsed] = useState(false);
+  const lastCountedRef = useRef(starter);
+  const hints = exercise.hints ?? [];
+  const solution = exercise.solution ?? null;
+
+  useEffect(() => {
+    if (debouncedCode === starter) return;
+    if (debouncedCode === lastCountedRef.current) return;
+    lastCountedRef.current = debouncedCode;
+    setAttempts((n) => n + 1);
+  }, [debouncedCode, starter]);
+
+  // Graded quiz exercises (exercise.kind === 'quiz') track per-question
+  // correctness instead of running code.
+  const isQuiz = exercise.kind === 'quiz';
+  const quizQuestions = useMemo(
+    () => (isQuiz ? (exercise.questions ?? []) : []),
+    [isQuiz, exercise.questions]
+  );
+  const [quizSolved, setQuizSolved] = useState({});
+
   const goTo = useCallback(
     (next) => {
       setDir(next > step ? 'fwd' : 'back');
@@ -214,13 +250,17 @@ export default function LessonPanel({
     return () => window.removeEventListener('message', onMessage);
   }, [isJs, runNonce]);
 
-  const results = useMemo(
-    () =>
-      isJs
-        ? labelJsResults(checks, jsRun.results)
-        : checkExercise(debouncedCode, checks ?? []),
-    [isJs, jsRun, debouncedCode, checks]
-  );
+  const results = useMemo(() => {
+    if (isQuiz) {
+      return quizQuestions.map((q, i) => ({
+        label: `Question ${i + 1}`,
+        pass: !!quizSolved[i],
+      }));
+    }
+    return isJs
+      ? labelJsResults(checks, jsRun.results)
+      : checkExercise(debouncedCode, checks ?? []);
+  }, [isQuiz, quizQuestions, quizSolved, isJs, jsRun, debouncedCode, checks]);
   const ready = allPass(results);
   const runningHere =
     !!session && session.running && session.topicId === topicId;
@@ -241,6 +281,7 @@ export default function LessonPanel({
       setJustPassed((cur) => (cur.length ? [] : cur));
       return undefined;
     }
+    play(passes.every(Boolean) ? 'allpass' : 'check');
     setJustPassed(flipped);
     const id = setTimeout(() => setJustPassed([]), 700);
     return () => clearTimeout(id);
@@ -260,6 +301,7 @@ export default function LessonPanel({
   const onLab = step >= labIndex;
 
   const handleComplete = () => {
+    play('ceremony');
     if (isReview) {
       onWatered?.();
       setCeremony({ stage: STAGES_PER_TOPIC, water: true });
@@ -269,9 +311,15 @@ export default function LessonPanel({
       getTopicProgress(topicId).lockedStage + 1,
       STAGES_PER_TOPIC
     );
-    completeLesson(topicId);
+    completeLesson(topicId, { half: solutionUsed });
     setCeremony({ stage: next });
   };
+
+  // Stuck-help availability ladder.
+  const hintsAvailable =
+    attempts >= HINT2_AT ? Math.min(2, hints.length) : attempts >= HINT1_AT ? Math.min(1, hints.length) : 0;
+  const showCheckHints = attempts >= HINT2_AT;
+  const solutionAvailable = !!solution && attempts >= SOLUTION_AT && !ready;
 
   return (
     <div
@@ -338,6 +386,20 @@ export default function LessonPanel({
                 <h3 className="lp-mission-title">Your turn</h3>
                 <p>{exercise.instructions}</p>
               </div>
+              {isQuiz ? (
+                <div className="lp-quiz-list lp-enter" style={{ '--i': 1 }}>
+                  {quizQuestions.map((q, i) => (
+                    <QuizBlock
+                      key={i}
+                      quiz={q}
+                      index={i}
+                      onCorrect={() =>
+                        setQuizSolved((cur) => ({ ...cur, [i]: true }))
+                      }
+                    />
+                  ))}
+                </div>
+              ) : (
               <div className="lp-lab-grid lp-enter" style={{ '--i': 1 }}>
                 <div className="lp-lab-col">
                   <div className="lp-lab-head">
@@ -363,6 +425,56 @@ export default function LessonPanel({
                     autoCapitalize="off"
                     aria-label="Exercise code editor"
                   />
+                  {(hintsAvailable > 0 || solutionAvailable) && !ready && (
+                    <div className="lp-stuck">
+                      {hints.slice(0, hintsShown).map((hint, i) => (
+                        <p key={i} className="lp-tip lp-stuck-hint">
+                          <span className="lp-tip-bulb" aria-hidden="true">
+                            💡
+                          </span>
+                          <span>{hint}</span>
+                        </p>
+                      ))}
+                      <div className="lp-stuck-actions">
+                        {hintsShown < hintsAvailable && (
+                          <button
+                            type="button"
+                            className="lp-stuck-btn"
+                            onClick={() => setHintsShown((n) => n + 1)}
+                          >
+                            💡 Stuck? Get a hint
+                          </button>
+                        )}
+                        {solutionAvailable && !solutionShown && (
+                          <button
+                            type="button"
+                            className="lp-stuck-btn lp-stuck-btn--solution"
+                            onClick={() => setSolutionShown(true)}
+                          >
+                            Show the solution
+                          </button>
+                        )}
+                      </div>
+                      {solutionShown && (
+                        <div className="lp-solution">
+                          <pre className="lp-code lp-solution-code">
+                            <code>{solution}</code>
+                          </pre>
+                          <button
+                            type="button"
+                            className="lp-stuck-btn lp-stuck-btn--solution"
+                            onClick={() => {
+                              setCode(solution);
+                              setDebouncedCode(solution);
+                              setSolutionUsed(true);
+                            }}
+                          >
+                            Use it (half the sprouts)
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="lp-lab-col">
                   <div className="lp-browser">
@@ -415,12 +527,20 @@ export default function LessonPanel({
                             <path d="M3.5 8.5l3 3 6-7" />
                           </svg>
                         </span>
-                        <span className="lp-check-label">{r.label}</span>
+                        <span className="lp-check-label">
+                          {r.label}
+                          {!r.pass && showCheckHints && checks?.[i]?.hint && (
+                            <span className="lp-check-hint">
+                              {checks[i].hint}
+                            </span>
+                          )}
+                        </span>
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
+              )}
             </div>
           )}
         </div>

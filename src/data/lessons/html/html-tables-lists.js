@@ -24,6 +24,12 @@ const lessons = [
     exercise: {
       instructions:
         'Make a shopping list for the garden shed: a <ul> with at least three <li> items (tools, seeds, snacks — your call).',
+      hints: [
+        'A <ul> creates a bullet-point list. Every item inside it must be wrapped in an <li> element.',
+        'Add <ul> with at least three <li> items inside it, like <li>Trowel</li>, <li>Seeds</li>, <li>Gloves</li>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Shed shopping</h1>\n    <ul>\n      <li>Trowel</li>\n      <li>Seeds</li>\n      <li>Gloves</li>\n    </ul>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Shed shopping</h1>\n    <!-- your bullet points go here -->\n\n  </body>\n</html>',
       checks: [
@@ -31,11 +37,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'ul li',
           label: 'A <ul> holds your items',
+          hint: 'Add a <ul> element with at least one <li> inside it.',
         },
         {
           type: 'selectorExists',
           selector: 'ul li:nth-of-type(3)',
           label: 'The list has at least three items',
+          hint: 'Your <ul> needs at least three <li> items.',
         },
       ],
     },
@@ -63,6 +71,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build a tiny garden glossary: a <dl> with two terms — add a <dt> and a matching <dd> for "Compost", then a second <dt> and <dd> for "Seedling".',
+      hints: [
+        'A <dl> is a definition list. Each entry needs a <dt> (the term) followed by a <dd> (the description).',
+        'Write <dl><dt>Compost</dt><dd>Decomposed organic matter.</dd><dt>Seedling</dt><dd>A young plant.</dd></dl>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Garden glossary</h1>\n    <dl>\n      <dt>Compost</dt>\n      <dd>Decomposed organic matter used to enrich soil.</dd>\n      <dt>Seedling</dt>\n      <dd>A young plant grown from seed.</dd>\n    </dl>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Garden glossary</h1>\n    <!-- term, description, term, description -->\n\n  </body>\n</html>',
       checks: [
@@ -70,11 +84,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'dl dt',
           label: 'Your <dl> contains a term (<dt>)',
+          hint: 'Add a <dl> element with at least one <dt> inside it.',
         },
         {
           type: 'selectorExists',
           selector: 'dl dt:nth-of-type(2)',
           label: 'There are at least two terms',
+          hint: 'Add two <dt> elements — one for Compost and one for Seedling.',
         },
         {
           type: 'selectorExists',
@@ -107,6 +123,12 @@ const lessons = [
     exercise: {
       instructions:
         'Chart how fast seeds sprout: build a <table> with two rows, where each row has two <td> cells — a plant name and its days to sprout.',
+      hints: [
+        'A table is built from the outside in: <table> wraps everything, <tr> is a row, and <td> is one cell inside a row.',
+        'Add <table> with two <tr> rows. Each row needs two <td> cells — the plant name in the first, the number of days in the second.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Days to sprout</h1>\n    <table>\n      <tr>\n        <td>Fern</td>\n        <td>14 days</td>\n      </tr>\n      <tr>\n        <td>Bamboo</td>\n        <td>5 days</td>\n      </tr>\n    </table>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Days to sprout</h1>\n    <!-- rows of cells go here -->\n\n  </body>\n</html>',
       checks: [
@@ -114,11 +136,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'table tr',
           label: 'Your <table> has a row',
+          hint: 'Add a <table> element with at least one <tr> inside it.',
         },
         {
           type: 'selectorExists',
           selector: 'table tr:nth-of-type(2)',
           label: 'There are at least two rows',
+          hint: 'Add a second <tr> row to your <table>.',
         },
         {
           type: 'selectorExists',
@@ -151,6 +175,12 @@ const lessons = [
     exercise: {
       instructions:
         'Upgrade this table: add a <caption> that says "Watering schedule" as the first thing inside the <table>, and change the two <td>s in the first row into <th> header cells.',
+      hints: [
+        '<caption> is a title for the whole table — write it as the very first element inside <table>. <th> is a header cell — use it instead of <td> to label columns.',
+        'Add <caption>Watering schedule</caption> before the first <tr>, then change <td>Plant</td> to <th>Plant</th> and <td>Times per week</td> to <th>Times per week</th>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <table>\n      <caption>Watering schedule</caption>\n      <tr>\n        <th>Plant</th>\n        <th>Times per week</th>\n      </tr>\n      <tr>\n        <td>Fern</td>\n        <td>3</td>\n      </tr>\n      <tr>\n        <td>Cactus</td>\n        <td>1</td>\n      </tr>\n    </table>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <table>\n      <tr>\n        <td>Plant</td>\n        <td>Times per week</td>\n      </tr>\n      <tr>\n        <td>Fern</td>\n        <td>3</td>\n      </tr>\n      <tr>\n        <td>Cactus</td>\n        <td>1</td>\n      </tr>\n    </table>\n  </body>\n</html>',
       checks: [
@@ -158,12 +188,14 @@ const lessons = [
           type: 'selectorExists',
           selector: 'table caption',
           label: 'The table has a <caption>',
+          hint: 'Add a <caption> element as the first child of <table>.',
         },
         {
           type: 'textIncludes',
           text: 'watering',
           selector: 'caption',
           label: 'The caption mentions watering',
+          hint: 'Your <caption> text needs to include the word "watering".',
         },
         {
           type: 'selectorExists',
@@ -196,6 +228,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build the pricing table inside <main>: a <caption>, a <thead> whose row has two <th>s (Plan, Price), a <tbody> with at least two rows of plans, and a <tfoot> with a row containing a note cell.',
+      hints: [
+        'A full table has four parts in order: <caption>, <thead> (header rows), <tbody> (data rows), and <tfoot> (closing row).',
+        'Inside <thead>, add a <tr> with two <th> cells. Inside <tbody>, add at least two <tr> rows with <td> cells. Inside <tfoot>, add one <tr> with a <td> note.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Sapling Subscriptions</h1>\n      <table>\n        <caption>Plans</caption>\n        <thead>\n          <tr><th>Plan</th><th>Price</th></tr>\n        </thead>\n        <tbody>\n          <tr><td>Seed</td><td>$0</td></tr>\n          <tr><td>Sprout</td><td>$5</td></tr>\n        </tbody>\n        <tfoot>\n          <tr><td colspan="2">All prices in acorns.</td></tr>\n        </tfoot>\n      </table>\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Sapling Subscriptions</h1>\n      <table>\n        <!-- caption, thead, tbody, tfoot -->\n\n      </table>\n    </main>\n  </body>\n</html>',
       checks: [
@@ -203,11 +241,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'table caption',
           label: 'The table introduces itself with a <caption>',
+          hint: 'Add a <caption> as the first element inside <table>.',
         },
         {
           type: 'selectorExists',
           selector: 'thead th:nth-of-type(2)',
           label: 'A <thead> row labels both columns with <th>s',
+          hint: 'Your <thead> row needs two <th> header cells.',
         },
         {
           type: 'selectorExists',

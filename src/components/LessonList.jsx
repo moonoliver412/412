@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { isThirsty, useProgress } from '../state/useProgress';
+import { isThirsty, needsPractice, useProgress } from '../state/useProgress';
 import { findTopic, STAGES_PER_TOPIC } from '../data/curriculum';
 import { getLesson } from '../data/lessons';
 import LessonPanel from './LessonPanel';
@@ -12,10 +12,16 @@ import './LessonList.css';
  * honor-system button, explicitly labeled as a preview.
  */
 export default function LessonList({ topicId }) {
-  const { session, getTopicProgress, completeLesson, waterTopic } =
-    useProgress();
+  const {
+    session,
+    getTopicProgress,
+    completeLesson,
+    waterTopic,
+    practiceTopic,
+  } = useProgress();
   const [openLessonId, setOpenLessonId] = useState(null);
   const [reviewLessonId, setReviewLessonId] = useState(null);
+  const [practiceLessonId, setPracticeLessonId] = useState(null);
   const found = findTopic(topicId);
   if (!found) return null;
 
@@ -32,6 +38,26 @@ export default function LessonList({ topicId }) {
   const reviewLesson = reviewLessonId ? getLesson(reviewLessonId) : null;
   const reviewLessonName =
     topic.lessons.find((l) => l.id === reviewLessonId)?.name;
+
+  const practiceDue = needsPractice(topicProgress);
+  const practiceLesson = practiceLessonId ? getLesson(practiceLessonId) : null;
+  const practiceLessonName = topic.lessons.find(
+    (l) => l.id === practiceLessonId
+  )?.name;
+
+  // Practice re-does an already-completed lesson (no stage credit, small
+  // reward) — same rotation trick as watering.
+  const startPractice = () => {
+    const done = topic.lessons
+      .slice(0, lockedStage)
+      .filter((l) => getLesson(l.id));
+    if (!done.length) {
+      practiceTopic(topicId);
+      return;
+    }
+    const pick = done[(topicProgress.tendedAt ?? 0) % done.length];
+    setPracticeLessonId(pick.id);
+  };
 
   // Watering reviews one authored lesson from this topic; rotating off the
   // tendedAt stamp gives a different lesson each watering without Math.random.
@@ -111,6 +137,22 @@ export default function LessonList({ topicId }) {
         </p>
       )}
 
+      {practiceDue && (
+        <div className="lesson-thirsty">
+          <p className="lesson-thirsty-note" role="status">
+            This tree hasn&apos;t been tended in a while. A quick practice
+            keeps it growing strong.
+          </p>
+          <button
+            type="button"
+            className="lesson-water-btn"
+            onClick={startPractice}
+          >
+            🌿 Practice a lesson
+          </button>
+        </div>
+      )}
+
       {mastered && thirsty && (
         <div className="lesson-thirsty">
           <p className="lesson-thirsty-note" role="status">
@@ -143,6 +185,17 @@ export default function LessonList({ topicId }) {
           mode="review"
           onWatered={() => waterTopic(topicId)}
           onClose={() => setReviewLessonId(null)}
+        />
+      )}
+
+      {practiceLesson && (
+        <LessonPanel
+          topicId={topicId}
+          lesson={practiceLesson}
+          title={`Practice · ${practiceLessonName ?? 'Lesson'}`}
+          mode="review"
+          onWatered={() => practiceTopic(topicId)}
+          onClose={() => setPracticeLessonId(null)}
         />
       )}
     </aside>

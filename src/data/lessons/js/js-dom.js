@@ -25,6 +25,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Select the element with id "grove-title" and log its textContent. Then select all elements with class "leaf" and log how many there are.',
+      hints: [
+        'document.querySelector("#grove-title") selects by id. document.querySelectorAll(".leaf") selects all matching elements and has a .length property.',
+        'Write console.log(document.querySelector("#grove-title").textContent); then const leaves = document.querySelectorAll(".leaf"); console.log(leaves.length);',
+      ],
       starter:
         '// Select #grove-title and log its text\n// your code here\n\n// Select all .leaf elements and log the count\n// your code here\n',
       html: '<h2 id="grove-title">The Grove</h2>\n<ul>\n  <li class="leaf">Maple leaf</li>\n  <li class="leaf">Oak leaf</li>\n  <li class="leaf">Birch leaf</li>\n</ul>',
@@ -33,13 +37,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'grove',
           label: 'The grove title text is logged',
+          hint: 'Read .textContent from the element returned by querySelector("#grove-title") and log it.',
         },
         {
           type: 'logIncludes',
           text: '3',
           label: 'The count of 3 leaf elements is logged',
+          hint: 'querySelectorAll returns a list — log .length on that list to get 3.',
         },
       ],
+      solution:
+        'console.log(document.querySelector("#grove-title").textContent);\n\nconst leaves = document.querySelectorAll(".leaf");\nconsole.log(leaves.length);\n',
     },
   },
   {
@@ -66,6 +74,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Change the textContent of #status to "Planted!". Then create a new <li> with text "Willow" and append it to the #grove list.',
+      hints: [
+        'To change text: select the element with querySelector, then set its .textContent. To add an element: document.createElement("li") makes it, and appendChild() attaches it.',
+        'Write document.querySelector("#status").textContent = "Planted!"; then const li = document.createElement("li"); li.textContent = "Willow"; document.querySelector("#grove").appendChild(li);',
+      ],
       starter:
         '// Change the status text\n// your code here\n\n// Create a new li and append it\n// your code here\n',
       html: '<p id="status">Waiting…</p>\n<ul id="grove">\n  <li>Maple</li>\n  <li>Oak</li>\n</ul>',
@@ -75,6 +87,7 @@ const lessons = [
           text: 'planted',
           selector: '#status',
           label: '#status now says "Planted!"',
+          hint: 'Set document.querySelector("#status").textContent = "Planted!";',
         },
         {
           type: 'selectorExists',
@@ -87,8 +100,11 @@ const lessons = [
           text: 'willow',
           selector: '#grove',
           label: 'The new item says "Willow"',
+          hint: 'Set the new li\'s textContent to "Willow" before appending it to #grove.',
         },
       ],
+      solution:
+        'document.querySelector("#status").textContent = "Planted!";\n\nconst li = document.createElement("li");\nli.textContent = "Willow";\ndocument.querySelector("#grove").appendChild(li);\n',
     },
   },
   {
@@ -115,6 +131,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Add a click listener to #plant-btn. When clicked, change the textContent of #output to "Seedling planted!" and add the class "active" to #plant-btn.',
+      hints: [
+        'Use addEventListener("click", function() { ... }) on the button element. Inside the callback, update textContent and call classList.add.',
+        'Write document.querySelector("#plant-btn").addEventListener("click", function() { document.querySelector("#output").textContent = "Seedling planted!"; document.querySelector("#plant-btn").classList.add("active"); });',
+      ],
       starter:
         '// Add a click listener to #plant-btn\n// your code here\n',
       html: '<button id="plant-btn">Plant</button>\n<p id="output">Waiting for action…</p>',
@@ -123,13 +143,17 @@ const lessons = [
           type: 'exprTruthy',
           expr: '(function(){ document.querySelector("#plant-btn").click(); return document.querySelector("#output").textContent.toLowerCase().includes("planted") || document.querySelector("#output").textContent.toLowerCase().includes("seedling"); })()',
           label: 'Clicking the button updates #output text',
+          hint: 'Inside the click callback set document.querySelector("#output").textContent to "Seedling planted!".',
         },
         {
           type: 'exprTruthy',
           expr: '(function(){ return document.querySelector("#plant-btn").classList.contains("active"); })()',
           label: 'The button gets the "active" class on click',
+          hint: 'Call classList.add("active") on the button inside the click callback.',
         },
       ],
+      solution:
+        'document.querySelector("#plant-btn").addEventListener("click", function() {\n  document.querySelector("#output").textContent = "Seedling planted!";\n  document.querySelector("#plant-btn").classList.add("active");\n});\n',
     },
   },
   {
@@ -156,6 +180,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Listen for the "input" event on #tree-input. Each time it fires, set the textContent of #tree-label to "Tree: " followed by the current input value.',
+      hints: [
+        'addEventListener("input", callback) fires every time the user types. The current text is in e.target.value inside the callback.',
+        'Write document.querySelector("#tree-input").addEventListener("input", function(e) { document.querySelector("#tree-label").textContent = "Tree: " + e.target.value; });',
+      ],
       starter:
         '// Listen to the input event on #tree-input\n// your code here\n',
       html: '<input id="tree-input" type="text" placeholder="Type a tree name…" />\n<p id="tree-label">Tree: </p>',
@@ -164,6 +192,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: '(function(){ const inp = document.querySelector("#tree-input"); inp.value = "Elm"; inp.dispatchEvent(new Event("input")); return document.querySelector("#tree-label").textContent.toLowerCase().includes("elm"); })()',
           label: '#tree-label updates to show the typed tree name',
+          hint: 'Set #tree-label\'s textContent to "Tree: " + e.target.value inside the input listener.',
         },
         {
           type: 'exprTruthy',
@@ -171,6 +200,8 @@ const lessons = [
           label: 'The label updates live as the user types',
         },
       ],
+      solution:
+        'document.querySelector("#tree-input").addEventListener("input", function(e) {\n  document.querySelector("#tree-label").textContent = "Tree: " + e.target.value;\n});\n',
     },
   },
   {
@@ -197,6 +228,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Wire up the mini to-do list: when #add-btn is clicked, read the value from #todo-input, create a new <li> with that text, append it to #todo-list, and clear the input. If the input is empty, do nothing.',
+      hints: [
+        'Inside the click callback: read input.value, check it is not empty, create an li element, set its textContent, append it, then set input.value = "" to clear.',
+        'Write addBtn.addEventListener("click", function() { const text = input.value.trim(); if (!text) return; const li = document.createElement("li"); li.textContent = text; list.appendChild(li); input.value = ""; });',
+      ],
       starter:
         'const addBtn   = document.querySelector("#add-btn");\nconst input    = document.querySelector("#todo-input");\nconst list     = document.querySelector("#todo-list");\n\n// your code here\n',
       html: '<input id="todo-input" type="text" placeholder="Add a task…" />\n<button id="add-btn">Add</button>\n<ul id="todo-list"></ul>',
@@ -205,6 +240,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: '(function(){ document.querySelector("#todo-input").value = "Water the oak"; document.querySelector("#add-btn").click(); return document.querySelectorAll("#todo-list li").length >= 1; })()',
           label: 'Clicking Add appends a new item to the list',
+          hint: 'Create a new li, set its textContent to the input value, and call list.appendChild(li) inside the click handler.',
         },
         {
           type: 'exprTruthy',
@@ -215,8 +251,11 @@ const lessons = [
           type: 'exprTruthy',
           expr: '(function(){ const inp = document.querySelector("#todo-input"); inp.value = ""; document.querySelector("#add-btn").click(); const before = document.querySelectorAll("#todo-list li").length; inp.value = ""; document.querySelector("#add-btn").click(); return document.querySelectorAll("#todo-list li").length === before; })()',
           label: 'Clicking Add with empty input does not add a blank item',
+          hint: 'Check if the input value is empty (or only whitespace) at the start of the handler and return early if so.',
         },
       ],
+      solution:
+        'const addBtn   = document.querySelector("#add-btn");\nconst input    = document.querySelector("#todo-input");\nconst list     = document.querySelector("#todo-list");\n\naddBtn.addEventListener("click", function() {\n  const text = input.value.trim();\n  if (!text) return;\n  const li = document.createElement("li");\n  li.textContent = text;\n  list.appendChild(li);\n  input.value = "";\n});\n',
     },
   },
 ];

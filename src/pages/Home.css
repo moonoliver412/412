@@ -409,3 +409,120 @@
     transform: none;
   }
 }
+
+/* Today's quests + the streak wager. */
+.home-quests {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 26px;
+}
+
+.home-quests-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.home-quest-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-quest {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-quest-icon {
+  flex: none;
+  font-size: 18px;
+}
+
+.home-quest-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.home-quest-blurb {
+  font-size: 13.5px;
+  color: #d6d6d6;
+}
+
+.home-quest.is-done .home-quest-blurb {
+  color: #8fbc70;
+}
+
+.home-quest-bar {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: #2c2c2c;
+  overflow: hidden;
+}
+
+.home-quest-fill {
+  display: block;
+  height: 100%;
+  background: var(--amber);
+  border-radius: var(--radius-pill);
+  transition: width var(--mo-base) var(--ease-out);
+}
+
+.home-quest.is-done .home-quest-fill {
+  background: #7aa05f;
+}
+
+.home-quest-count {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: #8f8f8f;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-quest.is-done .home-quest-count {
+  color: #8fbc70;
+}
+
+.home-wager {
+  border-top: 1.5px solid #2c2c2c;
+  padding-top: 12px;
+}
+
+.home-wager-live {
+  margin: 0;
+  font-size: 13px;
+  color: var(--amber);
+  line-height: 1.5;
+}
+
+.home-wager-btn {
+  width: 100%;
+  background: transparent;
+  border: 1.5px dashed rgba(229, 185, 94, 0.5);
+  border-radius: 14px;
+  padding: 10px 14px;
+  color: var(--amber);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: left;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    background-color var(--mo-fast) var(--ease-out);
+}
+
+.home-wager-btn:hover:not(:disabled) {
+  border-color: var(--amber);
+  background: rgba(229, 185, 94, 0.08);
+}
+
+.home-wager-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

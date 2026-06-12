@@ -1,0 +1,80 @@
+/* Streak-at-risk banner — slim, urgent but calm. */
+
+.sg-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 10px 18px;
+  background: var(--panel);
+  border: 1.5px solid var(--orange);
+  border-radius: var(--radius-pill);
+  color: #fff;
+  animation: sg-in var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes sg-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sg-flame {
+  flex: none;
+  font-size: 18px;
+}
+
+.sg-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 13.5px;
+}
+
+.sg-cta {
+  flex: none;
+  background: var(--orange);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-decoration: none;
+  transition: transform var(--mo-fast) var(--ease-out);
+}
+
+.sg-cta:hover {
+  transform: scale(1.04);
+}
+
+.sg-dismiss {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border: 1.5px solid #4a4a4a;
+  border-radius: 50%;
+  color: #d6d6d6;
+  font-size: 12px;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .sg-banner {
+    margin: 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-banner {
+    animation: none !important;
+  }
+  .sg-cta {
+    transition: none !important;
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useProgress } from '../state/useProgress';
 import { findTopic } from '../data/curriculum';
+import { play } from '../lib/sound';
 import './TimerPanel.css';
 
 const DURATIONS = [10, 25, 50];
@@ -51,6 +52,7 @@ export default function TimerPanel({ topicId }) {
       if (getSessionElapsed() >= durationMs && !finishedRef.current) {
         finishedRef.current = true;
         finishSession(); // timer ran out: bank the minutes, no penalty
+        play('finish');
         setJustCompleted(true);
         setConfirmingAbandon(false);
       }
@@ -101,6 +103,7 @@ export default function TimerPanel({ topicId }) {
           onClick={() => {
             setConfirmingAbandon(false);
             startSession(topicId, pickedDuration);
+            play('start');
           }}
         >
           Start session
@@ -184,6 +187,20 @@ export default function TimerPanel({ topicId }) {
               onClick={pauseSession}
             >
               Pause
+            </button>
+          ) : remaining <= 0 ? (
+            // Rehydrated after the timer already ran out (e.g. a refresh
+            // mid-session): bank the minutes instead of fake-resuming.
+            <button
+              type="button"
+              className="cs-pill-btn cs-pill-btn--orange timer-btn"
+              onClick={() => {
+                finishSession();
+                play('finish');
+                setJustCompleted(true);
+              }}
+            >
+              Finish session
             </button>
           ) : (
             <button

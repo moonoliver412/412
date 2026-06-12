@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useProgress } from '../state/useProgress';
+import { isThirsty, needsPractice, useProgress } from '../state/useProgress';
 import { LANGUAGES, STAGES_PER_TOPIC } from '../data/curriculum';
 import { hasLesson } from '../data/lessons';
 import './Learn.css';
@@ -103,11 +103,24 @@ function LanguageSection({ language, progress, index }) {
 }
 
 export default function Learn() {
-  const { progress } = useProgress();
+  const { progress, getTopicProgress } = useProgress();
   const doneLessons = LANGUAGES.reduce(
     (n, lang) =>
       n + lang.topics.reduce((m, t) => m + lockedFor(progress, t.id), 0),
     0
+  );
+
+  // Trees that need attention: thirsty mastered topics + stale in-progress
+  // ones. The Playground's side panel offers Water / Practice on arrival.
+  const needy = LANGUAGES.flatMap((lang) =>
+    lang.topics
+      .map((topic) => {
+        const tp = getTopicProgress(topic.id);
+        if (isThirsty(tp)) return { topic, lang, kind: 'water' };
+        if (needsPractice(tp)) return { topic, lang, kind: 'practice' };
+        return null;
+      })
+      .filter(Boolean)
   );
 
   return (
@@ -119,6 +132,43 @@ export default function Learn() {
           {LANGUAGES.length} languages. Each topic is one tree in your forest.
         </p>
       </header>
+
+      {needy.length > 0 && (
+        <section
+          className="cs-panel learn-tend learn-rise"
+          style={{ '--i': 1 }}
+          aria-label="Trees that need attention"
+        >
+          <div className="learn-lang-head">
+            <h2 className="cs-panel-title learn-lang-name">Tend the grove</h2>
+            <span className="learn-lang-count">
+              {needy.length} {needy.length === 1 ? 'tree needs' : 'trees need'}{' '}
+              you
+            </span>
+          </div>
+          <div className="learn-tend-row">
+            {needy.slice(0, 6).map(({ topic, lang, kind }) => (
+              <Link
+                key={topic.id}
+                to={`/playground?topic=${topic.id}`}
+                className="learn-tend-card"
+              >
+                <span className="learn-tend-icon" aria-hidden="true">
+                  {kind === 'water' ? '💧' : '🌿'}
+                </span>
+                <span className="learn-tend-text">
+                  <span className="learn-tend-name">{topic.name}</span>
+                  <span className="learn-tend-action">
+                    {kind === 'water'
+                      ? `Thirsty — water it (${lang.name})`
+                      : `Practice keeps it growing (${lang.name})`}
+                  </span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {LANGUAGES.map((language, i) => (
         <LanguageSection

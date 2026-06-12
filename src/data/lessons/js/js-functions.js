@@ -25,6 +25,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write a function called greet that takes a name parameter and returns the string "Hello, <name>!" — for example greet("Ada") returns "Hello, Ada!". Log the result of calling it with any name.',
+      hints: [
+        'A function needs the function keyword, a name, parentheses for parameters, curly braces for the body, and a return statement.',
+        'Write function greet(name) { return `Hello, ${name}!`; } — the template literal builds the exact string needed.',
+      ],
       starter:
         '// Write your greet function here\n// your code here\n\nconsole.log(greet("Ada"));\n',
       checks: [
@@ -32,11 +36,13 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof greet === "function"',
           label: 'greet is a function',
+          hint: 'Declare greet using the function keyword so it is available as a function.',
         },
         {
           type: 'exprTruthy',
           expr: 'greet("Ada") === "Hello, Ada!"',
           label: 'greet("Ada") returns "Hello, Ada!"',
+          hint: 'Return a template literal that starts with "Hello, " and ends with "!".',
         },
         {
           type: 'logIncludes',
@@ -44,6 +50,8 @@ const lessons = [
           label: 'The greeting is logged to the console',
         },
       ],
+      solution:
+        'function greet(name) {\n  return `Hello, ${name}!`;\n}\n\nconsole.log(greet("Ada"));\n',
     },
   },
   {
@@ -70,6 +78,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write a function called classify that takes a number called score and returns "pass" if score is 60 or above, or "fail" otherwise. Log the result for scores 80 and 45.',
+      hints: [
+        'Use an if statement inside your function. The condition checks whether score is >= 60, and each branch returns a string.',
+        'Write function classify(score) { if (score >= 60) { return "pass"; } return "fail"; }',
+      ],
       starter:
         '// Write your classify function here\n// your code here\n\nconsole.log(classify(80));\nconsole.log(classify(45));\n',
       checks: [
@@ -82,6 +94,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'classify(80) === "pass" && classify(45) === "fail" && classify(60) === "pass"',
           label: 'classify returns the correct result for various scores',
+          hint: 'Use >= 60 so that exactly 60 also returns "pass".',
         },
         {
           type: 'logIncludes',
@@ -89,6 +102,8 @@ const lessons = [
           label: '"pass" is logged for a high score',
         },
       ],
+      solution:
+        'function classify(score) {\n  if (score >= 60) {\n    return "pass";\n  }\n  return "fail";\n}\n\nconsole.log(classify(80));\nconsole.log(classify(45));\n',
     },
   },
   {
@@ -115,6 +130,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Use a for loop to log the numbers 1 through 5, each on its own line. Then write a function called sumTo that takes a number n and returns the sum of all integers from 1 to n (e.g. sumTo(5) returns 15).',
+      hints: [
+        'A for loop starts at 1 and runs while i <= 5. Inside sumTo, start a total at 0 and add each number from 1 up to n.',
+        'Write for (let i = 1; i <= 5; i++) { console.log(i); } then function sumTo(n) { let total = 0; for (let i = 1; i <= n; i++) { total += i; } return total; }',
+      ],
       starter:
         '// Log 1 through 5\n// your code here\n\n// Write sumTo\n// your code here\n\nconsole.log(sumTo(5));\n',
       checks: [
@@ -127,13 +146,17 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof sumTo === "function" && sumTo(5) === 15 && sumTo(3) === 6',
           label: 'sumTo correctly sums 1 through n',
+          hint: 'Add up every integer from 1 to n inside a loop and return the total.',
         },
         {
           type: 'logIncludes',
           text: '15',
           label: 'sumTo(5) logs 15',
+          hint: 'Call console.log(sumTo(5)) after defining the function.',
         },
       ],
+      solution:
+        'for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}\n\nfunction sumTo(n) {\n  let total = 0;\n  for (let i = 1; i <= n; i++) {\n    total += i;\n  }\n  return total;\n}\n\nconsole.log(sumTo(5));\n',
     },
   },
   {
@@ -160,6 +183,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write a function called makeAdder that takes a number called base and returns a new function. The returned function should take a number n and return base + n. Then create addFive = makeAdder(5) and log addFive(3) and addFive(10).',
+      hints: [
+        'A closure returns a function from inside another function. The inner function can still see the outer function\'s variables.',
+        'Write function makeAdder(base) { return function(n) { return base + n; }; } — the inner function closes over base.',
+      ],
       starter:
         '// Write makeAdder\n// your code here\n\nconst addFive = makeAdder(5);\nconsole.log(addFive(3));\nconsole.log(addFive(10));\n',
       checks: [
@@ -172,6 +199,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof makeAdder(5) === "function" && makeAdder(5)(3) === 8 && makeAdder(10)(4) === 14',
           label: 'makeAdder returns a function that correctly adds to the base',
+          hint: 'Make sure makeAdder returns a function (not just a value) that takes n and returns base + n.',
         },
         {
           type: 'logIncludes',
@@ -179,6 +207,8 @@ const lessons = [
           label: 'addFive(3) logs 8',
         },
       ],
+      solution:
+        'function makeAdder(base) {\n  return function(n) {\n    return base + n;\n  };\n}\n\nconst addFive = makeAdder(5);\nconsole.log(addFive(3));\nconsole.log(addFive(10));\n',
     },
   },
   {
@@ -205,6 +235,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Create a game with makeGame(7). Then call the returned guess function with at least two wrong guesses and finally the correct answer (7). Log the return value of each call.',
+      hints: [
+        'Call guess() with a number lower than 7, then higher than 7, then 7. Log each return value with console.log.',
+        'Write console.log(guess(3)); console.log(guess(9)); console.log(guess(7)); after the const guess = makeGame(7); line.',
+      ],
       starter:
         'function makeGame(secret) {\n  let attempts = 0;\n  return function guess(n) {\n    attempts++;\n    if (n < secret) return `Too low! (attempt ${attempts})`;\n    if (n > secret) return `Too high! (attempt ${attempts})`;\n    return `Correct in ${attempts} attempt(s)!`;\n  };\n}\n\nconst guess = makeGame(7);\n// your code here — call guess with wrong numbers, then 7\n',
       checks: [
@@ -212,11 +246,13 @@ const lessons = [
           type: 'logIncludes',
           text: 'too',
           label: 'A "too low" or "too high" hint is logged',
+          hint: 'Call guess() with a number that is not 7 first so a "too low" or "too high" message is logged.',
         },
         {
           type: 'logIncludes',
           text: 'correct',
           label: 'The "correct" message is logged',
+          hint: 'Call guess(7) last and log the result — it returns the "Correct" message.',
         },
         {
           type: 'logIncludes',
@@ -224,6 +260,8 @@ const lessons = [
           label: 'The attempt count appears in a message',
         },
       ],
+      solution:
+        'function makeGame(secret) {\n  let attempts = 0;\n  return function guess(n) {\n    attempts++;\n    if (n < secret) return `Too low! (attempt ${attempts})`;\n    if (n > secret) return `Too high! (attempt ${attempts})`;\n    return `Correct in ${attempts} attempt(s)!`;\n  };\n}\n\nconst guess = makeGame(7);\nconsole.log(guess(3));\nconsole.log(guess(9));\nconsole.log(guess(7));\n',
     },
   },
 ];

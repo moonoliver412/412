@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Inside the <body>, add an <h1> element containing the text "Hello, world!" — the traditional first words of every new coder.',
+      hints: [
+        'Remember: every opening tag needs a matching closing tag. A heading opens with <h1> and closes with </h1>.',
+        'Add <h1>Hello, world!</h1> between the <body> tags, where the comment is.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Hello, world!</h1>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <!-- your heading goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -35,12 +41,14 @@ const lessons = [
           type: 'selectorExists',
           selector: 'h1',
           label: 'Your page has an <h1> heading',
+          hint: 'You need an <h1> element inside the <body>.',
         },
         {
           type: 'textIncludes',
           text: 'hello',
           selector: 'h1',
           label: 'The heading says hello',
+          hint: 'The text inside your <h1> needs to include the word hello.',
         },
       ],
     },
@@ -72,6 +80,12 @@ const lessons = [
     exercise: {
       instructions:
         'Give this page a working backstage: inside <head>, add a <title> that says "My Tree House" and a <meta> tag with charset="utf-8".',
+      hints: [
+        'The <head> element is for behind-the-scenes info. Both <title> and <meta> live there, not in <body>.',
+        'Add <title>My Tree House</title> and <meta charset="utf-8"> inside the <head> tags.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <title>My Tree House</title>\n    <meta charset="utf-8">\n\n  </head>\n  <body>\n    <p>Welcome up the ladder.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <!-- title and meta go here -->\n\n  </head>\n  <body>\n    <p>Welcome up the ladder.</p>\n  </body>\n</html>',
       checks: [
@@ -79,11 +93,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'title',
           label: 'Your page has a <title>',
+          hint: 'Add a <title> element inside your <head>.',
         },
         {
           type: 'selectorExists',
           selector: 'meta[charset]',
           label: 'A <meta> tag declares the character set',
+          hint: 'Add <meta charset="utf-8"> — a void element with no closing tag.',
         },
       ],
     },
@@ -111,6 +127,12 @@ const lessons = [
     exercise: {
       instructions:
         'The journal has a title but no entries. Below the <h1>, add an <h2> for the first section (try "Week one") and a <p> describing what happened.',
+      hints: [
+        'Headings go from <h1> (top) to <h6>. An <h2> is the next level down — use it for a section title inside the page.',
+        'After the <h1>, add <h2>Week one</h2> and then a <p> with anything you like inside it.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>My Garden Journal</h1>\n    <h2>Week one</h2>\n    <p>Planted three seeds and watered them.</p>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>My Garden Journal</h1>\n    <!-- add a section heading and a paragraph -->\n\n  </body>\n</html>',
       checks: [
@@ -118,6 +140,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'h2',
           label: 'There is an <h2> section heading',
+          hint: 'Add an <h2> element below the <h1>.',
         },
         {
           type: 'selectorExists',
@@ -150,6 +173,12 @@ const lessons = [
     exercise: {
       instructions:
         'Give this page its zones: wrap the <h1> in a <header>, wrap the welcome paragraph in a <main>, and wrap the copyright line in a <footer>.',
+      hints: [
+        'Think of a newspaper: the masthead is your <header>, the story is your <main>, and the fine print is your <footer>.',
+        'Wrap the <h1> in <header>…</header>, wrap the first <p> in <main>…</main>, and wrap the last <p> in <footer>…</footer>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Maple & Co.</h1>\n    </header>\n    <main>\n      <p>Fine syrup since 1902.</p>\n    </main>\n    <footer>\n      <p>© 2026 Maple & Co.</p>\n    </footer>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Maple & Co.</h1>\n    <p>Fine syrup since 1902.</p>\n    <p>© 2026 Maple & Co.</p>\n  </body>\n</html>',
       checks: [
@@ -157,11 +186,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'header h1',
           label: 'The <h1> sits inside a <header>',
+          hint: 'Wrap the <h1> element inside a <header> tag.',
         },
         {
           type: 'selectorExists',
           selector: 'main p',
           label: 'The welcome paragraph sits inside <main>',
+          hint: 'Wrap the welcome paragraph inside a <main> tag.',
         },
         {
           type: 'selectorExists',
@@ -194,6 +225,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build a page skeleton for a tree-care guide: a <title> saying "Tree Care 101" in the head, a <header> containing an <h1>, a <main> containing at least one <p> of advice, and a <footer> at the bottom.',
+      hints: [
+        'Work top to bottom: fill the <head> first (title), then build the <body> zones (header, main, footer) one at a time.',
+        'Put <title>Tree Care 101</title> in the <head>. Then add <header><h1>…</h1></header>, <main><p>…</p></main>, and <footer>…</footer> inside <body>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <title>Tree Care 101</title>\n  </head>\n  <body>\n    <header>\n      <h1>Tree Care 101</h1>\n    </header>\n    <main>\n      <p>Water your trees deeply once a week.</p>\n    </main>\n    <footer>\n      <p>Happy growing!</p>\n    </footer>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n\n  </head>\n  <body>\n\n  </body>\n</html>',
       checks: [
@@ -201,11 +238,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'title',
           label: 'Your page has a <title>',
+          hint: 'Add a <title> element inside the <head> tags.',
         },
         {
           type: 'selectorExists',
           selector: 'header h1',
           label: 'A <header> introduces the page with an <h1>',
+          hint: 'Wrap an <h1> inside a <header> element in your <body>.',
         },
         {
           type: 'selectorExists',

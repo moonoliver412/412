@@ -25,6 +25,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'The starter code has a bug. It tries to log a variable that has not been declared. Fix it by declaring the variable first using const treeName = "oak", then log it.',
+      hints: [
+        'A ReferenceError means you used a name that does not exist yet. Add a declaration line before the console.log.',
+        'Add const treeName = "oak"; on the line above the console.log so the variable exists when it is read.',
+      ],
       starter:
         '// This line will throw a ReferenceError — fix it!\nconsole.log(treeName);',
       checks: [
@@ -32,6 +36,7 @@ const lessons = [
           type: 'logIncludes',
           text: 'oak',
           label: '"oak" is logged with no errors thrown',
+          hint: 'Declare const treeName = "oak"; before the console.log line.',
         },
         {
           type: 'exprTruthy',
@@ -39,6 +44,8 @@ const lessons = [
           label: 'treeName is declared and accessible',
         },
       ],
+      solution:
+        'const treeName = "oak";\nconsole.log(treeName);\n',
     },
   },
   {
@@ -65,6 +72,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'The starter code has a bug. The assert fires because the array is empty. Fix it by adding at least one tree object with a species and age to the trees array, so the assert passes silently and the table has something to show.',
+      hints: [
+        'Add an object inside the square brackets. An object with species and age looks like { species: "oak", age: 5 }.',
+        'Replace the comment inside the array with { species: "oak", age: 5 } so trees.length is at least 1.',
+      ],
       starter:
         'const trees = [\n  // bug: no trees — add at least one { species, age } object\n];\n\nconsole.table(trees);\nconsole.assert(trees.length > 0, "trees array should not be empty");',
       checks: [
@@ -72,13 +83,17 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'Array.isArray(trees) && trees.length > 0',
           label: 'Your trees array has at least one entry',
+          hint: 'Add at least one object inside the trees array brackets.',
         },
         {
           type: 'exprTruthy',
           expr: 'trees[0] && typeof trees[0].species === "string"',
           label: 'The first entry has a species property',
+          hint: 'Make sure your object has a species key with a string value like "oak".',
         },
       ],
+      solution:
+        'const trees = [\n  { species: "oak", age: 5 },\n];\n\nconsole.table(trees);\nconsole.assert(trees.length > 0, "trees array should not be empty");\n',
     },
   },
   {
@@ -105,6 +120,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'The function below has a bug. It should return the species in uppercase, but it returns undefined. Fix the bug by adding the missing return statement. Then log the result of calling formatSpecies("oak").',
+      hints: [
+        'A function that reaches its closing brace without a return statement gives back undefined. Add a return on the line after the const upper line.',
+        'Write return upper; on the line after const upper = species.toUpperCase(); — that sends the uppercased string back to the caller.',
+      ],
       starter:
         'function formatSpecies(species) {\n  const upper = species.toUpperCase();\n  // bug: the return statement is missing!\n  // your code here\n}\n\nconsole.log(formatSpecies("oak"));',
       checks: [
@@ -112,6 +131,7 @@ const lessons = [
           type: 'logIncludes',
           text: 'OAK',
           label: '"OAK" is logged in all caps',
+          hint: 'Add return upper; inside the function so it sends back the uppercased string.',
         },
         {
           type: 'exprTruthy',
@@ -119,6 +139,8 @@ const lessons = [
           label: 'formatSpecies returns the species in uppercase',
         },
       ],
+      solution:
+        'function formatSpecies(species) {\n  const upper = species.toUpperCase();\n  return upper;\n}\n\nconsole.log(formatSpecies("oak"));\n',
     },
   },
   {
@@ -145,6 +167,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'The starter code calls JSON.parse on a broken string, which throws a SyntaxError. Wrap the call in a try/catch. In the catch block, log "parse failed" and fall back to an empty object {}. Log the result either way.',
+      hints: [
+        'try { ... } catch (err) { ... } wraps the risky code. If JSON.parse throws, execution jumps straight to the catch block.',
+        'Write try { const result = JSON.parse(broken); console.log(result); } catch (err) { console.log("parse failed"); console.log({}); }',
+      ],
       starter:
         'const broken = "{ bad json ";\n\n// Wrap in try/catch:\n// - try: parse broken with JSON.parse, log the result\n// - catch: log "parse failed", use {} as fallback and log it\n// your code here',
       checks: [
@@ -152,13 +178,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'parse failed',
           label: '"parse failed" is logged when the parse throws',
+          hint: 'Add console.log("parse failed"); inside the catch block.',
         },
         {
           type: 'logIncludes',
           text: '{}',
           label: 'The fallback empty object {} is logged',
+          hint: 'Add console.log({}); in the catch block after logging "parse failed".',
         },
       ],
+      solution:
+        'const broken = "{ bad json ";\n\ntry {\n  const result = JSON.parse(broken);\n  console.log(result);\n} catch (err) {\n  console.log("parse failed");\n  console.log({});\n}\n',
     },
   },
   {
@@ -186,6 +216,10 @@ const lessons = [
       html: '<ul id="list"></ul><p id="total"></p>',
       instructions:
         'The code below has three bugs. Bug 1: the area function uses + instead of * to multiply width × height — fix the operator. Bug 2: the for loop uses >= instead of < so it never runs — fix the condition. Bug 3: appendChild is misspelled as appendChld — fix the typo. Fix all three so the list shows three items and the total shows 6.',
+      hints: [
+        'Look at each bug location marked in a comment. Bug 1 is in the return statement, Bug 2 is in the for condition, Bug 3 is in the method call.',
+        'Change w + h to w * h, change i >= to i <, and change appendChld to appendChild.',
+      ],
       starter:
         'function area(w, h) {\n  // Bug 1: should multiply, not add\n  return w + h;\n}\n\nconst sizes = [{ w: 1, h: 1 }, { w: 2, h: 1 }, { w: 3, h: 1 }];\nlet total = 0;\n\n// Bug 2: loop condition is wrong — should be i < sizes.length\nfor (let i = 0; i >= sizes.length; i++) {\n  const s = sizes[i];\n  total += area(s.w, s.h);\n\n  const li = document.createElement("li");\n  li.textContent = `${s.w}×${s.h} = ${area(s.w, s.h)}`;\n  // Bug 3: typo in method name\n  document.getElementById("list").appendChld(li);\n}\n\ndocument.getElementById("total").textContent = "total: " + total;',
       checks: [
@@ -194,14 +228,18 @@ const lessons = [
           text: '6',
           selector: '#total',
           label: 'The total of 6 appears on the page',
+          hint: 'Fix the * operator in area() and the loop condition so the loop actually runs and totals correctly.',
         },
         {
           type: 'selectorExists',
           selector: '#list li',
           count: 3,
           label: 'Three list items show up on the page',
+          hint: 'Fix the loop condition (< not >=) and the typo appendChld → appendChild so items are added.',
         },
       ],
+      solution:
+        'function area(w, h) {\n  return w * h;\n}\n\nconst sizes = [{ w: 1, h: 1 }, { w: 2, h: 1 }, { w: 3, h: 1 }];\nlet total = 0;\n\nfor (let i = 0; i < sizes.length; i++) {\n  const s = sizes[i];\n  total += area(s.w, s.h);\n\n  const li = document.createElement("li");\n  li.textContent = `${s.w}×${s.h} = ${area(s.w, s.h)}`;\n  document.getElementById("list").appendChild(li);\n}\n\ndocument.getElementById("total").textContent = "total: " + total;\n',
     },
   },
 ];

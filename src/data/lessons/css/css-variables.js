@@ -24,18 +24,26 @@ const lessons = [
     exercise: {
       instructions:
         'Define two custom properties on :root — --color-primary set to #3d8b5e and --spacing-md set to 1.5rem. Then apply them: give h1 the color and give .card the padding.',
+      hints: [
+        'Custom properties are defined with two dashes before the name: --my-name: value; inside a rule block.',
+        'Add --color-primary: #3d8b5e and --spacing-md: 1.5rem inside :root, then set color: var(--color-primary) on h1 and padding: var(--spacing-md) on .card.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        /* define --color-primary and --spacing-md here */\n      }\n      h1 {\n        /* use var(--color-primary) */\n      }\n      .card {\n        /* use var(--spacing-md) */\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Garden Map</h1>\n    <div class="card">Plot A</div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        --color-primary: #3d8b5e;\n        --spacing-md: 1.5rem;\n      }\n      h1 {\n        color: var(--color-primary);\n      }\n      .card {\n        padding: var(--spacing-md);\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Garden Map</h1>\n    <div class="card">Plot A</div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: '--color-primary:#3d8b5e',
           label: '--color-primary is defined as #3d8b5e',
+          hint: 'Inside :root, write --color-primary: #3d8b5e;',
         },
         {
           type: 'styleIncludes',
           text: 'color:var(--color-primary)',
           label: 'h1 uses var(--color-primary)',
+          hint: 'Set color: var(--color-primary) on h1.',
         },
         {
           type: 'styleIncludes',

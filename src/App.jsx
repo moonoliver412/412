@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import AchievementToasts from './components/AchievementToasts';
 import Onboarding from './components/Onboarding';
+import StreakGuard from './components/StreakGuard';
 import Home from './pages/Home';
 import Playground from './pages/Playground';
 import Forest from './pages/Forest';
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <>
       <NavBar />
+      <StreakGuard />
       <AchievementToasts />
       <Onboarding />
       <Routes>
@@ -25,7 +27,9 @@ export default function App() {
         <Route path="/challenges" element={<Challenges />} />
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/dev/gallery" element={<DevGallery />} />
+        {import.meta.env.DEV && (
+          <Route path="/dev/gallery" element={<DevGallery />} />
+        )}
       </Routes>
     </>
   );

@@ -24,13 +24,20 @@ const lessons = [
     exercise: {
       instructions:
         'The tree-card is a simple block by default. Add a media query so that on screens wider than 600px, the card gets a max-width of 480px and a background color of #e8f5e9.',
+      hints: [
+        'A media query wraps CSS in a conditional block: @media (min-width: ...) { /* rules here */ }.',
+        'Write @media (min-width: 600px) { .card { max-width: 480px; background-color: #e8f5e9; } } after the existing .card rule.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        padding: 1rem;\n        background: #fff;\n      }\n      /* your media query here */\n    </style>\n  </head>\n  <body>\n    <div class="card">Seedling stats</div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        padding: 1rem;\n        background: #fff;\n      }\n      @media (min-width: 600px) {\n        .card {\n          max-width: 480px;\n          background-color: #e8f5e9;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">Seedling stats</div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: '@media',
           label: 'A media query is present',
+          hint: 'Start your media query with @media (min-width: 600px) { ... }.',
         },
         {
           type: 'styleIncludes',
@@ -41,6 +48,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'max-width:480px',
           label: 'The card gets a max-width inside the query',
+          hint: 'Put max-width: 480px on .card inside the media query block.',
         },
       ],
     },
@@ -68,13 +76,20 @@ const lessons = [
     exercise: {
       instructions:
         'Make the heading fluid: use clamp() to set its font-size with a minimum of 1.2rem, a preferred size of 5vw, and a maximum of 2.5rem.',
+      hints: [
+        'clamp() takes three comma-separated values: the smallest allowed, the preferred, and the largest allowed.',
+        'Set font-size: clamp(1.2rem, 5vw, 2.5rem) on h1.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      h1 {\n        /* your clamp() here */\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Growing Season</h1>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      h1 {\n        font-size: clamp(1.2rem, 5vw, 2.5rem);\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Growing Season</h1>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'clamp(',
           label: 'The heading uses clamp()',
+          hint: 'Use clamp() as the value for font-size on h1.',
         },
         {
           type: 'styleIncludes',
@@ -85,6 +100,7 @@ const lessons = [
           type: 'styleIncludes',
           text: '5vw',
           label: 'The preferred size uses a viewport unit',
+          hint: 'The middle argument of clamp() should be 5vw.',
         },
       ],
     },
@@ -112,18 +128,26 @@ const lessons = [
     exercise: {
       instructions:
         'Write mobile-first CSS: by default the nav links stack vertically (flex-direction: column). Add a min-width: 700px media query that switches them to a row.',
+      hints: [
+        'Set the default flex-direction on nav outside any media query, then put the row override inside @media (min-width: 700px).',
+        'Add flex-direction: column to the base nav rule, then write @media (min-width: 700px) { nav { flex-direction: row; } }.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      nav {\n        display: flex;\n        gap: 1rem;\n        /* set the default direction here */\n      }\n      /* add your media query here */\n    </style>\n  </head>\n  <body>\n    <nav>\n      <a href="#">Home</a>\n      <a href="#">Garden</a>\n      <a href="#">About</a>\n    </nav>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      nav {\n        display: flex;\n        gap: 1rem;\n        flex-direction: column;\n      }\n      @media (min-width: 700px) {\n        nav {\n          flex-direction: row;\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <nav>\n      <a href="#">Home</a>\n      <a href="#">Garden</a>\n      <a href="#">About</a>\n    </nav>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'flex-direction:column',
           label: 'Links stack vertically by default',
+          hint: 'Add flex-direction: column to the base nav rule.',
         },
         {
           type: 'styleIncludes',
           text: 'min-width:700px',
           label: 'A min-width: 700px query is present',
+          hint: 'Wrap the row rule in @media (min-width: 700px) { ... }.',
         },
         {
           type: 'styleIncludes',
@@ -156,18 +180,26 @@ const lessons = [
     exercise: {
       instructions:
         'Fix the hero image: set max-width to 100% and height to auto so it scales with its container without distortion.',
+      hints: [
+        'Two properties on .hero-img prevent overflow and distortion: max-width and height.',
+        'Set max-width: 100% and height: auto on .hero-img.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .hero-img {\n        /* your rules here */\n      }\n    </style>\n  </head>\n  <body>\n    <img class="hero-img" src="forest.jpg" alt="Dense forest canopy">\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .hero-img {\n        max-width: 100%;\n        height: auto;\n      }\n    </style>\n  </head>\n  <body>\n    <img class="hero-img" src="forest.jpg" alt="Dense forest canopy">\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'max-width:100%',
           label: 'The image is capped at 100% of its container',
+          hint: 'Add max-width: 100% to .hero-img.',
         },
         {
           type: 'styleIncludes',
           text: 'height:auto',
           label: 'Height is set to auto to preserve ratio',
+          hint: 'Add height: auto to .hero-img so the image does not stretch.',
         },
       ],
     },
@@ -191,18 +223,26 @@ const lessons = [
     exercise: {
       instructions:
         'Build a responsive seed-shop page: a .container centered with clamp() width, an h1 with a clamp() font-size, and a .cards grid that is 1 column by default and 2 columns at min-width 600px.',
+      hints: [
+        'You need clamp() for sizing, a single-column grid as the default, and a media query that switches to two columns.',
+        'Set width: clamp(300px, 90%, 860px) on .container, font-size: clamp(1.5rem, 4vw, 2.5rem) on h1, grid-template-columns: 1fr on .cards, and override it with repeat(2, 1fr) inside @media (min-width: 600px).',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your responsive styles here */\n    </style>\n  </head>\n  <body>\n    <div class="container">\n      <h1>Seed Shop</h1>\n      <div class="cards">\n        <div class="card">Oak seeds</div>\n        <div class="card">Willow seeds</div>\n      </div>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .container {\n        width: clamp(300px, 90%, 860px);\n        margin-inline: auto;\n      }\n      h1 {\n        font-size: clamp(1.5rem, 4vw, 2.5rem);\n      }\n      .cards {\n        display: grid;\n        grid-template-columns: 1fr;\n        gap: 1rem;\n      }\n      @media (min-width: 600px) {\n        .cards {\n          grid-template-columns: repeat(2, 1fr);\n        }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="container">\n      <h1>Seed Shop</h1>\n      <div class="cards">\n        <div class="card">Oak seeds</div>\n        <div class="card">Willow seeds</div>\n      </div>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'clamp(',
           label: 'clamp() is used for fluid sizing',
+          hint: 'Use clamp() for either the container width or the h1 font-size.',
         },
         {
           type: 'styleIncludes',
           text: 'grid-template-columns:1fr',
           label: 'Cards start as a single column',
+          hint: 'Set grid-template-columns: 1fr on .cards as the default.',
         },
         {
           type: 'styleIncludes',

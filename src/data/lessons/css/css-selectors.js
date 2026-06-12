@@ -28,18 +28,26 @@ const lessons = [
     exercise: {
       instructions:
         'Inside the <style> block, write a CSS rule that targets h1 elements and sets their color to "steelblue".',
+      hints: [
+        'A CSS rule looks like: selector { property: value; } — start by writing h1 { }.',
+        'Write h1 { color: steelblue; } inside the style block.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your css here */\n    </style>\n  </head>\n  <body>\n    <h1>My Garden</h1>\n    <p>Where everything grows.</p>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      h1 {\n        color: steelblue;\n      }\n    </style>\n  </head>\n  <body>\n    <h1>My Garden</h1>\n    <p>Where everything grows.</p>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'h1',
           label: 'Your stylesheet targets h1',
+          hint: 'Write a rule that starts with h1 { ... }.',
         },
         {
           type: 'styleIncludes',
           text: 'color:steelblue',
           label: 'The heading color is steelblue',
+          hint: 'Inside the h1 rule, set color: steelblue.',
         },
       ],
     },
@@ -67,13 +75,20 @@ const lessons = [
     exercise: {
       instructions:
         'Style the page below: give the element with id="sprout" a color of "seagreen", and give all elements with class="note" an italic font style.',
+      hints: [
+        'Use #sprout to target the element by id and .note to target elements by class.',
+        'Write #sprout { color: seagreen; } and .note { font-style: italic; } in the style block.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your css here */\n    </style>\n  </head>\n  <body>\n    <h2 id="sprout">Little Sprout</h2>\n    <p class="note">Planted on Monday.</p>\n    <p class="note">First leaf by Friday.</p>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      #sprout {\n        color: seagreen;\n      }\n      .note {\n        font-style: italic;\n      }\n    </style>\n  </head>\n  <body>\n    <h2 id="sprout">Little Sprout</h2>\n    <p class="note">Planted on Monday.</p>\n    <p class="note">First leaf by Friday.</p>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: '#sprout',
           label: 'The #sprout id is targeted',
+          hint: 'Target the element with #sprout { ... }.',
         },
         {
           type: 'styleIncludes',
@@ -84,6 +99,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'font-style:italic',
           label: 'The .note paragraphs are italic',
+          hint: 'Add .note { font-style: italic; } to your stylesheet.',
         },
       ],
     },
@@ -111,18 +127,26 @@ const lessons = [
     exercise: {
       instructions:
         'Make the leaf card stand out: set the background-color to a hex color of your choice (any valid 6-digit hex like #4a9e6b) and set the text color to white.',
+      hints: [
+        'A hex color starts with # and has six characters, like #4a9e6b — pick any you like.',
+        'Add background-color: #4a9e6b (or another hex) and color: white to .leaf-card.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .leaf-card {\n        padding: 1rem;\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="leaf-card">\n      <h2>Fern Leaf</h2>\n      <p>Found near the willow.</p>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .leaf-card {\n        padding: 1rem;\n        background-color: #4a9e6b;\n        color: white;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="leaf-card">\n      <h2>Fern Leaf</h2>\n      <p>Found near the willow.</p>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'background-color:#',
           label: 'A hex background-color is set on the card',
+          hint: 'Set background-color to any 6-digit hex color like #4a9e6b.',
         },
         {
           type: 'styleIncludes',
           text: 'color:white',
           label: 'The text color is white',
+          hint: 'Add color: white to .leaf-card.',
         },
       ],
     },
@@ -150,18 +174,26 @@ const lessons = [
     exercise: {
       instructions:
         'Style the journal page below: give the body a font-size of 1rem and a line-height of 1.6, and give the h1 a font-size of 2rem.',
+      hints: [
+        'You need two separate rules: one for body and one for h1.',
+        'Write body { font-size: 1rem; line-height: 1.6; } and h1 { font-size: 2rem; } in the style block.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your css here */\n    </style>\n  </head>\n  <body>\n    <h1>Garden Journal</h1>\n    <p>Today I spotted the first bud on the cherry tree. It is small and pale pink, no bigger than a fingernail.</p>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      body {\n        font-size: 1rem;\n        line-height: 1.6;\n      }\n      h1 {\n        font-size: 2rem;\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Garden Journal</h1>\n    <p>Today I spotted the first bud on the cherry tree. It is small and pale pink, no bigger than a fingernail.</p>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'line-height:1.6',
           label: 'Body line-height is 1.6',
+          hint: 'Add line-height: 1.6 inside the body rule.',
         },
         {
           type: 'styleIncludes',
           text: 'font-size:2rem',
           label: 'The h1 has a 2rem font size',
+          hint: 'Write h1 { font-size: 2rem; }.',
         },
       ],
     },
@@ -185,18 +217,26 @@ const lessons = [
     exercise: {
       instructions:
         'Style the seed shop page: give the body a background-color of "#f5f0e8" and a font-size of 1rem; give elements with class "product" a color of "#2d5a27" and a font-weight of bold; give the footer a color of "#888".',
+      hints: [
+        'Write three separate rules: one for body, one for .product, and one for footer.',
+        'Set body { background-color: #f5f0e8; font-size: 1rem; }, .product { color: #2d5a27; font-weight: bold; }, footer { color: #888; }.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your css here */\n    </style>\n  </head>\n  <body>\n    <h1>Sprout Seed Shop</h1>\n    <p class="product">Lavender seeds — £2.50</p>\n    <p class="product">Fern spores — £3.00</p>\n    <footer>\n      <p>© 2026 Sprout Shop</p>\n    </footer>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      body {\n        background-color: #f5f0e8;\n        font-size: 1rem;\n      }\n      .product {\n        color: #2d5a27;\n        font-weight: bold;\n      }\n      footer {\n        color: #888;\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Sprout Seed Shop</h1>\n    <p class="product">Lavender seeds — £2.50</p>\n    <p class="product">Fern spores — £3.00</p>\n    <footer>\n      <p>© 2026 Sprout Shop</p>\n    </footer>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'background-color:#f5f0e8',
           label: 'The page has the warm cream background',
+          hint: 'Add background-color: #f5f0e8 to the body rule.',
         },
         {
           type: 'styleIncludes',
           text: 'color:#2d5a27',
           label: 'Product text is forest green',
+          hint: 'Add color: #2d5a27 to the .product rule.',
         },
         {
           type: 'styleIncludes',

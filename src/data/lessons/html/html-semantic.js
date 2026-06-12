@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'This page renders fine but means nothing. Give it meaning: turn the first <div> into an <h1> and the second into a <p>, so that no <div>s remain.',
+      hints: [
+        'Ask yourself what each element is. A page title should be an <h1>, not a <div>. A sentence of description should be a <p>.',
+        'Change <div>Sprout City Gazette</div> to <h1>Sprout City Gazette</h1> and the second <div> to a <p>. Remember to update both the opening and closing tags.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Sprout City Gazette</h1>\n    <p>All the news from the garden, every morning.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <div>Sprout City Gazette</div>\n    <div>All the news from the garden, every morning.</div>\n  </body>\n</html>',
       checks: [
@@ -35,11 +41,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'h1',
           label: 'The page title is a real <h1>',
+          hint: 'Change the first <div> to an <h1> — update both the opening and closing tags.',
         },
         {
           type: 'selectorExists',
           selector: 'p',
           label: 'The intro line is a <p>',
+          hint: 'Change the second <div> to a <p>.',
         },
         {
           type: 'selectorCount',
@@ -73,6 +81,12 @@ const lessons = [
     exercise: {
       instructions:
         'Complete the landmarks: wrap the two menu links in a <nav> (keep it inside the <header>), wrap the welcome paragraph in <main>, and give the copyright line a <footer>.',
+      hints: [
+        'Landmarks are page regions with names: <nav> for navigation links, <main> for the unique page content, <footer> for the fine print at the bottom.',
+        'Inside the <header>, wrap the two <a> links in <nav>…</nav>. Then wrap the first <p> in <main>…</main> and the last <p> in <footer>…</footer>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Fern & Frond</h1>\n      <nav>\n        <a href="/">Home</a>\n        <a href="/shop">Shop</a>\n      </nav>\n    </header>\n    <main>\n      <p>Hand-raised houseplants, posted to your door.</p>\n    </main>\n    <footer>\n      <p>© 2026 Fern & Frond</p>\n    </footer>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Fern & Frond</h1>\n      <a href="/">Home</a>\n      <a href="/shop">Shop</a>\n    </header>\n    <p>Hand-raised houseplants, posted to your door.</p>\n    <p>© 2026 Fern & Frond</p>\n  </body>\n</html>',
       checks: [
@@ -80,11 +94,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'header nav a',
           label: 'The menu links live in a <nav> inside the header',
+          hint: 'Wrap the two <a> links in a <nav> element, keeping it inside <header>.',
         },
         {
           type: 'selectorExists',
           selector: 'main p',
           label: 'The welcome paragraph sits inside <main>',
+          hint: 'Wrap the welcome paragraph in a <main> element.',
         },
         {
           type: 'selectorExists',
@@ -117,6 +133,12 @@ const lessons = [
     exercise: {
       instructions:
         'Each diary entry should stand on its own. Wrap each heading-plus-paragraph pair in its own <article>, so the page ends up with two articles inside <main>.',
+      hints: [
+        'An <article> is for self-contained content that makes sense on its own — like a blog post or diary entry. Each entry needs its own.',
+        'Wrap each <h2> and its <p> together in <article>…</article>. You should end up with two <article> elements inside <main>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Greenhouse Diary</h1>\n      <article>\n        <h2>The basil bolted</h2>\n        <p>Tall, proud, and suddenly bitter.</p>\n      </article>\n      <article>\n        <h2>Three new tomatoes</h2>\n        <p>Sun Gold, Tiny Tim, and a mystery seedling.</p>\n      </article>\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Greenhouse Diary</h1>\n      <h2>The basil bolted</h2>\n      <p>Tall, proud, and suddenly bitter.</p>\n      <h2>Three new tomatoes</h2>\n      <p>Sun Gold, Tiny Tim, and a mystery seedling.</p>\n    </main>\n  </body>\n</html>',
       checks: [
@@ -125,11 +147,13 @@ const lessons = [
           selector: 'article',
           count: 2,
           label: 'Each entry is its own <article> (two in total)',
+          hint: 'You need exactly two <article> elements — one per diary entry.',
         },
         {
           type: 'selectorExists',
           selector: 'article h2',
           label: 'Every article opens with its heading',
+          hint: 'Each <h2> should be inside its own <article>.',
         },
         {
           type: 'selectorExists',
@@ -166,6 +190,12 @@ const lessons = [
     exercise: {
       instructions:
         'Add the sidekicks below the intro: an <aside> containing a <p> with a maple fun fact, then a <details> element with a <summary> saying "Show planting steps" and a <p> of steps hidden inside.',
+      hints: [
+        '<aside> holds related but non-essential content. <details> is a built-in collapsible — its first child is <summary>, the rest is hidden until clicked.',
+        'Add <aside><p>Maples can live for 300 years.</p></aside> then <details><summary>Show planting steps</summary><p>Dig, drop, water, wait.</p></details>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Growing maples</h1>\n      <p>Maples ask for little: sun, water, and patience.</p>\n      <aside>\n        <p>Maples can live for 300 years.</p>\n      </aside>\n      <details>\n        <summary>Show planting steps</summary>\n        <p>Dig, drop, water, wait.</p>\n      </details>\n\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <main>\n      <h1>Growing maples</h1>\n      <p>Maples ask for little: sun, water, and patience.</p>\n      <!-- aside, then details -->\n\n    </main>\n  </body>\n</html>',
       checks: [
@@ -173,11 +203,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'aside p',
           label: 'An <aside> shares the fun fact',
+          hint: 'Add an <aside> element with a <p> inside it.',
         },
         {
           type: 'selectorExists',
           selector: 'details summary',
           label: '<details> opens with a visible <summary>',
+          hint: 'The first element inside <details> must be a <summary>.',
         },
         {
           type: 'selectorExists',
@@ -214,6 +246,12 @@ const lessons = [
     exercise: {
       instructions:
         'De-soup the news page: the banner <div> becomes a <header>, the links <div> a <nav>, the content <div> the <main>, the story <div> an <article>, and the fine print a <footer> — until not a single <div> remains.',
+      hints: [
+        'Work one <div> at a time. Ask: is this the page banner? → <header>. A block of links? → <nav>. The main content? → <main>. A standalone story? → <article>. The fine print? → <footer>.',
+        'Change each opening <div> and its matching </div> closing tag to the right semantic element. There are five <div>s to replace in total.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>The Daily Acorn</h1>\n      <nav>\n        <a href="#">Home</a>\n        <a href="#">Archive</a>\n      </nav>\n    </header>\n    <main>\n      <article>\n        <h2>Squirrel hides 10,000th nut</h2>\n        <p>Local legend Hazel reached the milestone on Tuesday.</p>\n      </article>\n    </main>\n    <footer>\n      <p>© 2026 The Daily Acorn</p>\n    </footer>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <div>\n      <h1>The Daily Acorn</h1>\n      <div>\n        <a href="#">Home</a>\n        <a href="#">Archive</a>\n      </div>\n    </div>\n    <div>\n      <div>\n        <h2>Squirrel hides 10,000th nut</h2>\n        <p>Local legend Hazel reached the milestone on Tuesday.</p>\n      </div>\n    </div>\n    <div>\n      <p>© 2026 The Daily Acorn</p>\n    </div>\n  </body>\n</html>',
       checks: [
@@ -221,11 +259,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'header nav a',
           label: 'The banner is a <header> with its menu in a <nav>',
+          hint: 'Replace the outer banner <div> with <header> and the links <div> with <nav>.',
         },
         {
           type: 'selectorExists',
           selector: 'main article h2',
           label: 'The story is an <article> inside <main>',
+          hint: 'Replace the content <div> with <main> and the story <div> with <article>.',
         },
         {
           type: 'selectorExists',

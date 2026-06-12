@@ -25,6 +25,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write the first slice of a tiny note-taking app. Create an array called notes and a function addNote(text) that pushes { text, done: false } into it. Call addNote twice with different strings, then log notes.length.',
+      hints: [
+        'Inside addNote, use notes.push({ text, done: false }); — that creates an object with the text you passed and done starting as false.',
+        'Add notes.push({ text: text, done: false }); inside the addNote function body.',
+      ],
       starter:
         'const notes = [];\n\nfunction addNote(text) {\n  // push { text, done: false } into notes\n  // your code here\n}\n\naddNote("water the oak");\naddNote("plant the maple");\n\nconsole.log(notes.length);',
       checks: [
@@ -32,13 +36,17 @@ const lessons = [
           type: 'logIncludes',
           text: '2',
           label: 'notes.length is 2 after adding two notes',
+          hint: 'Make sure addNote pushes one object per call so notes.length reaches 2.',
         },
         {
           type: 'exprTruthy',
           expr: 'Array.isArray(notes) && notes.length === 2 && notes[0].done === false',
           label: 'Every note starts with done set to false',
+          hint: 'Include done: false in the object you push inside addNote.',
         },
       ],
+      solution:
+        'const notes = [];\n\nfunction addNote(text) {\n  notes.push({ text: text, done: false });\n}\n\naddNote("water the oak");\naddNote("plant the maple");\n\nconsole.log(notes.length);\n',
     },
   },
   {
@@ -66,6 +74,10 @@ const lessons = [
       html: '<p id="status"></p>',
       instructions:
         'Write a pure function getTotalCost(items) that returns the sum of item.price across all items. Then write a display function showCost(items) that sets #status\'s textContent to "Total: <number>". Call showCost with two items.',
+      hints: [
+        'Use reduce to sum all item.price values in getTotalCost. In showCost, set document.getElementById("status").textContent using a template literal.',
+        'getTotalCost: return items.reduce((sum, item) => sum + item.price, 0); showCost: document.getElementById("status").textContent = `Total: ${total}`;',
+      ],
       starter:
         'function getTotalCost(items) {\n  // sum item.price across all items and return it\n  // your code here\n}\n\nfunction showCost(items) {\n  const total = getTotalCost(items);\n  // set document.getElementById("status").textContent to "Total: <total>"\n  // your code here\n}\n\nconst cart = [\n  { name: "trowel", price: 8 },\n  { name: "seeds", price: 4 },\n];\n\nshowCost(cart);',
       checks: [
@@ -74,13 +86,17 @@ const lessons = [
           text: '12',
           selector: '#status',
           label: 'The total of 12 shows up on the page',
+          hint: 'Set #status textContent to a string that includes the total returned by getTotalCost.',
         },
         {
           type: 'exprTruthy',
           expr: 'typeof getTotalCost === "function" && getTotalCost([{ price: 5 }, { price: 3 }]) === 8',
           label: 'getTotalCost returns the correct sum',
+          hint: 'Use reduce with a starting value of 0 to add up all item.price values.',
         },
       ],
+      solution:
+        'function getTotalCost(items) {\n  return items.reduce((sum, item) => sum + item.price, 0);\n}\n\nfunction showCost(items) {\n  const total = getTotalCost(items);\n  document.getElementById("status").textContent = `Total: ${total}`;\n}\n\nconst cart = [\n  { name: "trowel", price: 8 },\n  { name: "seeds", price: 4 },\n];\n\nshowCost(cart);\n',
     },
   },
   {
@@ -107,6 +123,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Write a function safeLabel(item) that returns item?.label ?? "unlabelled". Call it three times and log each result: once with { label: "oak pot" }, once with null, and once with {}.',
+      hints: [
+        '?. means "read this property only if the value exists — otherwise give undefined". ?? means "use this fallback if the left side is null or undefined".',
+        'Write return item?.label ?? "unlabelled"; inside the function body — that one line covers all three cases.',
+      ],
       starter:
         'function safeLabel(item) {\n  // return item?.label ?? "unlabelled"\n  // your code here\n}\n\nconsole.log(safeLabel({ label: "oak pot" }));\nconsole.log(safeLabel(null));\nconsole.log(safeLabel({}));',
       checks: [
@@ -119,13 +139,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'unlabelled',
           label: '"unlabelled" is returned when label is null or missing',
+          hint: 'Use ?? "unlabelled" so that null and missing labels all fall back to the default.',
         },
         {
           type: 'exprTruthy',
           expr: 'typeof safeLabel === "function" && safeLabel(null) === "unlabelled" && safeLabel({ label: "pine" }) === "pine"',
           label: 'safeLabel works correctly for all three cases',
+          hint: 'Use item?.label to safely read the property without crashing when item is null.',
         },
       ],
+      solution:
+        'function safeLabel(item) {\n  return item?.label ?? "unlabelled";\n}\n\nconsole.log(safeLabel({ label: "oak pot" }));\nconsole.log(safeLabel(null));\nconsole.log(safeLabel({}));\n',
     },
   },
   {
@@ -153,6 +177,10 @@ const lessons = [
       html: '<ul id="plants"></ul><p id="info"></p>',
       instructions:
         'Write a renderPlants(names) function. If names is empty, set #plants textContent to "No plants yet". Otherwise set its innerHTML to names mapped to <li> elements. Always set #info textContent to "<count> plant(s)". Call it first with [] then with ["oak", "fern"].',
+      hints: [
+        'For the else branch, set list.innerHTML = names.map(n => `<li>${n}</li>`).join(""); to build the list from the array.',
+        'After the if/else, set info.textContent = `${names.length} plant(s)`; — this runs for both the empty and non-empty cases.',
+      ],
       starter:
         'function renderPlants(names) {\n  const list = document.getElementById("plants");\n  const info = document.getElementById("info");\n\n  if (names.length === 0) {\n    // set list.textContent to "No plants yet"\n    // your code here\n  } else {\n    // set list.innerHTML to mapped <li> items\n    // your code here\n  }\n\n  // set info.textContent to "<count> plant(s)"\n  // your code here\n}\n\nrenderPlants([]);\nrenderPlants(["oak", "fern"]);',
       checks: [
@@ -161,14 +189,18 @@ const lessons = [
           selector: '#plants li',
           count: 2,
           label: 'Two plant list items appear on the page',
+          hint: 'In the else branch set list.innerHTML to names.map(n => `<li>${n}</li>`).join("") to create two <li> elements.',
         },
         {
           type: 'textIncludes',
           text: '2',
           selector: '#info',
           label: 'The info area shows the correct plant count',
+          hint: 'Set info.textContent to a string containing names.length after the if/else block.',
         },
       ],
+      solution:
+        'function renderPlants(names) {\n  const list = document.getElementById("plants");\n  const info = document.getElementById("info");\n\n  if (names.length === 0) {\n    list.textContent = "No plants yet";\n  } else {\n    list.innerHTML = names.map(n => `<li>${n}</li>`).join("");\n  }\n\n  info.textContent = `${names.length} plant(s)`;\n}\n\nrenderPlants([]);\nrenderPlants(["oak", "fern"]);\n',
     },
   },
   {
@@ -196,6 +228,10 @@ const lessons = [
       html: '<ul id="seeds"></ul><p id="planted-count"></p>',
       instructions:
         'Build the seed tracker. Declare let seeds = []. Write addSeed(name) that pushes { name, planted: false } into seeds. Write markPlanted(name) that finds the matching seed and sets its planted to true. Write render() that sets #seeds innerHTML to one <li> per seed — include the name and "(planted)" for planted ones — and sets #planted-count textContent to "Planted: <n>". Finally call addSeed("sunflower"), addSeed("lavender"), markPlanted("sunflower"), and render().',
+      hints: [
+        'In markPlanted, use seeds.find(s => s.name === name) to get the matching object, then set .planted = true on it. In render, use filter and .length to count planted seeds.',
+        'render innerHTML: seeds.map(s => `<li>${s.name}${s.planted ? " (planted)" : ""}</li>`).join(""); planted count: seeds.filter(s => s.planted).length',
+      ],
       starter:
         'let seeds = [];\n\nfunction addSeed(name) {\n  // push { name, planted: false }\n  // your code here\n}\n\nfunction markPlanted(name) {\n  // find the seed with this name and set planted = true\n  // your code here\n}\n\nfunction render() {\n  const list = document.getElementById("seeds");\n  const count = document.getElementById("planted-count");\n  // set list.innerHTML and count.textContent\n  // your code here\n}\n\naddSeed("sunflower");\naddSeed("lavender");\nmarkPlanted("sunflower");\nrender();',
       checks: [
@@ -204,12 +240,14 @@ const lessons = [
           selector: '#seeds li',
           count: 2,
           label: 'Two seed items appear in the list',
+          hint: 'Map every seed to a <li> element in render() so both sunflower and lavender appear.',
         },
         {
           type: 'textIncludes',
           text: 'planted',
           selector: '#seeds',
           label: 'The planted status shows up in the list',
+          hint: 'Include "(planted)" in the li text for seeds where s.planted is true.',
         },
         {
           type: 'textIncludes',
@@ -218,6 +256,8 @@ const lessons = [
           label: 'The planted count correctly shows 1',
         },
       ],
+      solution:
+        'let seeds = [];\n\nfunction addSeed(name) {\n  seeds.push({ name: name, planted: false });\n}\n\nfunction markPlanted(name) {\n  const seed = seeds.find(s => s.name === name);\n  if (seed) seed.planted = true;\n}\n\nfunction render() {\n  const list = document.getElementById("seeds");\n  const count = document.getElementById("planted-count");\n  list.innerHTML = seeds.map(s => `<li>${s.name}${s.planted ? " (planted)" : ""}</li>`).join("");\n  count.textContent = "Planted: " + seeds.filter(s => s.planted).length;\n}\n\naddSeed("sunflower");\naddSeed("lavender");\nmarkPlanted("sunflower");\nrender();\n',
     },
   },
 ];

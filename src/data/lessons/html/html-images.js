@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Add a photo to the page: an <img> with src="harbor.jpg" (a placeholder filename is fine here — nothing needs to download) and an alt attribute describing fishing boats at sunrise.',
+      hints: [
+        '<img> is a void element — no closing tag. It always needs a src (where the file is) and an alt (what it shows).',
+        'Add <img src="harbor.jpg" alt="Fishing boats at sunrise"> below the heading.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Harbor mornings</h1>\n    <img src="harbor.jpg" alt="Fishing boats at sunrise">\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Harbor mornings</h1>\n    <!-- your photo goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -35,11 +41,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'img[src]',
           label: 'An <img> points at a file with src',
+          hint: 'Add an <img> element with a src attribute set to "harbor.jpg".',
         },
         {
           type: 'selectorExists',
           selector: 'img[alt]',
           label: 'The photo has alt text',
+          hint: 'Add an alt attribute to your <img> describing what the photo shows.',
         },
       ],
     },
@@ -71,6 +79,12 @@ const lessons = [
     exercise: {
       instructions:
         'The hero image ships one giant file to everyone. Add a srcset offering meadow-small.jpg 480w and meadow-large.jpg 1200w, plus a sizes attribute — "(max-width: 600px) 90vw, 1200px" works nicely.',
+      hints: [
+        'srcset is an attribute on the <img> tag that lists several file options and their widths. The browser picks the best one.',
+        'Add srcset="meadow-small.jpg 480w, meadow-large.jpg 1200w" and sizes="(max-width: 600px) 90vw, 1200px" to the existing <img>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Meadow watch</h1>\n    <img src="meadow-large.jpg" alt="A meadow in full bloom"\n      srcset="meadow-small.jpg 480w, meadow-large.jpg 1200w"\n      sizes="(max-width: 600px) 90vw, 1200px">\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Meadow watch</h1>\n    <img src="meadow-large.jpg" alt="A meadow in full bloom">\n  </body>\n</html>',
       checks: [
@@ -78,11 +92,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'img[srcset]',
           label: 'The image offers multiple sizes via srcset',
+          hint: 'Add a srcset attribute to the <img> listing both file sizes.',
         },
         {
           type: 'selectorExists',
           selector: 'img[sizes]',
           label: 'A sizes attribute tells the browser the display width',
+          hint: 'Add a sizes attribute to tell the browser how wide the image will display.',
         },
       ],
     },
@@ -114,6 +130,12 @@ const lessons = [
     exercise: {
       instructions:
         'Promote this photo: wrap the <img> in a <figure>, and turn the paragraph below it into a <figcaption> inside the same figure.',
+      hints: [
+        'A <figure> groups an image with its caption. Both the <img> and the caption go inside the same <figure> element.',
+        'Wrap the <img> and the text in <figure>…</figure>, then change the <p> tag to <figcaption>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Field notes</h1>\n    <figure>\n      <img src="aurora.jpg" alt="Green aurora over a pine forest">\n      <figcaption>Northern lights, photographed in March.</figcaption>\n    </figure>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Field notes</h1>\n    <img src="aurora.jpg" alt="Green aurora over a pine forest">\n    <p>Northern lights, photographed in March.</p>\n  </body>\n</html>',
       checks: [
@@ -121,11 +143,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'figure img',
           label: 'The photo lives inside a <figure>',
+          hint: 'Wrap the <img> element inside a <figure> tag.',
         },
         {
           type: 'selectorExists',
           selector: 'figure figcaption',
           label: 'The figure has a <figcaption>',
+          hint: 'Change the <p> to <figcaption> and make sure it is inside the <figure>.',
         },
       ],
     },
@@ -153,6 +177,12 @@ const lessons = [
     exercise: {
       instructions:
         'Two upgrades: connect the trail map image to its <map> by adding usemap="#trail", and add loading="lazy" to the waterfall photo at the bottom of the page.',
+      hints: [
+        'usemap is an attribute on <img> that points at a <map> by name. loading="lazy" is an attribute that delays loading until the image is near the screen.',
+        'Add usemap="#trail" to the first <img> (the trail map), and add loading="lazy" to the second <img> (the waterfall photo).',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Park guide</h1>\n    <img src="trail-map.png" alt="Park trail map" usemap="#trail">\n    <map name="trail">\n      <area shape="rect" coords="0,0,120,80" href="#lake" alt="Lake loop">\n      <area shape="rect" coords="120,0,240,80" href="#falls" alt="Falls path">\n    </map>\n    <p>Scroll on for photos from the falls path.</p>\n    <img src="falls.jpg" alt="Willow Falls after spring rain" loading="lazy">\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Park guide</h1>\n    <img src="trail-map.png" alt="Park trail map">\n    <map name="trail">\n      <area shape="rect" coords="0,0,120,80" href="#lake" alt="Lake loop">\n      <area shape="rect" coords="120,0,240,80" href="#falls" alt="Falls path">\n    </map>\n    <p>Scroll on for photos from the falls path.</p>\n    <img src="falls.jpg" alt="Willow Falls after spring rain">\n  </body>\n</html>',
       checks: [
@@ -162,6 +192,7 @@ const lessons = [
           attr: 'usemap',
           value: '#trail',
           label: 'The trail map is wired to its <map> with usemap="#trail"',
+          hint: 'Add usemap="#trail" to the trail map <img> — the value must start with #.',
         },
         {
           type: 'attrEquals',
@@ -169,6 +200,7 @@ const lessons = [
           attr: 'loading',
           value: 'lazy',
           label: 'The waterfall photo loads lazily',
+          hint: 'Add loading="lazy" to the waterfall <img> tag.',
         },
       ],
     },
@@ -200,6 +232,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build the gallery: an <h1> naming your collection, then exactly three <figure> elements — each holding an <img> with honest alt text plus a <figcaption>.',
+      hints: [
+        'Each gallery card is a <figure> with an <img> and a <figcaption> inside. Build one, then copy the pattern twice more.',
+        'Start with <h1>My Gallery</h1>, then add three <figure> blocks each containing <img src="photo.jpg" alt="…"> and <figcaption>…</figcaption>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <title>My gallery</title>\n  </head>\n  <body>\n    <h1>My Gallery</h1>\n    <figure>\n      <img src="dunes.jpg" alt="Grass-topped dunes at dusk">\n      <figcaption>Dunes, ten minutes before rain.</figcaption>\n    </figure>\n    <figure>\n      <img src="forest.jpg" alt="Sunlight through tall pines">\n      <figcaption>Morning light in the pine grove.</figcaption>\n    </figure>\n    <figure>\n      <img src="harbor.jpg" alt="Fishing boats at sunrise">\n      <figcaption>Harbor at golden hour.</figcaption>\n    </figure>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <title>My gallery</title>\n  </head>\n  <body>\n    <!-- heading, then three captioned figures -->\n\n  </body>\n</html>',
       checks: [
@@ -207,12 +245,14 @@ const lessons = [
           type: 'selectorExists',
           selector: 'h1',
           label: 'The gallery has an <h1> title',
+          hint: 'Add an <h1> element at the top of the <body>.',
         },
         {
           type: 'selectorCount',
           selector: 'figure',
           count: 3,
           label: 'Exactly three <figure> cards',
+          hint: 'You need exactly three <figure> elements — not two, not four.',
         },
         {
           type: 'selectorCount',

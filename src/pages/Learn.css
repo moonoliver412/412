@@ -218,3 +218,65 @@
     transform: none;
   }
 }
+
+/* "Tend the grove" — trees needing water or practice. */
+.learn-tend {
+  padding: 22px 26px;
+  margin-bottom: 28px;
+}
+
+.learn-tend-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.learn-tend-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(154, 143, 106, 0.14);
+  border: 1.5px solid var(--wilt);
+  border-radius: 16px;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: transform var(--mo-fast) var(--ease-out),
+    border-color var(--mo-fast) var(--ease-out);
+}
+
+.learn-tend-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--amber);
+}
+
+.learn-tend-icon {
+  flex: none;
+  font-size: 22px;
+}
+
+.learn-tend-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.learn-tend-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.learn-tend-action {
+  font-size: 12px;
+  color: #cfcabd;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .learn-tend-card {
+    transition: none;
+  }
+}

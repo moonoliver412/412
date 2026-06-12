@@ -24,13 +24,20 @@ const lessons = [
     exercise: {
       instructions:
         'Set the body font stack to Georgia, "Times New Roman", and the serif fallback — in that order. Then give the code element a monospace stack.',
+      hints: [
+        'font-family takes a comma-separated list — put quoted names with spaces and end with a generic keyword like serif.',
+        'Set font-family: Georgia, "Times New Roman", serif on body, and font-family: monospace on code.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      body {\n        /* your font-family here */\n      }\n      code {\n        /* your monospace stack here */\n      }\n    </style>\n  </head>\n  <body>\n    <p>Plant <code>seeds.js</code> in good soil.</p>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      body {\n        font-family: Georgia, "Times New Roman", serif;\n      }\n      code {\n        font-family: monospace;\n      }\n    </style>\n  </head>\n  <body>\n    <p>Plant <code>seeds.js</code> in good soil.</p>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'font-family:',
           label: 'font-family is declared',
+          hint: 'Add font-family: Georgia, "Times New Roman", serif to body.',
         },
         {
           type: 'styleIncludes',
@@ -41,6 +48,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'monospace',
           label: 'The code element gets a monospace stack',
+          hint: 'Add font-family: monospace to the code rule.',
         },
       ],
     },
@@ -68,13 +76,20 @@ const lessons = [
     exercise: {
       instructions:
         'Style the paragraph: set font-size to 1rem, font-weight to 400, and line-height to 1.6.',
+      hints: [
+        'All three properties go inside the p { } rule block.',
+        'Set font-size: 1rem, font-weight: 400, and line-height: 1.6 on p.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      p {\n        /* your three properties here */\n      }\n    </style>\n  </head>\n  <body>\n    <p>Roots grow slowly underground before anything appears above the soil.</p>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      p {\n        font-size: 1rem;\n        font-weight: 400;\n        line-height: 1.6;\n      }\n    </style>\n  </head>\n  <body>\n    <p>Roots grow slowly underground before anything appears above the soil.</p>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'font-size:1rem',
           label: 'font-size is 1rem',
+          hint: 'Add font-size: 1rem to the p rule.',
         },
         {
           type: 'styleIncludes',
@@ -85,6 +100,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'line-height:1.6',
           label: 'line-height is 1.6',
+          hint: 'Add line-height: 1.6 to the p rule — no unit needed.',
         },
       ],
     },
@@ -108,13 +124,20 @@ const lessons = [
     exercise: {
       instructions:
         'Style the label so it appears uppercase with a letter-spacing of 0.1em and font-size of 0.75rem.',
+      hints: [
+        'Three properties on .label do the work: text-transform for the case, letter-spacing for the spacing, and font-size for the size.',
+        'Set text-transform: uppercase, letter-spacing: 0.1em, and font-size: 0.75rem on .label.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .label {\n        /* your styles here */\n      }\n    </style>\n  </head>\n  <body>\n    <span class="label">growth stage</span>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .label {\n        text-transform: uppercase;\n        letter-spacing: 0.1em;\n        font-size: 0.75rem;\n      }\n    </style>\n  </head>\n  <body>\n    <span class="label">growth stage</span>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'text-transform:uppercase',
           label: 'The label is uppercase',
+          hint: 'Add text-transform: uppercase to .label.',
         },
         {
           type: 'styleIncludes',
@@ -125,6 +148,7 @@ const lessons = [
           type: 'styleIncludes',
           text: 'font-size:0.75rem',
           label: 'Font-size is 0.75rem',
+          hint: 'Add font-size: 0.75rem to .label.',
         },
       ],
     },
@@ -152,18 +176,26 @@ const lessons = [
     exercise: {
       instructions:
         'Make the heading fluid: use clamp() to give h1 a minimum of 1.5rem, a preferred size of 4vw, and a maximum of 3rem.',
+      hints: [
+        'clamp() takes three arguments: minimum, preferred, maximum — all separated by commas.',
+        'Set font-size: clamp(1.5rem, 4vw, 3rem) on h1.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      h1 {\n        /* your clamp() here */\n      }\n    </style>\n  </head>\n  <body>\n    <h1>The Canopy Chronicle</h1>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      h1 {\n        font-size: clamp(1.5rem, 4vw, 3rem);\n      }\n    </style>\n  </head>\n  <body>\n    <h1>The Canopy Chronicle</h1>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'font-size:clamp(',
           label: 'font-size uses clamp()',
+          hint: 'Write font-size: clamp(...) on the h1 rule.',
         },
         {
           type: 'styleIncludes',
           text: '4vw',
           label: 'The preferred size is a viewport unit',
+          hint: 'The middle value in your clamp() should be 4vw.',
         },
         {
           type: 'styleIncludes',
@@ -192,18 +224,26 @@ const lessons = [
     exercise: {
       instructions:
         'Build a type-driven article: set body font-family to Georgia and serif fallback, give h1 a clamp() font-size, set p line-height to 1.7, and give the .label class an uppercase text-transform.',
+      hints: [
+        'You need four rules: one for body, one for h1, one for p, and one for .label.',
+        'Set font-family: Georgia, serif on body; font-size: clamp(1.75rem, 5vw, 3rem) on h1; line-height: 1.7 on p; text-transform: uppercase on .label.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your typography rules here */\n    </style>\n  </head>\n  <body>\n    <span class="label">Forest Notes</span>\n    <h1>Why Old Trees Matter</h1>\n    <p>Ancient trees store carbon, support biodiversity, and anchor whole ecosystems.</p>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      body {\n        font-family: Georgia, serif;\n      }\n      h1 {\n        font-size: clamp(1.75rem, 5vw, 3rem);\n      }\n      p {\n        line-height: 1.7;\n      }\n      .label {\n        text-transform: uppercase;\n      }\n    </style>\n  </head>\n  <body>\n    <span class="label">Forest Notes</span>\n    <h1>Why Old Trees Matter</h1>\n    <p>Ancient trees store carbon, support biodiversity, and anchor whole ecosystems.</p>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'font-family:georgia',
           label: 'Body uses Georgia as the first font',
+          hint: 'Add font-family: Georgia, serif to the body rule.',
         },
         {
           type: 'styleIncludes',
           text: 'font-size:clamp(',
           label: 'h1 has a fluid clamp() size',
+          hint: 'Set font-size: clamp(1.75rem, 5vw, 3rem) on h1.',
         },
         {
           type: 'styleIncludes',

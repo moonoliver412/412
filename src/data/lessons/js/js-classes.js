@@ -25,6 +25,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Define a class Sprout. Give it a constructor that takes a species string and stores it as this.species. Create an instance called mySprout with the species "birch". Log mySprout.species.',
+      hints: [
+        'Inside the constructor, use this.species = species; to store the value on the instance. Then call console.log(mySprout.species) outside the class.',
+        'Add this.species = species; inside the constructor body, then log mySprout.species after the class definition.',
+      ],
       starter:
         'class Sprout {\n  constructor(species) {\n    // store species on this\n    // your code here\n  }\n}\n\nconst mySprout = new Sprout("birch");\n// log mySprout.species\n// your code here',
       checks: [
@@ -32,13 +36,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'birch',
           label: 'The species "birch" is logged to the console',
+          hint: 'Add console.log(mySprout.species); after creating the instance.',
         },
         {
           type: 'exprTruthy',
           expr: 'typeof Sprout === "function" && new Sprout("oak").species === "oak"',
           label: 'Sprout stores any species correctly',
+          hint: 'Assign this.species = species; inside the constructor so the value is saved on the instance.',
         },
       ],
+      solution:
+        'class Sprout {\n  constructor(species) {\n    this.species = species;\n  }\n}\n\nconst mySprout = new Sprout("birch");\nconsole.log(mySprout.species);\n',
     },
   },
   {
@@ -65,6 +73,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Add a grow() method to the Sprout class that increases this.height by 1. Also add a get description() getter that returns the string "A <species> of height <height>". Create an instance, call grow() twice, then log the description.',
+      hints: [
+        'In the grow() body write this.height += 1; In the getter body write return `A ${this.species} of height ${this.height}`;',
+        'The getter uses the get keyword before the method name and no parentheses when you read it: s.description not s.description().',
+      ],
       starter:
         'class Sprout {\n  constructor(species) {\n    this.species = species;\n    this.height = 0;\n  }\n\n  grow() {\n    // increase height by 1\n    // your code here\n  }\n\n  get description() {\n    // return "A <species> of height <height>"\n    // your code here\n  }\n}\n\nconst s = new Sprout("pine");\ns.grow();\ns.grow();\nconsole.log(s.description);',
       checks: [
@@ -72,13 +84,17 @@ const lessons = [
           type: 'logIncludes',
           text: 'pine',
           label: 'The description includes the species name',
+          hint: 'Return a template literal that includes this.species in the description getter.',
         },
         {
           type: 'exprTruthy',
           expr: '(function(){ const s = new Sprout("oak"); s.grow(); s.grow(); return s.height === 2; })()',
           label: 'grow() correctly adds 1 to height each time',
+          hint: 'Write this.height += 1; inside the grow() method body.',
         },
       ],
+      solution:
+        'class Sprout {\n  constructor(species) {\n    this.species = species;\n    this.height = 0;\n  }\n\n  grow() {\n    this.height += 1;\n  }\n\n  get description() {\n    return `A ${this.species} of height ${this.height}`;\n  }\n}\n\nconst s = new Sprout("pine");\ns.grow();\ns.grow();\nconsole.log(s.description);\n',
     },
   },
   {
@@ -105,6 +121,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Create a class Plant with a constructor that takes name and stores it as this.name. Add a greet() method that returns "I am a <name>". Extend Plant with a class Flower that adds a color property. Override greet() in Flower to return "I am a <color> <name>". Log the result of greet() on a new Flower("rose", "red").',
+      hints: [
+        'In the Flower constructor, call super(name) first — that runs Plant\'s constructor. Then store color with this.color = color.',
+        'In Flower\'s greet() write return `I am a ${this.color} ${this.name}`; — this.name comes from Plant via super.',
+      ],
       starter:
         'class Plant {\n  constructor(name) {\n    this.name = name;\n  }\n  greet() {\n    return `I am a ${this.name}`;\n  }\n}\n\nclass Flower extends Plant {\n  constructor(name, color) {\n    // call super, store color\n    // your code here\n  }\n  greet() {\n    // return "I am a <color> <name>"\n    // your code here\n  }\n}\n\nconst rose = new Flower("rose", "red");\nconsole.log(rose.greet());',
       checks: [
@@ -112,6 +132,7 @@ const lessons = [
           type: 'logIncludes',
           text: 'red',
           label: 'The greeting includes the color "red"',
+          hint: 'Include this.color in the string returned by Flower\'s greet() method.',
         },
         {
           type: 'logIncludes',
@@ -122,8 +143,11 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'new Flower("lily", "white") instanceof Plant',
           label: 'Every Flower instance is also a Plant',
+          hint: 'Make Flower extend Plant and call super(name) so instanceof Plant works.',
         },
       ],
+      solution:
+        'class Plant {\n  constructor(name) {\n    this.name = name;\n  }\n  greet() {\n    return `I am a ${this.name}`;\n  }\n}\n\nclass Flower extends Plant {\n  constructor(name, color) {\n    super(name);\n    this.color = color;\n  }\n  greet() {\n    return `I am a ${this.color} ${this.name}`;\n  }\n}\n\nconst rose = new Flower("rose", "red");\nconsole.log(rose.greet());\n',
     },
   },
   {
@@ -150,6 +174,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Practice the export/import pattern. Define an object GARDEN with a key "species" set to "oak". Then log GARDEN.species. Real modules need separate files — here you are just making sure you can declare and use named values the way exports work.',
+      hints: [
+        'GARDEN is already defined in the starter. You just need to add a console.log line to read its species property.',
+        'Write console.log(GARDEN.species); — that accesses the "species" key on the object and prints "oak".',
+      ],
       starter:
         '// Imagine this is a module you would export:\nconst GARDEN = {\n  species: "oak",\n  size: "small",\n};\n\n// Log the species\n// your code here',
       checks: [
@@ -157,6 +185,7 @@ const lessons = [
           type: 'logIncludes',
           text: 'oak',
           label: 'GARDEN.species "oak" is logged to the console',
+          hint: 'Add console.log(GARDEN.species); to log the value "oak".',
         },
         {
           type: 'exprTruthy',
@@ -164,6 +193,8 @@ const lessons = [
           label: 'GARDEN is defined with species set to "oak"',
         },
       ],
+      solution:
+        'const GARDEN = {\n  species: "oak",\n  size: "small",\n};\n\nconsole.log(GARDEN.species);\n',
     },
   },
   {
@@ -191,6 +222,10 @@ const lessons = [
       html: '<div id="garden"></div>',
       instructions:
         'Build a GardenWidget class. The constructor takes an element and a species string, stores both, sets this.trees = 0, and calls render(). Add a plant() method that adds 1 to this.trees and calls render(). Add render() which sets the element\'s textContent to "<species> garden: <trees> tree(s)". Create an instance using #garden and "maple", then call plant() twice.',
+      hints: [
+        'In plant(), write this.trees += 1; this.render(); In render(), set this.el.textContent to a template literal with this.species and this.trees.',
+        'render() body: this.el.textContent = `${this.species} garden: ${this.trees} tree(s)`;',
+      ],
       starter:
         'class GardenWidget {\n  constructor(el, species) {\n    this.el = el;\n    this.species = species;\n    this.trees = 0;\n    this.render();\n  }\n\n  plant() {\n    // increment trees and re-render\n    // your code here\n  }\n\n  render() {\n    // set el.textContent to "<species> garden: <trees> tree(s)"\n    // your code here\n  }\n}\n\nconst widget = new GardenWidget(document.getElementById("garden"), "maple");\nwidget.plant();\nwidget.plant();',
       checks: [
@@ -199,12 +234,14 @@ const lessons = [
           text: 'maple',
           selector: '#garden',
           label: 'The species name shows up in the widget',
+          hint: 'Use this.species in the template literal inside render() so the species appears in #garden.',
         },
         {
           type: 'textIncludes',
           text: '2',
           selector: '#garden',
           label: 'The tree count of 2 shows up in the widget',
+          hint: 'Call this.trees += 1; and then this.render(); inside the plant() method.',
         },
         {
           type: 'exprTruthy',
@@ -212,6 +249,8 @@ const lessons = [
           label: 'GardenWidget is defined as a class',
         },
       ],
+      solution:
+        'class GardenWidget {\n  constructor(el, species) {\n    this.el = el;\n    this.species = species;\n    this.trees = 0;\n    this.render();\n  }\n\n  plant() {\n    this.trees += 1;\n    this.render();\n  }\n\n  render() {\n    this.el.textContent = `${this.species} garden: ${this.trees} tree(s)`;\n  }\n}\n\nconst widget = new GardenWidget(document.getElementById("garden"), "maple");\nwidget.plant();\nwidget.plant();\n',
     },
   },
 ];

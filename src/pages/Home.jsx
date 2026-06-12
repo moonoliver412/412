@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useGame } from '../state/useGame';
+import { useGame, WAGER_PAYOUT, WAGER_STAKE } from '../state/useGame';
 import { useProgress } from '../state/useProgress';
 import { LANGUAGES, STAGES_PER_TOPIC } from '../data/curriculum';
 import { getAchievement } from '../data/achievements';
+import { questView } from '../data/quests';
+import { rankFor, nextRank } from '../data/ranks';
+import { dayGap } from '../lib/streak';
 import './Home.css';
 
 // Home is the dashboard: a time-of-day greeting with a deep-linked
@@ -50,8 +53,14 @@ function Stat({ icon, value, label }) {
 }
 
 export default function Home() {
-  const { game, setGoalTarget } = useGame();
+  const { game, setGoalTarget, plantWager } = useGame();
   const { progress } = useProgress();
+
+  const today = todayStr();
+  const quests = questView(game.quests, today);
+  const rank = rankFor(game.xp);
+  const next2 = nextRank(game.xp);
+  const wagerDay = game.wager ? dayGap(game.wager.startDay, today) + 1 : 0;
 
   const next = nextActionable(progress);
   const masteredCount = ALL_TOPICS.filter(
@@ -106,7 +115,13 @@ export default function Home() {
           label={`day streak · best ${game.streak.longest}`}
         />
         <Stat icon="🌱" value={game.sprouts} label="sprouts to spend" />
-        <Stat icon="⚡" value={game.xp} label="experience" />
+        <Stat
+          icon={rank.icon}
+          value={rank.name}
+          label={
+            next2 ? `${game.xp} xp · ${next2.at - game.xp} to ${next2.name}` : `${game.xp} xp · top rank`
+          }
+        />
         <Stat
           icon="🌳"
           value={`${masteredCount}/${ALL_TOPICS.length}`}
@@ -160,7 +175,65 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="home-section home-card cs-card" style={{ '--i': 3 }}>
+        <section
+          className="home-section home-card cs-panel home-quests"
+          style={{ '--i': 3 }}
+        >
+          <h2 className="cs-panel-title home-quests-title">
+            Today&apos;s quests
+          </h2>
+          <ul className="home-quest-list">
+            {quests.map((quest) => (
+              <li
+                key={quest.id}
+                className={`home-quest${quest.done ? ' is-done' : ''}`}
+              >
+                <span className="home-quest-icon" aria-hidden="true">
+                  {quest.icon}
+                </span>
+                <span className="home-quest-text">
+                  <span className="home-quest-blurb">{quest.blurb}</span>
+                  <span className="home-quest-bar" aria-hidden="true">
+                    <span
+                      className="home-quest-fill"
+                      style={{
+                        width: `${(quest.progress / quest.target) * 100}%`,
+                      }}
+                    />
+                  </span>
+                </span>
+                <span className="home-quest-count">
+                  {quest.done ? '✓' : `${quest.progress}/${quest.target}`}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="home-wager">
+            {game.wager ? (
+              <p className="home-wager-live" role="status">
+                🌳 Wager live — day {Math.min(wagerDay, 7)} of 7. Keep the
+                streak to win {WAGER_PAYOUT} sprouts.
+              </p>
+            ) : (
+              <button
+                type="button"
+                className="home-wager-btn"
+                disabled={game.sprouts < WAGER_STAKE}
+                title={
+                  game.sprouts < WAGER_STAKE
+                    ? `You need ${WAGER_STAKE} sprouts to plant a wager`
+                    : 'Stake sprouts on a 7-day streak'
+                }
+                onClick={plantWager}
+              >
+                🎲 Plant a wager — stake {WAGER_STAKE} 🌱, hold a 7-day
+                streak, win {WAGER_PAYOUT}
+              </button>
+            )}
+          </div>
+        </section>
+
+        <section className="home-section home-card cs-card" style={{ '--i': 4 }}>
           <h2 className="home-card-title">Recent badges</h2>
           {recentBadges.length > 0 ? (
             <ul className="home-badge-list">
@@ -185,7 +258,7 @@ export default function Home() {
 
         <section
           className="home-section home-card cs-panel home-forest"
-          style={{ '--i': 4 }}
+          style={{ '--i': 5 }}
         >
           <h2 className="cs-panel-title home-forest-title">Your forest</h2>
           {LANGUAGES.map((lang) => {

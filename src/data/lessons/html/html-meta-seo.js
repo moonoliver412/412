@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Dress the shop window: inside <head>, add a <title> for the bakery page and a <meta name="description"> whose content describes the page in one inviting sentence.',
+      hints: [
+        'Both <title> and <meta> live inside <head>. The <title> text appears in the browser tab. The meta description uses a name and a content attribute.',
+        'Add <title>Sprout Bakery</title> and <meta name="description" content="Fresh bakes from our garden kitchen."> inside the <head>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Sprout Bakery</title>\n    <meta name="description" content="Fresh bakes made with garden ingredients.">\n\n  </head>\n  <body>\n    <h1>Sprout Bakery</h1>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <!-- title and description go here -->\n\n  </head>\n  <body>\n    <h1>Sprout Bakery</h1>\n  </body>\n</html>',
       checks: [
@@ -35,11 +41,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'head title',
           label: 'The head has a <title>',
+          hint: 'Add a <title> element inside the <head>.',
         },
         {
           type: 'selectorExists',
           selector: 'meta[name="description"][content]',
           label: 'A meta description carries content',
+          hint: 'Add <meta name="description" content="…"> inside the <head> with a non-empty content value.',
         },
       ],
     },
@@ -67,6 +75,12 @@ const lessons = [
     exercise: {
       instructions:
         'Make the bakery link unfurl nicely: add two Open Graph metas — one with property="og:title" (content: the guide\'s name) and one with property="og:image" pointing at https://example.com/loaf.jpg.',
+      hints: [
+        'Open Graph tags use property instead of name. The value of content is what chat apps will show in the link preview.',
+        'Add <meta property="og:title" content="Sourdough starter guide"> and <meta property="og:image" content="https://example.com/loaf.jpg"> inside the <head>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Sourdough starter guide — Sprout Bakery</title>\n    <meta name="description" content="From flour and water to first loaf.">\n    <meta property="og:title" content="Sourdough starter guide">\n    <meta property="og:image" content="https://example.com/loaf.jpg">\n\n  </head>\n  <body>\n    <h1>Sourdough starter guide</h1>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Sourdough starter guide — Sprout Bakery</title>\n    <meta name="description" content="From flour and water to first loaf.">\n    <!-- Open Graph tags go here -->\n\n  </head>\n  <body>\n    <h1>Sourdough starter guide</h1>\n  </body>\n</html>',
       checks: [
@@ -76,6 +90,7 @@ const lessons = [
           attr: 'property',
           value: 'og:title',
           label: 'The card has an og:title headline',
+          hint: 'Add <meta property="og:title" content="…"> in the <head>.',
         },
         {
           type: 'attrEquals',
@@ -83,6 +98,7 @@ const lessons = [
           attr: 'property',
           value: 'og:image',
           label: 'The card has an og:image picture',
+          hint: 'Add <meta property="og:image" content="https://example.com/loaf.jpg"> in the <head>.',
         },
       ],
     },
@@ -114,6 +130,12 @@ const lessons = [
     exercise: {
       instructions:
         'Give the bakery an identity in the tab bar: add a <link rel="icon"> pointing at favicon.png, and a <link rel="manifest"> pointing at site.webmanifest.',
+      hints: [
+        '<link> is a void element in the <head>. Its rel attribute says what the link is for — "icon" for the favicon, "manifest" for the app manifest.',
+        'Add <link rel="icon" href="favicon.png"> and <link rel="manifest" href="site.webmanifest"> inside the <head>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Sprout Bakery</title>\n    <link rel="icon" href="favicon.png">\n    <link rel="manifest" href="site.webmanifest">\n\n  </head>\n  <body>\n    <h1>Sprout Bakery</h1>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Sprout Bakery</title>\n    <!-- icon and manifest links go here -->\n\n  </head>\n  <body>\n    <h1>Sprout Bakery</h1>\n  </body>\n</html>',
       checks: [
@@ -123,6 +145,7 @@ const lessons = [
           attr: 'rel',
           value: 'icon',
           label: 'A <link rel="icon"> declares the favicon',
+          hint: 'Add <link rel="icon" href="favicon.png"> inside the <head>.',
         },
         {
           type: 'attrEquals',
@@ -130,6 +153,7 @@ const lessons = [
           attr: 'rel',
           value: 'manifest',
           label: 'A <link rel="manifest"> points at the app manifest',
+          hint: 'Add <link rel="manifest" href="site.webmanifest"> inside the <head>.',
         },
       ],
     },
@@ -157,6 +181,12 @@ const lessons = [
     exercise: {
       instructions:
         'Tell search engines this page is a recipe: inside <head>, add a <script type="application/ld+json"> block declaring "@context": "https://schema.org", "@type": "Recipe", and a "name" for your bread.',
+      hints: [
+        'A <script type="application/ld+json"> block in the head holds JSON data for search engines. Browsers ignore it; search engines read it.',
+        'Add <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Recipe", "name": "Honest sourdough"}</script> inside the <head>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Honest sourdough — Sprout Bakery</title>\n    <script type="application/ld+json">\n    {\n      "@context": "https://schema.org",\n      "@type": "Recipe",\n      "name": "Honest sourdough"\n    }\n    </script>\n\n  </head>\n  <body>\n    <h1>Honest sourdough</h1>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Honest sourdough — Sprout Bakery</title>\n    <!-- structured data goes here -->\n\n  </head>\n  <body>\n    <h1>Honest sourdough</h1>\n  </body>\n</html>',
       checks: [
@@ -166,12 +196,14 @@ const lessons = [
           attr: 'type',
           value: 'application/ld+json',
           label: 'A script block declares the JSON-LD type',
+          hint: 'Add a <script> with type="application/ld+json" inside the <head>.',
         },
         {
           type: 'textIncludes',
           text: 'recipe',
           selector: 'script',
           label: 'The structured data describes a Recipe',
+          hint: 'The JSON inside the script block needs "@type": "Recipe" (case-sensitive).',
         },
       ],
     },
@@ -203,6 +235,12 @@ const lessons = [
     exercise: {
       instructions:
         'Audit and fix the head: rewrite the <title> so it includes "Sprout Bakery", add a <meta name="description">, add a <meta property="og:title">, and add a favicon with <link rel="icon">.',
+      hints: [
+        'The head checklist: title with the site name, meta description, og:title for social previews, favicon link. Work through them one at a time.',
+        'Change <title>Untitled page</title> to include "Sprout Bakery", then add the three missing tags: <meta name="description" content="…">, <meta property="og:title" content="…">, and <link rel="icon" href="favicon.png">.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Cinnamon week — Sprout Bakery</title>\n    <meta name="description" content="Seven days, seven swirls at Sprout Bakery.">\n    <meta property="og:title" content="Cinnamon week at Sprout Bakery">\n    <link rel="icon" href="favicon.png">\n  </head>\n  <body>\n    <h1>Cinnamon week at Sprout Bakery</h1>\n    <p>Seven days, seven swirls.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Untitled page</title>\n  </head>\n  <body>\n    <h1>Cinnamon week at Sprout Bakery</h1>\n    <p>Seven days, seven swirls.</p>\n  </body>\n</html>',
       checks: [
@@ -211,11 +249,13 @@ const lessons = [
           text: 'sprout bakery',
           selector: 'head title',
           label: 'The title names the bakery',
+          hint: 'Update the <title> text so it includes the words "Sprout Bakery".',
         },
         {
           type: 'selectorExists',
           selector: 'meta[name="description"]',
           label: 'The page has a meta description',
+          hint: 'Add <meta name="description" content="…"> in the <head>.',
         },
         {
           type: 'attrEquals',

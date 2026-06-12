@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Two barriers to fix: the section heading jumps from <h1> straight to <h4>, and the photo says nothing. Change the <h4> into an <h2>, and give the <img> an alt attribute describing the robin.',
+      hints: [
+        'Heading levels must go in order without gaps. After an <h1>, the next level should be <h2>, not <h4>. Screen readers use this order to navigate.',
+        'Change <h4>Robins</h4> to <h2>Robins</h2>, then add an alt attribute to the <img> like alt="A robin perched on a branch".',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Backyard bird guide</h1>\n    <h2>Robins</h2>\n    <p>Friendly, round, and always first to the feeder.</p>\n    <img src="robin.png" alt="A robin perched on a snowy branch">\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Backyard bird guide</h1>\n    <h4>Robins</h4>\n    <p>Friendly, round, and always first to the feeder.</p>\n    <img src="robin.png">\n  </body>\n</html>',
       checks: [
@@ -35,6 +41,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'h2',
           label: 'The section heading is now an <h2>',
+          hint: 'Change the <h4> element to <h2> — update both the opening and closing tags.',
         },
         {
           type: 'selectorCount',
@@ -46,6 +53,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'img[alt]',
           label: 'The robin photo has alt text',
+          hint: 'Add an alt attribute to the <img> describing what the photo shows.',
         },
       ],
     },
@@ -73,6 +81,12 @@ const lessons = [
     exercise: {
       instructions:
         'These fields only have placeholders, which many users never hear. Above each input, add a <label>: one with for="name" that says "Name", and one with for="email" that says "Email".',
+      hints: [
+        'A <label> connects to its input using matching for and id values. Clicking the label then focuses the input.',
+        'Add <label for="name">Name</label> above the name input, and <label for="email">Email</label> above the email input.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="name">Name</label>\n      <input id="name" type="text" placeholder="Name">\n      <label for="email">Email</label>\n      <input id="email" type="email" placeholder="Email">\n      <button>Join the club</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <input id="name" type="text" placeholder="Name">\n      <input id="email" type="email" placeholder="Email">\n      <button>Join the club</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -82,6 +96,7 @@ const lessons = [
           attr: 'for',
           value: 'name',
           label: 'The name field has a connected <label>',
+          hint: 'Add a <label for="name"> above the name input.',
         },
         {
           type: 'attrEquals',
@@ -89,6 +104,7 @@ const lessons = [
           attr: 'for',
           value: 'email',
           label: 'The email field has a connected <label>',
+          hint: 'Add a <label for="email"> above the email input.',
         },
       ],
     },
@@ -116,6 +132,12 @@ const lessons = [
     exercise: {
       instructions:
         'Make the search form speak up: add role="search" to the <form>, and give the icon-only button an aria-label of "Search" so screen readers know what it does.',
+      hints: [
+        'ARIA attributes add meaning when HTML alone is not enough. role="search" labels a form as a search landmark. aria-label gives a spoken name to a button with no visible text.',
+        'Add role="search" to the <form> tag, and add aria-label="Search" to the <button> tag.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form role="search">\n      <label for="q">Find a bird</label>\n      <input id="q" type="text">\n      <button aria-label="Search">\n        <img src="magnifier.png" alt="">\n      </button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="q">Find a bird</label>\n      <input id="q" type="text">\n      <button>\n        <img src="magnifier.png" alt="">\n      </button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -125,11 +147,13 @@ const lessons = [
           attr: 'role',
           value: 'search',
           label: 'The form is a search landmark (role="search")',
+          hint: 'Add role="search" to the <form> element.',
         },
         {
           type: 'selectorExists',
           selector: 'button[aria-label]',
           label: 'The icon button has a spoken name',
+          hint: 'Add aria-label="Search" to the <button> element.',
         },
       ],
     },
@@ -157,6 +181,12 @@ const lessons = [
     exercise: {
       instructions:
         'Two keyboard fixes: add a skip link as the first thing inside <body> — an <a> with href="#main" saying "Skip to content" — and turn the fake <div> button into a real <button>.',
+      hints: [
+        'A skip link is just a normal <a> element pointing to #main. It lets keyboard users jump past the menu. Real buttons must be <button>, not <div> — only <button> is keyboard-reachable by default.',
+        'Add <a href="#main">Skip to content</a> as the very first element inside <body>, then change <div>Adopt this tree</div> to <button>Adopt this tree</button>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <a href="#main">Skip to content</a>\n    <header>\n      <h1>Adopt-a-Tree</h1>\n      <a href="/trees">All trees</a>\n    </header>\n    <main id="main">\n      <p>Every sapling needs a sponsor.</p>\n      <button>Adopt this tree</button>\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Adopt-a-Tree</h1>\n      <a href="/trees">All trees</a>\n    </header>\n    <main id="main">\n      <p>Every sapling needs a sponsor.</p>\n      <div>Adopt this tree</div>\n    </main>\n  </body>\n</html>',
       checks: [
@@ -166,11 +196,13 @@ const lessons = [
           attr: 'href',
           value: '#main',
           label: 'A skip link jumps straight to #main',
+          hint: 'Add an <a href="#main">Skip to content</a> as the very first element inside <body>.',
         },
         {
           type: 'selectorExists',
           selector: 'main button',
           label: 'Adopting happens with a real <button>',
+          hint: 'Change the <div>Adopt this tree</div> to a <button> element.',
         },
         {
           type: 'selectorCount',
@@ -208,6 +240,12 @@ const lessons = [
     exercise: {
       instructions:
         'Audit the page and fix all three barriers: give the elm photo an alt description, change the skipped <h3> into an <h2>, and add a <label> with for="email" above the email input.',
+      hints: [
+        'Use the four-check audit: every image needs alt text, headings must not skip levels, every form field needs a connected label, clickable things must be real elements.',
+        'Add alt="…" to the <img>, change <h3> to <h2>, and add <label for="email">Email</label> above the email input.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Adopt-a-Tree</h1>\n    </header>\n    <main>\n      <h2>Meet the trees</h2>\n      <img src="elm.png" alt="A young elm in a sunny meadow">\n      <p>Elm, rowan, and one very dramatic willow.</p>\n      <form>\n        <label for="email">Email</label>\n        <input id="email" type="email" placeholder="Email">\n        <button>Get updates</button>\n      </form>\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Adopt-a-Tree</h1>\n    </header>\n    <main>\n      <h3>Meet the trees</h3>\n      <img src="elm.png">\n      <p>Elm, rowan, and one very dramatic willow.</p>\n      <form>\n        <input id="email" type="email" placeholder="Email">\n        <button>Get updates</button>\n      </form>\n    </main>\n  </body>\n</html>',
       checks: [
@@ -215,11 +253,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'img[alt]',
           label: 'The elm photo has alt text',
+          hint: 'Add an alt attribute to the <img> describing the elm tree.',
         },
         {
           type: 'selectorExists',
           selector: 'h2',
           label: 'The section heading is an <h2>',
+          hint: 'Change <h3>Meet the trees</h3> to <h2>Meet the trees</h2>.',
         },
         {
           type: 'selectorCount',

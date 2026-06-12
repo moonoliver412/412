@@ -1,0 +1,145 @@
+/* Quiz question — motion per .claude/skills/motion-graphics. */
+
+.qz {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #161616;
+  border: 1.5px solid #2c2c2c;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.qz-question {
+  margin: 0;
+  color: #fff;
+  font-size: 15.5px;
+  line-height: 1.55;
+  font-weight: 600;
+}
+
+.qz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qz-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: #1d1d1d;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: #d6d6d6;
+  font-size: 14px;
+  line-height: 1.45;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    transform var(--mo-fast) var(--ease-out),
+    opacity var(--mo-fast) var(--ease-out);
+}
+
+.qz-option:hover:not(:disabled) {
+  border-color: var(--amber);
+  transform: translateY(-1px);
+}
+
+.qz-option:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.qz-option-mark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid #4a4a4a;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: #8f8f8f;
+}
+
+/* Right answer: lock, glow, pop (T3 micro — fires once). */
+.qz-option.is-right {
+  border-color: #7aa05f;
+  background: rgba(122, 160, 95, 0.14);
+  color: #fff;
+  opacity: 1;
+  animation: qz-right var(--mo-slow) var(--ease-spring);
+}
+
+.qz-option.is-right .qz-option-mark {
+  border-color: #7aa05f;
+  background: #7aa05f;
+  color: #fff;
+}
+
+@keyframes qz-right {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Wrong answer: shake, stays available (T1 error feedback). */
+.qz-option.is-wrong {
+  border-color: #e07a5f;
+  animation: qz-wrong var(--mo-base) var(--ease-out);
+}
+
+@keyframes qz-wrong {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+.qz-explain {
+  margin: 0;
+  padding: 10px 14px;
+  background: rgba(229, 185, 94, 0.12);
+  border: 1.5px solid rgba(229, 185, 94, 0.45);
+  border-radius: 12px;
+  color: var(--amber);
+  font-size: 13.5px;
+  line-height: 1.55;
+  animation: qz-explain-in var(--mo-base) var(--ease-out) both;
+}
+
+@keyframes qz-explain-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qz,
+  .qz * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

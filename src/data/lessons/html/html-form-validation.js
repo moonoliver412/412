@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Tighten the username field: add required so it cannot be left empty, and pattern="[a-z]+" so only lowercase letters get through.',
+      hints: [
+        'required and pattern are attributes you add directly to the <input> tag. required has no value; pattern takes a regular expression.',
+        'Add required and pattern="[a-z]+" to the existing <input id="user"> element.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="user">Username</label>\n      <input id="user" type="text" required pattern="[a-z]+">\n      <button>Create account</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="user">Username</label>\n      <input id="user" type="text">\n      <button>Create account</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -35,11 +41,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'input[required]',
           label: 'The username is required',
+          hint: 'Add the required attribute to the <input> element (no value needed).',
         },
         {
           type: 'selectorExists',
           selector: 'input[pattern]',
           label: 'A pattern restricts what counts as valid',
+          hint: 'Add pattern="[a-z]+" to the <input> element.',
         },
       ],
     },
@@ -67,6 +75,12 @@ const lessons = [
     exercise: {
       instructions:
         'This RSVP form accepts anything. Fix the types: make the email field type="email", the website field type="url", and the guests field type="number" with min="1".',
+      hints: [
+        'The type attribute on <input> tells the browser what format to expect and validate. Change it from type="text" to the correct type for each field.',
+        'Set type="email" on the email input, type="url" on the website input, and type="number" min="1" on the guests input.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="email">Email</label>\n      <input id="email" type="email">\n      <label for="site">Your website</label>\n      <input id="site" type="url">\n      <label for="guests">Guests</label>\n      <input id="guests" type="number" min="1">\n      <button>RSVP</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="email">Email</label>\n      <input id="email" type="text">\n      <label for="site">Your website</label>\n      <input id="site" type="text">\n      <label for="guests">Guests</label>\n      <input id="guests" type="text">\n      <button>RSVP</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -74,11 +88,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'input[type="email"]',
           label: 'The email field validates as an email',
+          hint: 'Change the email input\'s type from "text" to "email".',
         },
         {
           type: 'selectorExists',
           selector: 'input[type="url"]',
           label: 'The website field validates as a URL',
+          hint: 'Change the website input\'s type from "text" to "url".',
         },
         {
           type: 'selectorExists',
@@ -111,6 +127,12 @@ const lessons = [
     exercise: {
       instructions:
         'Make the error helpful: give the plot-code input a title that explains the rule (something like "Three capital letters, like KEW") and a maxlength of 3.',
+      hints: [
+        'title adds text to the browser\'s error bubble when validation fails. maxlength stops the user from typing more characters than allowed.',
+        'Add title="Three capital letters, like KEW" and maxlength="3" to the existing <input> element.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="code">Garden plot code</label>\n      <input id="code" type="text" pattern="[A-Z]{3}" title="Three capital letters, like KEW" maxlength="3">\n      <button>Claim plot</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="code">Garden plot code</label>\n      <input id="code" type="text" pattern="[A-Z]{3}">\n      <button>Claim plot</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -118,11 +140,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'input[pattern][title]',
           label: 'The pattern comes with a human explanation in title',
+          hint: 'Add a title attribute to the input explaining the rule in plain words.',
         },
         {
           type: 'selectorExists',
           selector: 'input[maxlength]',
           label: 'A maxlength stops runaway typing',
+          hint: 'Add maxlength="3" to the input.',
         },
       ],
     },
@@ -150,6 +174,12 @@ const lessons = [
     exercise: {
       instructions:
         'Connect the hint: give the rules paragraph an id="pw-hint", then point the password input at it with aria-describedby="pw-hint".',
+      hints: [
+        'aria-describedby links an input to an element that describes it. The value must match the id of the description element exactly.',
+        'Add id="pw-hint" to the <p> element, then add aria-describedby="pw-hint" to the <input>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="pw">Password</label>\n      <input id="pw" type="password" minlength="8" required aria-describedby="pw-hint">\n      <p id="pw-hint">At least eight characters, one number.</p>\n      <button>Save</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <form>\n      <label for="pw">Password</label>\n      <input id="pw" type="password" minlength="8" required>\n      <p>At least eight characters, one number.</p>\n      <button>Save</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -157,6 +187,7 @@ const lessons = [
           type: 'selectorExists',
           selector: '#pw-hint',
           label: 'The hint paragraph has the id "pw-hint"',
+          hint: 'Add id="pw-hint" to the <p> element.',
         },
         {
           type: 'attrEquals',
@@ -164,6 +195,7 @@ const lessons = [
           attr: 'aria-describedby',
           value: 'pw-hint',
           label: 'The input announces its hint via aria-describedby',
+          hint: 'Add aria-describedby="pw-hint" to the password <input>.',
         },
       ],
     },
@@ -195,6 +227,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build the signup form: three labelled fields — a username with a pattern, an email with type="email" and required, and a password with type="password" and minlength="8" — above the submit button.',
+      hints: [
+        'Build field by field: label then input, for each of the three fields. Each <label> for attribute must match its input\'s id.',
+        'Add: <label for="user">Username</label><input id="user" type="text" pattern="[a-z]+" required>, <label for="email">Email</label><input id="email" type="email" required>, <label for="pw">Password</label><input id="pw" type="password" minlength="8">.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Join Sprout Club</h1>\n    <form>\n      <label for="user">Username</label>\n      <input id="user" type="text" pattern="[a-z]+" required>\n      <label for="email">Email</label>\n      <input id="email" type="email" required>\n      <label for="pw">Password</label>\n      <input id="pw" type="password" minlength="8">\n\n      <button>Sign up</button>\n    </form>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Join Sprout Club</h1>\n    <form>\n      <!-- username, email, and password — labelled and validated -->\n\n      <button>Sign up</button>\n    </form>\n  </body>\n</html>',
       checks: [
@@ -202,11 +240,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'input[pattern]',
           label: 'The username enforces a pattern',
+          hint: 'Add a pattern attribute to the username input (e.g. pattern="[a-z]+").',
         },
         {
           type: 'selectorExists',
           selector: 'input[type="email"][required]',
           label: 'A required email field validates itself',
+          hint: 'One input needs both type="email" and required.',
         },
         {
           type: 'selectorExists',

@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Cut a window into the page: add an <iframe> with src="https://example.com", width="400", height="250", and a title describing what is inside.',
+      hints: [
+        'An <iframe> loads another page inside yours. It needs src (what to load) and title (what it is, for screen readers) — both are required.',
+        'Add <iframe src="https://example.com" width="400" height="250" title="Example.com preview"></iframe>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>My reading nook</h1>\n    <p>A little window to another site:</p>\n    <iframe src="https://example.com" width="400" height="250" title="Example.com preview"></iframe>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>My reading nook</h1>\n    <p>A little window to another site:</p>\n    <!-- iframe goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -35,11 +41,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'iframe[src]',
           label: 'An <iframe> loads a page via src',
+          hint: 'Add an <iframe> element with a src attribute.',
         },
         {
           type: 'selectorExists',
           selector: 'iframe[title]',
           label: 'The frame introduces itself with a title',
+          hint: 'Add a title attribute to the <iframe> describing what is inside.',
         },
       ],
     },
@@ -67,6 +75,12 @@ const lessons = [
     exercise: {
       instructions:
         'This player embed is rude and cramped: give the <iframe> a descriptive title attribute, and add allowfullscreen so the fullscreen button actually works.',
+      hints: [
+        'title tells screen readers what the frame holds. allowfullscreen is a boolean attribute — it needs no value, just the word itself.',
+        'Add title="Video: how to repot a fern" and allowfullscreen to the existing <iframe> tag.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Repotting 101</h1>\n    <iframe\n      src="https://example.com/embed/repotting"\n      width="560" height="315"\n      title="Video: how to repot a fern"\n      allowfullscreen>\n    </iframe>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Repotting 101</h1>\n    <iframe\n      src="https://example.com/embed/repotting"\n      width="560" height="315">\n    </iframe>\n  </body>\n</html>',
       checks: [
@@ -74,11 +88,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'iframe[title]',
           label: 'The player has a descriptive title',
+          hint: 'Add a title attribute to the <iframe> describing the video.',
         },
         {
           type: 'selectorExists',
           selector: 'iframe[allowfullscreen]',
           label: 'Fullscreen is allowed on the player',
+          hint: 'Add the allowfullscreen attribute to the <iframe> (no value needed).',
         },
       ],
     },
@@ -106,6 +122,12 @@ const lessons = [
     exercise: {
       instructions:
         'The café page needs directions: add an <iframe> with src="https://example.com/map?place=sprout-cafe", width="400" and height="300", and loading="lazy" so it only loads when scrolled into view.',
+      hints: [
+        'Set width and height on the <iframe> so the page reserves space before the map loads. Add loading="lazy" to delay loading until the visitor scrolls toward it.',
+        'Add <iframe src="https://example.com/map?place=sprout-cafe" width="400" height="300" loading="lazy" title="Map to Sprout Café"></iframe>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Sprout Café</h1>\n    <p>Find us behind the old greenhouse.</p>\n    <iframe\n      src="https://example.com/map?place=sprout-cafe"\n      width="400"\n      height="300"\n      loading="lazy"\n      title="Map to Sprout Café">\n    </iframe>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Sprout Café</h1>\n    <p>Find us behind the old greenhouse.</p>\n    <!-- map embed goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -113,11 +135,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'iframe[src]',
           label: 'A map <iframe> points at the map page',
+          hint: 'Add an <iframe> with a src attribute pointing at the map URL.',
         },
         {
           type: 'selectorExists',
           selector: 'iframe[width][height]',
           label: 'The frame reserves space with width and height',
+          hint: 'Add both width="400" and height="300" to the <iframe>.',
         },
         {
           type: 'attrEquals',

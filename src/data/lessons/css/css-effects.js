@@ -24,18 +24,26 @@ const lessons = [
     exercise: {
       instructions:
         'Add a transition to .leaf-btn: animate the "background" property over 250ms with easing "ease-out". The :hover state is already there — just add the transition to the base rule.',
+      hints: [
+        'The transition property goes on the base .leaf-btn rule, not on :hover.',
+        'Add transition: background 250ms ease-out inside the .leaf-btn block.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .leaf-btn {\n        background: #4caf50;\n        color: white;\n        border: none;\n        padding: 10px 24px;\n        border-radius: 6px;\n        cursor: pointer;\n        font-size: 1rem;\n        /* your css here */\n      }\n      .leaf-btn:hover {\n        background: #1b5e20;\n      }\n    </style>\n  </head>\n  <body>\n    <button class="leaf-btn">Plant a seed</button>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .leaf-btn {\n        background: #4caf50;\n        color: white;\n        border: none;\n        padding: 10px 24px;\n        border-radius: 6px;\n        cursor: pointer;\n        font-size: 1rem;\n        transition: background 250ms ease-out;\n      }\n      .leaf-btn:hover {\n        background: #1b5e20;\n      }\n    </style>\n  </head>\n  <body>\n    <button class="leaf-btn">Plant a seed</button>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'transition:background',
           label: 'A background transition is defined',
+          hint: 'Use transition: background ... on the .leaf-btn base rule.',
         },
         {
           type: 'styleIncludes',
           text: '250ms',
           label: 'The transition lasts 250ms',
+          hint: 'Include 250ms as the duration in your transition value.',
         },
       ],
     },
@@ -63,18 +71,26 @@ const lessons = [
     exercise: {
       instructions:
         'Make the .tree-card lift when hovered: add a transition on "transform" of 200ms ease-out to the base rule, and add a transform of "translateY(-6px) scale(1.02)" to the :hover rule.',
+      hints: [
+        'The transition belongs on the base .tree-card rule; the transform belongs on .tree-card:hover.',
+        'Add transition: transform 200ms ease-out to .tree-card, then transform: translateY(-6px) scale(1.02) to .tree-card:hover.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .tree-card {\n        background: #e8f5e9;\n        padding: 20px;\n        border-radius: 10px;\n        display: inline-block;\n        cursor: pointer;\n        /* your css here */\n      }\n      .tree-card:hover {\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="tree-card">\n      <h3>Oak Tree</h3>\n      <p>Grows slowly, lives long.</p>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .tree-card {\n        background: #e8f5e9;\n        padding: 20px;\n        border-radius: 10px;\n        display: inline-block;\n        cursor: pointer;\n        transition: transform 200ms ease-out;\n      }\n      .tree-card:hover {\n        transform: translateY(-6px) scale(1.02);\n      }\n    </style>\n  </head>\n  <body>\n    <div class="tree-card">\n      <h3>Oak Tree</h3>\n      <p>Grows slowly, lives long.</p>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'transition:transform',
           label: 'A transform transition is defined',
+          hint: 'Add transition: transform 200ms ease-out to the base .tree-card rule.',
         },
         {
           type: 'styleIncludes',
           text: 'translateY(-6px)',
           label: 'The hover lifts the card up 6px',
+          hint: 'In .tree-card:hover, set transform: translateY(-6px) scale(1.02).',
         },
       ],
     },
@@ -102,18 +118,26 @@ const lessons = [
     exercise: {
       instructions:
         'Write a @keyframes rule named "pulse" that goes from opacity 1 at 0% to opacity 0.4 at 50% and back to 1 at 100%. Apply it to .dot with duration 1.4s, easing ease-in-out, and infinite iteration.',
+      hints: [
+        'First write the @keyframes pulse { } block with 0%, 50%, and 100% stops, then reference it with animation: on .dot.',
+        'Use animation: pulse 1.4s ease-in-out infinite on .dot — the name must match your @keyframes name exactly.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      /* your @keyframes here */\n\n      .dot {\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: seagreen;\n        /* your animation here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="dot"></div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      @keyframes pulse {\n        0%   { opacity: 1; }\n        50%  { opacity: 0.4; }\n        100% { opacity: 1; }\n      }\n\n      .dot {\n        width: 16px;\n        height: 16px;\n        border-radius: 50%;\n        background: seagreen;\n        animation: pulse 1.4s ease-in-out infinite;\n      }\n    </style>\n  </head>\n  <body>\n    <div class="dot"></div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: '@keyframespulse',
           label: 'A @keyframes rule named pulse is defined',
+          hint: 'Write @keyframes pulse { ... } with opacity stops.',
         },
         {
           type: 'styleIncludes',
           text: 'animation:pulse',
           label: 'The dot uses the pulse animation',
+          hint: 'Add animation: pulse ... to the .dot rule.',
         },
         {
           type: 'styleIncludes',
@@ -146,18 +170,26 @@ const lessons = [
     exercise: {
       instructions:
         'Add a transition to the .panel base rule: animate both "transform" and "opacity", each over 300ms with ease-out. The :hover state is already there — just add the transition.',
+      hints: [
+        'You can list multiple properties in one transition by separating them with commas.',
+        'Add transition: transform 300ms ease-out, opacity 300ms ease-out to the .panel base rule.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .panel {\n        background: #c8e6c9;\n        padding: 20px;\n        border-radius: 8px;\n        display: inline-block;\n        cursor: pointer;\n        opacity: 0.85;\n        /* your css here */\n      }\n      .panel:hover {\n        transform: scale(1.03);\n        opacity: 1;\n      }\n      @media (prefers-reduced-motion: reduce) {\n        .panel { transition: none; }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="panel">\n      <h3>Grove Panel</h3>\n      <p>Hover to highlight.</p>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .panel {\n        background: #c8e6c9;\n        padding: 20px;\n        border-radius: 8px;\n        display: inline-block;\n        cursor: pointer;\n        opacity: 0.85;\n        transition: transform 300ms ease-out, opacity 300ms ease-out;\n      }\n      .panel:hover {\n        transform: scale(1.03);\n        opacity: 1;\n      }\n      @media (prefers-reduced-motion: reduce) {\n        .panel { transition: none; }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="panel">\n      <h3>Grove Panel</h3>\n      <p>Hover to highlight.</p>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: 'transition:transform',
           label: 'The transform transition is declared',
+          hint: 'Start with transition: transform 300ms ease-out in .panel.',
         },
         {
           type: 'styleIncludes',
           text: 'opacity',
           label: 'Opacity is also transitioned',
+          hint: 'Add opacity 300ms ease-out after the transform transition, separated by a comma.',
         },
         {
           type: 'styleIncludes',
@@ -186,18 +218,26 @@ const lessons = [
     exercise: {
       instructions:
         'Write a @keyframes "fadeUp" that goes from "opacity: 0; transform: translateY(20px)" to "opacity: 1; transform: translateY(0)". Apply it to .hero-title with 600ms ease-out and fill-mode both. Give .hero-cta a hover transform of "translateY(-3px)" with a 200ms ease-out transition.',
+      hints: [
+        'Write a @keyframes fadeUp block, then reference it with animation: fadeUp on .hero-title, and add transition + a :hover transform on .hero-cta.',
+        'Use animation: fadeUp 600ms ease-out both on .hero-title, transition: transform 200ms ease-out on .hero-cta, and transform: translateY(-3px) on .hero-cta:hover.',
+      ],
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .hero {\n        background: #1a2e1a;\n        color: white;\n        padding: 64px 32px;\n        text-align: center;\n      }\n      /* your @keyframes here */\n\n      .hero-title {\n        font-size: 2.5rem;\n        margin-bottom: 24px;\n        /* your animation here */\n      }\n      .hero-cta {\n        background: #4caf50;\n        color: white;\n        border: none;\n        padding: 14px 32px;\n        border-radius: 6px;\n        font-size: 1rem;\n        cursor: pointer;\n        /* your transition here */\n      }\n      .hero-cta:hover {\n        /* your hover transform here */\n      }\n      @media (prefers-reduced-motion: reduce) {\n        .hero-title { animation: none; }\n        .hero-cta   { transition: none; }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="hero">\n      <h1 class="hero-title">Grow something beautiful</h1>\n      <button class="hero-cta">Start learning</button>\n    </div>\n  </body>\n</html>',
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      .hero {\n        background: #1a2e1a;\n        color: white;\n        padding: 64px 32px;\n        text-align: center;\n      }\n      @keyframes fadeUp {\n        from { opacity: 0; transform: translateY(20px); }\n        to   { opacity: 1; transform: translateY(0); }\n      }\n\n      .hero-title {\n        font-size: 2.5rem;\n        margin-bottom: 24px;\n        animation: fadeUp 600ms ease-out both;\n      }\n      .hero-cta {\n        background: #4caf50;\n        color: white;\n        border: none;\n        padding: 14px 32px;\n        border-radius: 6px;\n        font-size: 1rem;\n        cursor: pointer;\n        transition: transform 200ms ease-out;\n      }\n      .hero-cta:hover {\n        transform: translateY(-3px);\n      }\n      @media (prefers-reduced-motion: reduce) {\n        .hero-title { animation: none; }\n        .hero-cta   { transition: none; }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="hero">\n      <h1 class="hero-title">Grow something beautiful</h1>\n      <button class="hero-cta">Start learning</button>\n    </div>\n  </body>\n</html>',
       checks: [
         {
           type: 'styleIncludes',
           text: '@keyframesfadeup',
           label: 'A fadeUp keyframes rule is defined',
+          hint: 'Write @keyframes fadeUp { from { ... } to { ... } } — CSS lowercases names when checking.',
         },
         {
           type: 'styleIncludes',
           text: 'animation:fadeup',
           label: 'The hero title uses the fadeUp animation',
+          hint: 'Add animation: fadeUp 600ms ease-out both to .hero-title.',
         },
         {
           type: 'styleIncludes',

@@ -25,6 +25,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Create an array called trees containing at least three tree names. Push one more name onto it, then log the array and its length.',
+      hints: [
+        'Arrays use square brackets and comma-separated values. The push() method adds a new item to the end.',
+        'Call trees.push("Maple"); to add a fourth name — then the existing console.log lines will show the updated array and its length.',
+      ],
       starter:
         'const trees = ["Oak", "Birch", "Pine"];\n\n// Push a fourth tree\n// your code here\n\nconsole.log(trees);\nconsole.log(trees.length);\n',
       checks: [
@@ -32,6 +36,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'Array.isArray(trees) && trees.length >= 4',
           label: 'trees has at least 4 items after the push',
+          hint: 'Call trees.push("AnyName") to add a fourth item before the console.log lines.',
         },
         {
           type: 'logIncludes',
@@ -39,6 +44,8 @@ const lessons = [
           label: 'The length (4 or more) is logged',
         },
       ],
+      solution:
+        'const trees = ["Oak", "Birch", "Pine"];\n\ntrees.push("Maple");\n\nconsole.log(trees);\nconsole.log(trees.length);\n',
     },
   },
   {
@@ -65,6 +72,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Given the ages array, use map to create a doubledAges array, filter to create a grownTrees array of ages 10 or above, and reduce to compute the totalAge. Log all three.',
+      hints: [
+        'map transforms each item, filter keeps matching items, and reduce collapses the array to one value. Each takes a callback.',
+        'Write const doubledAges = ages.map(a => a * 2); const grownTrees = ages.filter(a => a >= 10); const totalAge = ages.reduce((sum, a) => sum + a, 0);',
+      ],
       starter:
         'const ages = [4, 12, 7, 15, 2, 10];\n\n// your code here\n',
       checks: [
@@ -72,11 +83,13 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'Array.isArray(doubledAges) && doubledAges[0] === 8',
           label: 'doubledAges correctly doubles each value',
+          hint: 'Use ages.map(a => a * 2) and store the result in doubledAges.',
         },
         {
           type: 'exprTruthy',
           expr: 'Array.isArray(grownTrees) && grownTrees.every(a => a >= 10)',
           label: 'grownTrees contains only ages 10 and above',
+          hint: 'Use ages.filter(a => a >= 10) and store the result in grownTrees.',
         },
         {
           type: 'exprTruthy',
@@ -84,6 +97,8 @@ const lessons = [
           label: 'totalAge equals 50 (the sum of all ages)',
         },
       ],
+      solution:
+        'const ages = [4, 12, 7, 15, 2, 10];\n\nconst doubledAges = ages.map(a => a * 2);\nconst grownTrees = ages.filter(a => a >= 10);\nconst totalAge = ages.reduce((sum, a) => sum + a, 0);\n\nconsole.log(doubledAges);\nconsole.log(grownTrees);\nconsole.log(totalAge);\n',
     },
   },
   {
@@ -110,6 +125,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Create an object called sapling with at least three properties: name (string), height (number), and species (string). Then log sapling.name and the number of keys using Object.keys(sapling).length.',
+      hints: [
+        'An object uses curly braces. Each entry is a key, a colon, and a value — like name: "Birch". Separate entries with commas.',
+        'Write const sapling = { name: "Birch", height: 3, species: "birch" }; — the existing console.log lines will then pass.',
+      ],
       starter:
         '// Create your sapling object\n// your code here\n\nconsole.log(sapling.name);\nconsole.log(Object.keys(sapling).length);\n',
       checks: [
@@ -117,6 +136,7 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof sapling === "object" && sapling !== null && typeof sapling.name === "string"',
           label: 'sapling is an object with a name string',
+          hint: 'Give sapling a name property that holds a string value.',
         },
         {
           type: 'exprTruthy',
@@ -129,6 +149,8 @@ const lessons = [
           label: 'sapling has at least 3 properties',
         },
       ],
+      solution:
+        'const sapling = {\n  name: "Birch",\n  height: 3,\n  species: "birch",\n};\n\nconsole.log(sapling.name);\nconsole.log(Object.keys(sapling).length);\n',
     },
   },
   {
@@ -155,6 +177,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Destructure the name and height from the tree object below. Then use spread to create a new object called grownTree that is a copy of tree but with height increased by 5. Log grownTree.height.',
+      hints: [
+        'Destructuring uses curly braces on the left of =. Spread copies all properties with ... then you override any you want to change.',
+        'Write const { name, height } = tree; then const grownTree = { ...tree, height: height + 5 };',
+      ],
       starter:
         'const tree = { name: "Elm", height: 14, species: "elm" };\n\n// Destructure name and height\n// your code here\n\n// Create grownTree using spread\n// your code here\n\nconsole.log(grownTree.height);\n',
       checks: [
@@ -162,11 +188,13 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'typeof name === "string" && typeof height === "number"',
           label: 'name and height are destructured into variables',
+          hint: 'Use const { name, height } = tree; to pull both values out in one line.',
         },
         {
           type: 'exprTruthy',
           expr: 'typeof grownTree === "object" && grownTree.height === 19',
           label: 'grownTree has height increased by 5 (19)',
+          hint: 'Spread tree into a new object and set height: tree.height + 5 to get 19.',
         },
         {
           type: 'logIncludes',
@@ -174,6 +202,8 @@ const lessons = [
           label: 'The new height 19 is logged',
         },
       ],
+      solution:
+        'const tree = { name: "Elm", height: 14, species: "elm" };\n\nconst { name, height } = tree;\n\nconst grownTree = { ...tree, height: height + 5 };\n\nconsole.log(grownTree.height);\n',
     },
   },
   {
@@ -200,6 +230,10 @@ const lessons = [
       kind: 'js',
       instructions:
         'Given the grove array below, compute: evergreens (filter for evergreen: true), tallNames (map to just the names of trees with height >= 20), and totalHeight (reduce to the sum of all heights). Log all three.',
+      hints: [
+        'chain filter and map to get tallNames: first filter for height >= 20, then map to t.name. Use reduce with a starting value of 0 for totalHeight.',
+        'Write const evergreens = grove.filter(t => t.evergreen); const tallNames = grove.filter(t => t.height >= 20).map(t => t.name); const totalHeight = grove.reduce((sum, t) => sum + t.height, 0);',
+      ],
       starter:
         'const grove = [\n  { name: "Maple",  height: 22, evergreen: false },\n  { name: "Pine",   height: 30, evergreen: true  },\n  { name: "Birch",  height: 18, evergreen: false },\n  { name: "Spruce", height: 27, evergreen: true  },\n];\n\n// your code here\n\nconsole.log(evergreens);\nconsole.log(tallNames);\nconsole.log(totalHeight);\n',
       checks: [
@@ -207,11 +241,13 @@ const lessons = [
           type: 'exprTruthy',
           expr: 'Array.isArray(evergreens) && evergreens.length === 2 && evergreens.every(t => t.evergreen)',
           label: 'evergreens contains the 2 evergreen trees',
+          hint: 'Filter grove by t.evergreen === true and store the result in evergreens.',
         },
         {
           type: 'exprTruthy',
           expr: 'Array.isArray(tallNames) && tallNames.length === 3 && tallNames.every(n => typeof n === "string")',
           label: 'tallNames contains the 3 trees with height >= 20 as strings',
+          hint: 'Filter for height >= 20 first, then map each tree to t.name to get an array of strings.',
         },
         {
           type: 'exprTruthy',
@@ -219,6 +255,8 @@ const lessons = [
           label: 'totalHeight equals 97',
         },
       ],
+      solution:
+        'const grove = [\n  { name: "Maple",  height: 22, evergreen: false },\n  { name: "Pine",   height: 30, evergreen: true  },\n  { name: "Birch",  height: 18, evergreen: false },\n  { name: "Spruce", height: 27, evergreen: true  },\n];\n\nconst evergreens = grove.filter(t => t.evergreen);\nconst tallNames = grove.filter(t => t.height >= 20).map(t => t.name);\nconst totalHeight = grove.reduce((sum, t) => sum + t.height, 0);\n\nconsole.log(evergreens);\nconsole.log(tallNames);\nconsole.log(totalHeight);\n',
     },
   },
 ];

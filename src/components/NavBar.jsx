@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useGame } from '../state/useGame';
+import { canAskPermission, streakAtRisk } from '../lib/notify';
 import './NavBar.css';
 
 const LINKS = [
@@ -74,19 +75,20 @@ export default function NavBar() {
           </svg>
           {game.streak.current}
         </span>
-        <button className="nav-icon-btn" aria-label="Messages">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="5" width="18" height="14" rx="2" />
-            <path d="M3 7l9 6 9-6" />
-          </svg>
-        </button>
-        <button className="nav-icon-btn" aria-label="Schedule">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="4" width="18" height="17" rx="2" />
-            <path d="M8 2v4M16 2v4M3 9h18" />
-          </svg>
-        </button>
-        <button className="nav-icon-btn" aria-label="Notifications">
+        <button
+          className={`nav-icon-btn nav-bell${
+            streakAtRisk(game) ? ' is-alert' : ''
+          }`}
+          aria-label="Streak reminders"
+          title={
+            canAskPermission()
+              ? 'Turn on streak reminders'
+              : 'Streak reminders'
+          }
+          onClick={() => {
+            if (canAskPermission()) Notification.requestPermission();
+          }}
+        >
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6" strokeLinejoin="round" />
             <path d="M10 19a2 2 0 0 0 4 0" />
