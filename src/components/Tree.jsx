@@ -113,6 +113,7 @@ function rewilt(items, f) {
     if (it.fill) it.wfill = f(it.fill);
     if (it.cap) it.wcap = f(it.cap);
     if (it.edge) it.wedge = f(it.edge);
+    if (it.lit) it.wlit = f(it.lit);
   }
 }
 
@@ -125,8 +126,9 @@ const KINDS = {
   oak: { seed: 11, trunk: '#c79a63', trunkDk: '#9a7244', back: '#4f8f51', mid: '#79b865', front: '#a3d385', rim: '#cdeaa9' },
   // birch: pale birch-white trunk (signature), yellow-lime column canopy
   birch: { seed: 23, trunk: '#f4f0e4', trunkDk: '#c9c2ad', back: '#79944f', mid: '#8fae66', front: '#aac57e', rim: '#c8dba0' },
-  // pine: deep conifer hue kept, mids nudged toward the shared green band
-  pine: { seed: 37, trunk: '#937352', trunkDk: '#74573c', back: '#455f44', mid: '#6f9466', front: '#8aaa7c', rim: '#b5c99c' },
+  // pine: reference-matched flat-illustration spruce — deep mossy forest
+  // greens (dark drooping undersides, muted olive lit tops), mid-brown trunk
+  pine: { seed: 37, trunk: '#7a5b3d', trunkDk: '#5a4129', back: '#394d2d', mid: '#4b6336', front: '#5f7c40', rim: '#8aa054' },
   // maple: autumn fire kept — rust → soft scarlet → apricot → creamy gold
   maple: { seed: 53, trunk: '#9b6a50', trunkDk: '#71492f', back: '#b34d33', mid: '#df7a4a', front: '#f2a055', rim: '#f7cd7e' },
   // willow: crown in the shared band; the CURTAINS use deep forest #4a7c3f
@@ -578,12 +580,12 @@ function buildBirch(rng, pal) {
 function swagTier(rng, y, hw, droop) {
   const th = hw * 0.5 + 7;
   let d = `M ${R(-hw)} ${R(y + droop)}`;
-  const n = Math.max(4, Math.round(hw / 11)); // panel: fewer, rounder scallops
+  const n = Math.max(4, Math.round(hw / 13)); // chunky rounded frond fingers
   let px = -hw, py = y + droop;
   for (let i = 1; i <= n; i++) {
     const x = -hw + (2 * hw * i) / n;
     const yy = y + droop * Math.pow(Math.abs(x) / hw, 1.6) - rng() * 0.7;
-    d += ` Q ${R((px + x) / 2)} ${R((py + yy) / 2 + 2.1 + rng() * 1.1)} ${R(x)} ${R(yy)}`;
+    d += ` Q ${R((px + x) / 2)} ${R((py + yy) / 2 + 2.8 + rng() * 1.2)} ${R(x)} ${R(yy)}`;
     px = x; py = yy;
   }
   d += ` Q ${R(hw * 0.6)} ${R(y - th * 0.3)} ${R(hw * 0.16)} ${R(y - th * 0.82)}`;
@@ -608,32 +610,42 @@ function buildPine(rng, pal) {
   // --back layer (full), middle 4 the --mid layer, apex 4 + leader a new
   // --tip layer at ~35% amplitude.
   const specs = [
-    [0, 52, 12, 2.55, 'back'], [-20, 47, 11, 2.72, 'back'], [-39, 42.5, 10.5, 2.89, 'back'],
-    [-57, 38, 10, 3.06, 'back'], [-74, 34, 9.5, 3.23, 'back'],
-    [-90, 30, 9, 3.4, 'mid'], [-105, 26.5, 8.5, 3.57, 'mid'], [-119, 23, 8, 3.74, 'mid'],
-    [-132, 20, 7.5, 3.91, 'mid'],
-    [-144, 17, 7, 4.08, 'tip'], [-155, 14, 6, 4.25, 'tip'], [-165, 11, 5.5, 4.4, 'tip'],
-    [-174, 8.5, 4.5, 4.52, 'tip'],
+    [-10, 52, 12, 2.55, 'back'], [-30, 47, 11, 2.72, 'back'], [-49, 42.5, 10.5, 2.89, 'back'],
+    [-67, 38, 10, 3.06, 'back'], [-84, 34, 9.5, 3.23, 'back'],
+    [-100, 30, 9, 3.4, 'mid'], [-115, 26.5, 8.5, 3.57, 'mid'], [-129, 23, 8, 3.74, 'mid'],
+    [-142, 20, 7.5, 3.91, 'mid'],
+    [-154, 17, 7, 4.08, 'tip'], [-165, 14, 6, 4.25, 'tip'], [-175, 11, 5.5, 4.4, 'tip'],
+    [-184, 8.5, 4.5, 4.52, 'tip'],
   ];
-  // Iteration 2: NO per-needle strokes on tier edges — the swag scallops are
-  // soft self-edged boundaries only. Lit caps switch to an explicit cooler
-  // blue-green (#6a9e7a, ~+20 L*) drawn bolder so they read at tile size.
-  const PINE_CAP = '#8ec2a0'; // panel: cap must read at scene scale
-  const tiers = specs.map(([y, hw, droop, birth, band], i) => {
-    const fill = i % 2 ? pal.mid : pal.back;
-    const speckles = Array.from({ length: hw > 30 ? 8 : 5 }, () => [
-      R((rng() - 0.5) * hw * 1.3), R(y - 6 + rng() * (droop + 8)), R(0.7 + rng() * 0.7),
+  // Reference style (flat-illustration spruce): every tier is TWO surfaces —
+  // a deep-shadow base whose scalloped fringe droops low, and a LIT TOP
+  // surface (smaller droop, so the dark fringe shows beneath it). Lit tone
+  // ramps slightly lighter toward the apex, like top-light on the real thing.
+  const tiers = specs.map(([y, hw0, droop, birth, band], i) => {
+    const hw = hw0 * 1.07; // reference spruce is broader than the old pine
+    const dp = droop * 1.35; // reference fringes hang noticeably lower
+    const fill = mix(pal.back, '#2c3d22', i % 2 ? 0 : 0.25); // shadow underside
+    const t = i / (specs.length - 1); // 0 bottom → 1 apex
+    const lit = mix(mix(pal.mid, pal.front, 0.35 + t * 0.5), pal.rim, t * 0.12);
+    // speckles live on the LIT surface (tiny pale needles catching light)
+    const speckles = Array.from({ length: hw > 30 ? 7 : 4 }, () => [
+      R((rng() - 0.5) * hw * 1.0), R(y - 6 - rng() * (hw * 0.24)), R(0.6 + rng() * 0.6),
     ]);
-    const th = hw * 0.5 + 7;
-    const capLine = `M ${R(-hw * 0.9)} ${R(y + droop * 0.55)} Q ${R(-hw * 0.5)} ${R(y - th * 0.32)} ${R(-hw * 0.12)} ${R(y - th * 0.78)}`;
     return {
-      d: swagTier(rng, y, hw, droop), y, birth, band, fill, wfill: wiltLeaf(fill),
+      d: swagTier(rng, y, hw, dp), y, birth, band,
+      fill, wfill: wiltLeaf(fill),
       edge: selfEdge(fill), wedge: wiltLeaf(selfEdge(fill)),
-      capLine, cap: PINE_CAP, wcap: wiltLeaf(PINE_CAP),
+      // lit top sits higher and droops less, exposing a fat shadow fringe —
+      // the signature of the reference illustration
+      litD: swagTier(rng, y - dp * 0.34, hw * 0.9, dp * 0.5),
+      lit, wlit: wiltLeaf(lit),
       speckles,
     };
   });
-  tiers.reverse(); // draw top tiers first so each fringe overlaps the one above
+  // Reference stacking: bottom tiers draw FIRST so every tier's dark
+  // drooping fringe drapes over the lit surface of the tier below it —
+  // that visible shadow line between layers is the look's signature.
+  // (Band render order back→mid→tip matches; see the tier JSX.)
   // wilt: warm gray #9a9890 keeping the spike — never cold dead gray
   rewilt(tiers, (c) => mix(c, '#9a9890', 0.72));
   return {
@@ -648,12 +660,13 @@ function buildPine(rng, pal) {
     ],
     knots: [{ x: 1.5, y: R(-h * 0.55), rx: 1.6, ry: 2.4 }],
     // s2.4 signal: the first lateral BRANCH PAIR pokes out before tier one
+    // (sits just under the bottom tier so the mature canopy hides it)
     branches: [
-      { d: limb(0, 2, -16, -3, 2.4, 0.9, -2), birth: 2.32, droop: 8 },
-      { d: limb(0, 2, 16, -4, 2.4, 0.9, 2), birth: 2.42, droop: 8 },
+      { d: limb(0, -12, -16, -17, 2.4, 0.9, -2), birth: 2.32, droop: 8 },
+      { d: limb(0, -12, 16, -18, 2.4, 0.9, 2), birth: 2.42, droop: 8 },
     ],
     tiers,
-    leader: { d: 'M 0 -176 L 0 -192 M 0 -183 L -4.5 -188 M 0 -186 L 4.5 -191', oy: -176, birth: 4.7 },
+    leader: { d: 'M 0 -186 L 0 -200 M 0 -192 L -4.5 -197 M 0 -195 L 4.5 -200', oy: -186, birth: 4.7 },
     tuft: [
       'M -11 0 Q -13 -4 -12.5 -8', 'M -8 0 Q -8.5 -5 -6.5 -9', 'M 6 0 Q 6.5 -4.5 8 -7',
       'M 9 0 Q 10.5 -4 10 -8', 'M 12 0 Q 14 -3 14.5 -6',
@@ -661,7 +674,8 @@ function buildPine(rng, pal) {
     ],
     sils: [],
     leaves: [],
-    shadeLo: [{ cx: 2, cy: -46, rx: 22, ry: 34 }],
+    // reference style is clean flat layers — no central shading smudge
+    shadeLo: [],
     shadeHi: [],
     rims: Array.from({ length: 7 }, (_, i) => ({ x: R(-8 - rng() * 18), y: R(-18 - i * 23 - rng() * 10), r: R(1 + rng() * 0.8) })),
     rims2: rims2(rng, 0, -90, 30, 78, 18),
@@ -673,12 +687,9 @@ function buildPine(rng, pal) {
       mix(pal.back, '#16241a', 0.4)
     ),
     // stage-5 trophy: a golden star/topper glint rides the leader (star:true
-    // renders the topper glyph + warm rim halo); cones stay as supporting cast
-    fruits: [
-      { x: 0, y: -186, rot: 0, star: true },
-      { x: -27, y: -34, rot: 6 }, { x: 24, y: -73, rot: -8 }, { x: -17, y: -110, rot: 5 },
-      { x: 19, y: -52, rot: 7 }, { x: -14, y: -136, rot: -5 },
-    ],
+    // renders the topper glyph + warm rim halo). No cones — the reference
+    // body stays clean.
+    fruits: [{ x: 0, y: -196, rot: 0, star: true }],
     sparkles: sparkles(rng, 0, -90, 32, 78, 6),
     // pine fallers are SHORT NEEDLES on a fast spin (dur ≈ half the default)
     fallers: fallers(rng, 0, -40, 30, 2, pal.mid).map((f) => ({ ...f, dur: R(8 + (f.dur - 15) * 0.5) })),
@@ -1489,16 +1500,25 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
               className="cs-tree__tint cs-tree__tintstroke"
               stroke={wilted ? t.wedge : t.edge} strokeWidth="1.2" strokeLinejoin="round" vectorEffect="non-scaling-stroke"
             />
-            <path
-              d={t.capLine}
-              fill="none"
-              stroke={wilted ? t.wcap : t.cap}
-              strokeWidth="3" strokeLinecap="round" vectorEffect="non-scaling-stroke"
-              className="cs-tree__tintstroke"
-              opacity="0.9"
-            />
+            {t.litD && (
+              <path
+                d={t.litD}
+                fill={wilted ? t.wlit : t.lit}
+                className="cs-tree__tint"
+              />
+            )}
+            {t.capLine && (
+              <path
+                d={t.capLine}
+                fill="none"
+                stroke={wilted ? t.wcap : t.cap}
+                strokeWidth="3" strokeLinecap="round" vectorEffect="non-scaling-stroke"
+                className="cs-tree__tintstroke"
+                opacity="0.9"
+              />
+            )}
             {t.speckles.map((sp, j) => (
-              <circle key={j} cx={sp[0]} cy={sp[1]} r={sp[2]} fill={pal.rim} opacity="0.55" />
+              <circle key={j} cx={sp[0]} cy={sp[1]} r={sp[2]} fill={pal.rim} opacity="0.38" />
             ))}
           </g>
         );
@@ -1691,9 +1711,12 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
 
           {/* pine: the tier stack rides three sway bands — bottom on --back
               (full), middle on --mid, apex + leader on --tip (~35% amp).
-              Tip band renders first so each fringe overlaps the tier above. */}
+              Bottom band renders first so every tier's dark fringe drapes
+              over the lit surface of the tier below (reference stacking). */}
           {T.tiers && (
             <>
+              <g className="cs-tree__layer cs-tree__layer--back" style={slump(-2.5, 2)}>{tierEls('back')}</g>
+              <g className="cs-tree__layer cs-tree__layer--mid" style={slump(-3.5, 3)}>{tierEls('mid')}</g>
               <g className="cs-tree__layer cs-tree__layer--tip" style={slump(-1.5, 1)}>
                 {tierEls('tip')}
                 {T.leader &&
@@ -1713,8 +1736,6 @@ function Tree({ stage = 0, wilted = false, kind = 'oak', size = 140, seed }) {
                     );
                   })()}
               </g>
-              <g className="cs-tree__layer cs-tree__layer--mid" style={slump(-3.5, 3)}>{tierEls('mid')}</g>
-              <g className="cs-tree__layer cs-tree__layer--back" style={slump(-2.5, 2)}>{tierEls('back')}</g>
             </>
           )}
 
