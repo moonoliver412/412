@@ -168,9 +168,20 @@ function runLine(state, raw) {
 
 function runGit(state, args) {
   const sub = args[0];
+  // init and clone don't need an existing repository.
   if (sub === 'init') {
     ensureGit(state);
     state.out.push('Initialized empty Git repository');
+    return;
+  }
+  if (sub === 'clone') {
+    const url = args[1] ?? 'repo';
+    const folder =
+      args[2] ?? (url.split('/').pop().replace(/\.git$/, '') || 'repo');
+    const git = ensureGit(state);
+    git.remotes.add('origin');
+    state.fs[normPath(state, folder)] = { type: 'dir' };
+    state.out.push(`Cloning into '${folder}'`);
     return;
   }
   const git = state.git;
@@ -179,14 +190,32 @@ function runGit(state, args) {
     return;
   }
   switch (sub) {
-    case 'status':
-      state.out.push(
-        `On branch ${git.current}\n` +
-          (git.staged.size
-            ? `Changes to be committed:\n  ${[...git.staged].join('\n  ')}`
-            : 'nothing to commit')
-      );
+    case 'status': {
+      // Untracked = working-dir files that are neither staged nor committed.
+      const committed = new Set(git.commits.flatMap((c) => c.files));
+      const untracked = Object.keys(state.fs)
+        .filter(
+          (p) =>
+            state.fs[p].type === 'file' &&
+            !git.staged.has(p) &&
+            !committed.has(p)
+        )
+        .map((p) => p.split('/').pop());
+      const lines = [`On branch ${git.current}`];
+      if (git.staged.size) {
+        lines.push(
+          `Changes to be committed:\n  ${[...git.staged]
+            .map((p) => p.split('/').pop())
+            .join('\n  ')}`
+        );
+      }
+      if (untracked.length) {
+        lines.push(`Untracked files:\n  ${untracked.join('\n  ')}`);
+      }
+      if (!git.staged.size && !untracked.length) lines.push('nothing to commit');
+      state.out.push(lines.join('\n'));
       return;
+    }
     case 'add': {
       const target = args[1];
       if (target === '.' || target === '-A') {
@@ -258,11 +287,6 @@ function runGit(state, args) {
       return;
     case 'pull':
       state.out.push('Already up to date');
-      return;
-    case 'clone':
-      ensureGit(state);
-      git.remotes.add('origin');
-      state.out.push(`Cloning into '${args[1] ?? 'repo'}'`);
       return;
     default:
       state.out.push(`git: '${sub}' is not a git command`);

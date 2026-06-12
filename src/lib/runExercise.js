@@ -10,12 +10,13 @@
 
 import { checkExercise } from './checkExercise.js';
 import { buildJsRunDoc, labelJsResults } from './jsRunner.js';
-import { stripTypes } from './tsStrip.js';
 import { NODE_PREAMBLE } from './runners/node.js';
 import { runTerminal } from './runners/terminal.js';
 import { runSql } from './runners/sql.js';
 import { runPython } from './runners/python.js';
 
+// 'ts' is iframe-graded too, but its Babel transpile is async, so LessonPanel
+// builds the TS doc itself; buildIframeDoc handles only the synchronous kinds.
 const IFRAME_KINDS = new Set(['js', 'ts', 'node']);
 const CONSOLE_KINDS = new Set(['sql', 'python', 'terminal']);
 
@@ -33,18 +34,11 @@ export function showsPreview(exercise) {
   return exerciseMode(exercise) !== 'console';
 }
 
-/** Build the sandboxed-iframe document for js/ts/node. */
+/** Build the sandboxed-iframe document for js/node (ts is built in
+ *  LessonPanel after its async Babel transpile). */
 export function buildIframeDoc(exercise, code, nonce) {
   const checks = exercise.checks ?? [];
   switch (exercise.kind) {
-    case 'ts':
-      return buildJsRunDoc({
-        code: stripTypes(code),
-        source: code,
-        html: exercise.html,
-        checks,
-        nonce,
-      });
     case 'node':
       return buildJsRunDoc({
         code,

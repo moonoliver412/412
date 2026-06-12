@@ -34,11 +34,41 @@ import jsProject from './js/js-project';
 import jsClasses from './js/js-classes';
 import jsDebugging from './js/js-debugging';
 import tsBasics from './ts/ts-basics';
+import tsFunctions from './ts/ts-functions';
+import tsObjects from './ts/ts-objects';
+import tsUnions from './ts/ts-unions';
+import tsGenerics from './ts/ts-generics';
+import tsProject from './ts/ts-project';
 import nodeBasics from './node/node-basics';
+import nodeData from './node/node-data';
+import nodeHttp from './node/node-http';
+import expressRoutes from './node/express-routes';
+import expressApi from './node/express-api';
+import expressProject from './node/express-project';
 import reactJsx from './react/react-jsx';
+import reactProps from './react/react-props';
+import reactState from './react/react-state';
+import reactEvents from './react/react-events';
+import reactLists from './react/react-lists';
+import reactProject from './react/react-project';
 import sqlSelect from './sql/sql-select';
+import sqlFilter from './sql/sql-filter';
+import sqlAggregate from './sql/sql-aggregate';
+import sqlJoins from './sql/sql-joins';
+import sqlModify from './sql/sql-modify';
+import sqlDesign from './sql/sql-design';
 import pyBasics from './py/py-basics';
+import pyControl from './py/py-control';
+import pyFunctions from './py/py-functions';
+import pyCollections from './py/py-collections';
+import pyStrings from './py/py-strings';
+import pyProject from './py/py-project';
 import cliBasics from './cli/cli-basics';
+import cliFiles from './cli/cli-files';
+import gitStart from './cli/git-start';
+import gitCommits from './cli/git-commits';
+import gitBranches from './cli/git-branches';
+import gitRemote from './cli/git-remote';
 
 const topics = [
   htmlStructure,
@@ -71,11 +101,41 @@ const topics = [
   jsClasses,
   jsDebugging,
   tsBasics,
+  tsFunctions,
+  tsObjects,
+  tsUnions,
+  tsGenerics,
+  tsProject,
   nodeBasics,
+  nodeData,
+  nodeHttp,
+  expressRoutes,
+  expressApi,
+  expressProject,
   reactJsx,
+  reactProps,
+  reactState,
+  reactEvents,
+  reactLists,
+  reactProject,
   sqlSelect,
+  sqlFilter,
+  sqlAggregate,
+  sqlJoins,
+  sqlModify,
+  sqlDesign,
   pyBasics,
+  pyControl,
+  pyFunctions,
+  pyCollections,
+  pyStrings,
+  pyProject,
   cliBasics,
+  cliFiles,
+  gitStart,
+  gitCommits,
+  gitBranches,
+  gitRemote,
 ];
 
 const lessonsById = new Map();

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useProgress } from '../state/useProgress';
 import { STAGES_PER_TOPIC } from '../data/curriculum';
 import { allPass } from '../lib/checkExercise';
+import { buildJsRunDoc } from '../lib/jsRunner';
+import { transpileTs } from '../lib/runners/ts';
 import {
   buildIframeDoc,
   exerciseMode,
@@ -54,10 +56,9 @@ function consolePlaceholder(kind) {
   return '// console.log output appears here';
 }
 
-// Stuck-help escalation thresholds (distinct graded code snapshots).
-const HINT1_AT = 3;
-const HINT2_AT = 6;
-const SOLUTION_AT = 9;
+// Stuck-help escalation: one hint unlocks every ATTEMPTS_PER_HINT distinct
+// graded snapshots, then the solution opens once all hints have surfaced.
+const ATTEMPTS_PER_HINT = 3;
 
 function Block({ block, index }) {
   const style = { '--i': index };
@@ -243,11 +244,35 @@ export default function LessonPanel({
   const [run, setRun] = useState({ logs: [], error: null, results: [] });
   const runNonce = useMemo(() => codeNonce(debouncedCode), [debouncedCode]);
 
+  // TypeScript is transpiled by Babel (async) before it can run; its doc is
+  // built in the effect below. Other iframe languages build synchronously.
+  const [tsDoc, setTsDoc] = useState('');
+  useEffect(() => {
+    if (exercise.kind !== 'ts') return undefined;
+    let on = true;
+    transpileTs(debouncedCode).then((js) => {
+      if (on) {
+        setTsDoc(
+          buildJsRunDoc({
+            code: js,
+            source: debouncedCode,
+            checks,
+            nonce: runNonce,
+          })
+        );
+      }
+    });
+    return () => {
+      on = false;
+    };
+  }, [exercise.kind, debouncedCode, checks, runNonce]);
+
   // iframe languages: the doc the preview <iframe> runs.
   const previewDoc = useMemo(() => {
-    if (runMode === 'iframe') return buildIframeDoc(exercise, debouncedCode, runNonce);
-    return debouncedCode;
-  }, [runMode, exercise, debouncedCode, runNonce]);
+    if (runMode !== 'iframe') return debouncedCode;
+    if (exercise.kind === 'ts') return tsDoc;
+    return buildIframeDoc(exercise, debouncedCode, runNonce);
+  }, [runMode, exercise, debouncedCode, runNonce, tsDoc]);
 
   // iframe languages: collect results posted back by the sandbox.
   useEffect(() => {
@@ -342,10 +367,17 @@ export default function LessonPanel({
   };
 
   // Stuck-help availability ladder.
-  const hintsAvailable =
-    attempts >= HINT2_AT ? Math.min(2, hints.length) : attempts >= HINT1_AT ? Math.min(1, hints.length) : 0;
-  const showCheckHints = attempts >= HINT2_AT;
-  const solutionAvailable = !!solution && attempts >= SOLUTION_AT && !ready;
+  const hintsAvailable = Math.min(
+    hints.length,
+    Math.floor(attempts / ATTEMPTS_PER_HINT)
+  );
+  // Per-check hints surface once the learner is a couple of attempts in.
+  const showCheckHints = attempts >= ATTEMPTS_PER_HINT * 2;
+  // The solution opens only after every hint has been offered.
+  const solutionAvailable =
+    !!solution &&
+    !ready &&
+    attempts >= (hints.length + 1) * ATTEMPTS_PER_HINT;
 
   return (
     <div

@@ -115,7 +115,7 @@ describe('authored lesson content', () => {
         if (ex.hints !== undefined) {
           expect(Array.isArray(ex.hints), `${id} hints`).toBe(true);
           expect(ex.hints.length, `${id} hints count`).toBeGreaterThanOrEqual(1);
-          expect(ex.hints.length, `${id} hints count`).toBeLessThanOrEqual(2);
+          expect(ex.hints.length, `${id} hints count`).toBeLessThanOrEqual(3);
           for (const hint of ex.hints) {
             expect(typeof hint, `${id} hint`).toBe('string');
             expect(hint.length, `${id} empty hint`).toBeGreaterThan(0);

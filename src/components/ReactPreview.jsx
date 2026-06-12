@@ -1,20 +1,16 @@
-import {
-  Component,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { Component, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import * as React from 'react';
 import { runSourceCheck, SOURCE_CHECK_TYPES } from '../lib/sourceChecks';
+import { compileComponent, gradeReactDom } from '../lib/runners/reactGrade';
 import './ReactPreview.css';
 
 // Live React lab. The learner's JSX is transpiled with Babel (bundled, lazy)
 // and rendered with the app's own React into an isolated root, wrapped in an
-// error boundary so a broken component never crashes CodeSprout. After each
-// render, DOM checks grade the output and are lifted up via onResult — the
-// same { logs, error, results } shape the iframe runner posts back.
+// error boundary so a broken component never crashes CodeSprout. Compilation
+// and grading are shared with the lesson-verification harness via
+// runners/reactGrade. After each render, DOM checks grade the output and are
+// lifted up via onResult — the same { logs, error, results } shape the iframe
+// runner posts back.
 
 let babelPromise = null;
 function getBabel() {
@@ -44,55 +40,6 @@ class Boundary extends Component {
   }
 }
 
-/** Build a component from learner JSX. Returns { Comp } or { error }. */
-function compile(Babel, code) {
-  try {
-    let src = String(code ?? '')
-      .replace(/^\s*import[^\n]*\n/gm, '')
-      .replace(/export\s+default\s+function\s+([A-Za-z0-9_]+)/, 'function $1')
-      .replace(/export\s+default\s+/, 'return ');
-    const out = Babel.transform(src, {
-      presets: [['react', { runtime: 'classic' }]],
-    }).code;
-    const factory = new Function(
-      'React',
-      'useState',
-      'useEffect',
-      'useRef',
-      `${out}\nreturn (typeof App !== 'undefined' ? App : (typeof Welcome !== 'undefined' ? Welcome : null));`
-    );
-    const Comp = factory(React, React.useState, React.useEffect, React.useRef);
-    if (typeof Comp !== 'function') {
-      return { error: 'Name your component App (or default-export it).' };
-    }
-    return { Comp };
-  } catch (e) {
-    return { error: String(e?.message ?? e) };
-  }
-}
-
-function gradeDom(node, source, checks) {
-  return (checks ?? []).map((c) => {
-    try {
-      if (c.type === 'selectorExists') {
-        const m = node.querySelectorAll(c.selector);
-        return c.count != null ? m.length === c.count : m.length >= 1;
-      }
-      if (c.type === 'textIncludes') {
-        const root = c.selector ? node.querySelector(c.selector) : node;
-        if (!root) return false;
-        const t = root.textContent.replace(/\s+/g, ' ').toLowerCase();
-        return t.includes(String(c.text).toLowerCase());
-      }
-      if (c.type === 'logIncludes') return false; // React lab has no console
-      if (SOURCE_CHECK_TYPES.has(c.type)) return runSourceCheck(c, source);
-      return false;
-    } catch {
-      return false;
-    }
-  });
-}
-
 export default function ReactPreview({ code, checks, onResult }) {
   const hostRef = useRef(null);
   const rootRef = useRef(null);
@@ -108,7 +55,7 @@ export default function ReactPreview({ code, checks, onResult }) {
   }, []);
 
   const compiled = useMemo(
-    () => (babel ? compile(babel, code) : null),
+    () => (babel ? compileComponent(babel, code) : null),
     [babel, code]
   );
 
@@ -133,7 +80,7 @@ export default function ReactPreview({ code, checks, onResult }) {
           ? (checks ?? []).map((c) =>
               SOURCE_CHECK_TYPES.has(c.type) ? runSourceCheck(c, code) : false
             )
-          : gradeDom(hostRef.current, code, checks);
+          : gradeReactDom(hostRef.current, code, checks);
         onResult?.({ logs: [], error: err, results });
       }, 60);
       return () => clearTimeout(id);

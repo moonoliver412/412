@@ -85,8 +85,11 @@ export async function runSql(code, exercise, checks) {
         }
         if (c.type === 'verifyRowCount') {
           const out = db.exec(c.query);
+          // sql.js returns [] for a query that yields zero rows, so an empty
+          // result means a row count of 0 (not "no result").
           const r = out.length ? out[out.length - 1] : null;
-          return !!r && r.values.length === c.count;
+          const rows = r ? r.values.length : 0;
+          return rows === c.count;
         }
         if (SOURCE_CHECK_TYPES.has(c.type)) return runSourceCheck(c, code);
         return false;
