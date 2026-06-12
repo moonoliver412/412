@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useGame } from '../state/useGame';
 import './NavBar.css';
 
 const LINKS = [
@@ -10,6 +11,7 @@ const LINKS = [
 ];
 
 export default function NavBar() {
+  const { game } = useGame();
   return (
     <header className="nav">
       <div className="nav-logo">
@@ -44,6 +46,32 @@ export default function NavBar() {
       </nav>
 
       <div className="nav-actions">
+        <span
+          className="nav-stat"
+          title="Sprouts — earned from lessons and focus sessions"
+        >
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+            <path
+              d="M4 20C4 10 12 4 22 4c0 10-6 16-16 16"
+              fill="#8fbc70"
+            />
+          </svg>
+          {game.sprouts}
+        </span>
+        <span
+          className={`nav-stat nav-stat--streak${
+            game.streak.current > 0 ? ' is-lit' : ''
+          }`}
+          title={`Daily streak — longest ${game.streak.longest}`}
+        >
+          <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+            <path
+              d="M12 2c1 4-4 6-4 11a6 6 0 0 0 12 0c0-2.5-1-4.5-2.5-6-.5 2-1.5 3-2.5 3.5C16 7 14 4 12 2Z"
+              fill="currentColor"
+            />
+          </svg>
+          {game.streak.current}
+        </span>
         <button className="nav-icon-btn" aria-label="Messages">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="3" y="5" width="18" height="14" rx="2" />

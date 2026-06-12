@@ -1,0 +1,200 @@
+/* Challenges page — Clear Field mode.
+   T2 staggered card entrance, T1 hover lifts, T0 completed-check shimmer.
+   Reduced-motion block at the bottom. */
+
+/* ---- Header ---- */
+
+.chl-header {
+  margin-bottom: 32px;
+}
+
+.chl-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 48px;
+  margin: 8px 0 10px;
+}
+
+.chl-title-icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.chl-tagline {
+  font-family: var(--font-display);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #666;
+  margin: 0;
+}
+
+/* ---- Challenge grid ---- */
+
+.chl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* T2 staggered entrance */
+.chl-card {
+  animation: chl-rise var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 7) * 55ms);
+}
+
+@keyframes chl-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.chl-card-inner {
+  background: var(--panel);
+  border-radius: var(--radius-xl);
+  padding: 22px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: transform var(--mo-fast) var(--ease-out),
+    box-shadow var(--mo-fast) var(--ease-out),
+    border-color var(--mo-fast) var(--ease-out);
+  height: 100%;
+}
+
+/* T1 hover */
+.chl-card-inner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.32);
+  border-color: #3a3a3a;
+}
+
+/* Completed variant */
+.chl-card-inner.is-done {
+  border-color: rgba(229, 185, 94, 0.3);
+}
+
+.chl-card-inner.is-done:hover {
+  border-color: rgba(229, 185, 94, 0.6);
+}
+
+/* ---- Card contents ---- */
+
+.chl-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chl-lang-chip {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: 3px 11px;
+  border: 1.5px solid #3a3a3a;
+  color: #8f8f8f;
+}
+
+.chl-lang-chip--html { border-color: rgba(255, 120, 60, 0.5); color: #ff8c52; }
+.chl-lang-chip--css  { border-color: rgba(100, 160, 255, 0.5); color: #78aaff; }
+.chl-lang-chip--js   { border-color: rgba(255, 210, 60, 0.5);  color: #ffd23c; }
+
+.chl-done-check {
+  font-size: 17px;
+  line-height: 1;
+  color: var(--amber);
+  animation: chl-check-pop var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes chl-check-pop {
+  0%   { transform: scale(0); }
+  60%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.chl-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.chl-card-inner.is-done .chl-name {
+  color: var(--amber);
+}
+
+.chl-brief {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #aaa;
+  flex: 1;
+
+  /* clamp to 3 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.chl-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1.5px solid #2a2a2a;
+}
+
+.chl-reward {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6f6f6f;
+}
+
+.chl-cta {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--orange);
+  transition: color var(--mo-fast) var(--ease-out);
+}
+
+.chl-card-inner:hover .chl-cta {
+  color: #ff7340;
+}
+
+.chl-card-inner.is-done .chl-cta {
+  color: var(--amber);
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  .chl-grid {
+    grid-template-columns: 1fr;
+  }
+  .chl-title {
+    font-size: 36px;
+  }
+}
+
+/* Reduced motion = instant, not absent */
+@media (prefers-reduced-motion: reduce) {
+  .chl-card,
+  .chl-card-inner,
+  .chl-done-check {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,90 @@
+/* Achievement unlock toasts — top-right stack, spring entrance, self-dismiss.
+   Motion per .claude/skills/motion-graphics (T3, edge-fired, no dismissal). */
+
+.ach-toasts {
+  position: fixed;
+  top: 86px;
+  right: 24px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.ach-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1.5px solid var(--amber);
+  border-radius: 18px;
+  padding: 12px 18px 12px 14px;
+  min-width: 260px;
+  max-width: 340px;
+  box-shadow: 0 12px 32px rgba(13, 13, 13, 0.35);
+  animation: ach-in var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes ach-in {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ach-toast-icon {
+  flex: none;
+  font-size: 26px;
+  animation: ach-icon-pop var(--mo-slow) var(--ease-spring) 120ms both;
+}
+
+@keyframes ach-icon-pop {
+  from {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.3);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.ach-toast-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ach-toast-kicker {
+  font-family: var(--font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8f8f8f;
+}
+
+.ach-toast-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--amber);
+}
+
+.ach-toast-blurb {
+  font-size: 12.5px;
+  color: #d6d6d6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ach-toast,
+  .ach-toast-icon {
+    animation: none !important;
+  }
+}

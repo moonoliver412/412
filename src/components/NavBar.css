@@ -67,6 +67,30 @@
   gap: 12px;
 }
 
+/* Sprout balance + streak chips: the economy, always visible. */
+.nav-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-stat--streak {
+  color: #9a9a9a;
+}
+
+.nav-stat--streak.is-lit {
+  color: var(--orange);
+}
+
 .nav-icon-btn {
   display: grid;
   place-items: center;

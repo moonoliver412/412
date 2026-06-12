@@ -31,6 +31,7 @@
 }
 
 .lesson-row {
+  position: relative;
   background: var(--card);
   color: var(--ink);
   border-radius: var(--radius-pill);
@@ -40,6 +41,32 @@
   justify-content: space-between;
   gap: 10px;
   min-height: 48px;
+  transition: transform var(--mo-fast) var(--ease-out);
+}
+
+.lesson-row:not(.is-locked):hover {
+  transform: translateY(-1px);
+}
+
+/* T0 ambient: the next playable lesson breathes (opacity-only ring). */
+.lesson-row.is-next::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--amber);
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+  animation: lesson-breathe 2.4s var(--ease-out) infinite;
+}
+
+@keyframes lesson-breathe {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.85;
+  }
 }
 
 .lesson-row-name {
@@ -66,6 +93,19 @@
   display: grid;
   place-items: center;
   font-size: 15px;
+  animation: lesson-check-pop var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes lesson-check-pop {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .lesson-lock {
@@ -86,10 +126,13 @@
   font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 0.5px;
+  transition: transform var(--mo-fast) var(--ease-out),
+    background-color var(--mo-fast) var(--ease-out);
 }
 
 .lesson-complete-btn:hover:not(:disabled) {
   background: #e63e00;
+  transform: scale(1.05);
 }
 
 .lesson-complete-btn:disabled {
@@ -105,4 +148,15 @@
   font-size: 18px;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+/* Reduced motion = instant, not absent. */
+@media (prefers-reduced-motion: reduce) {
+  .lesson-row,
+  .lesson-row::after,
+  .lesson-check,
+  .lesson-complete-btn {
+    animation: none !important;
+    transition: none !important;
+  }
 }

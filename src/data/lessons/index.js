@@ -16,6 +16,23 @@ import htmlMetaSeo from './html/html-meta-seo';
 import htmlSvg from './html/html-svg';
 import htmlFormValidation from './html/html-form-validation';
 import htmlDebugging from './html/html-debugging';
+import cssSelectors from './css/css-selectors';
+import cssBoxLayout from './css/css-box-layout';
+import cssFlexAnim from './css/css-flex-anim';
+import cssGrid from './css/css-grid';
+import cssEffects from './css/css-effects';
+import cssResponsive from './css/css-responsive';
+import cssTypography from './css/css-typography';
+import cssBackgrounds from './css/css-backgrounds';
+import cssVariables from './css/css-variables';
+import jsVariables from './js/js-variables';
+import jsFunctions from './js/js-functions';
+import jsArraysObjects from './js/js-arrays-objects';
+import jsDom from './js/js-dom';
+import jsAsync from './js/js-async';
+import jsProject from './js/js-project';
+import jsClasses from './js/js-classes';
+import jsDebugging from './js/js-debugging';
 
 const topics = [
   htmlStructure,
@@ -30,6 +47,23 @@ const topics = [
   htmlSvg,
   htmlFormValidation,
   htmlDebugging,
+  cssSelectors,
+  cssBoxLayout,
+  cssFlexAnim,
+  cssGrid,
+  cssEffects,
+  cssResponsive,
+  cssTypography,
+  cssBackgrounds,
+  cssVariables,
+  jsVariables,
+  jsFunctions,
+  jsArraysObjects,
+  jsDom,
+  jsAsync,
+  jsProject,
+  jsClasses,
+  jsDebugging,
 ];
 
 const lessonsById = new Map();

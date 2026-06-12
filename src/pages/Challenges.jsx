@@ -1,54 +1,75 @@
-import { Link } from 'react-router-dom';
-import './stubs.css';
+import { useState } from 'react';
+import { useGame } from '../state/useGame';
+import { CHALLENGES } from '../data/challenges';
+import ChallengePanel from '../components/ChallengePanel';
+import './Challenges.css';
 
-function CapBadge() {
+function ChallengeCard({ challenge, isCompleted, index, onClick }) {
   return (
-    <span className="stub-badge" aria-hidden="true">
-      {/* graduation-cap glyph */}
-      <svg viewBox="0 0 24 24" width="26" height="26" fill="#111">
-        <polygon points="12,4 23,9 12,14 1,9" />
-        <path d="M6 11.5v4c0 1.6 2.7 3 6 3s6-1.4 6-3v-4l-6 2.7-6-2.7Z" />
-      </svg>
-    </span>
+    <div className="chl-card" style={{ '--i': index }}>
+      <button
+        type="button"
+        className={`chl-card-inner${isCompleted ? ' is-done' : ''}`}
+        onClick={onClick}
+        aria-label={`Open ${challenge.name} challenge`}
+      >
+        <div className="chl-card-top">
+          <span className={`chl-lang-chip chl-lang-chip--${challenge.language}`}>
+            {challenge.language.toUpperCase()}
+          </span>
+          {isCompleted && (
+            <span className="chl-done-check" aria-label="Completed">✓</span>
+          )}
+        </div>
+        <h3 className="chl-name">{challenge.name}</h3>
+        <p className="chl-brief">{challenge.brief}</p>
+        <div className="chl-card-footer">
+          <span className="chl-reward">+{challenge.reward} 🌱</span>
+          <span className="chl-cta">
+            {isCompleted ? 'Replay →' : 'Start →'}
+          </span>
+        </div>
+      </button>
+    </div>
   );
 }
 
 export default function Challenges() {
+  const { game } = useGame();
+  const [open, setOpen] = useState(null);
+
+  const completedSet = new Set(game.completedChallenges ?? []);
+
   return (
     <main className="cs-page">
-      <h1 className="cs-page-title">
-        <CapBadge />
-        Challenges
-      </h1>
+      <header className="chl-header">
+        <h1 className="chl-title">
+          <span className="chl-title-icon" aria-hidden="true">🌾</span>
+          Challenges
+        </h1>
+        <p className="chl-tagline">
+          No starter code. No hints. Just you and the field.
+        </p>
+      </header>
 
-      <section className="challenges-big-row">
-        <div className="cs-card stub-placeholder">clone a web</div>
-        <div className="cs-card stub-placeholder" />
-        <div className="cs-card stub-placeholder" />
+      <section className="chl-grid" aria-label="Available challenges">
+        {CHALLENGES.map((ch, i) => (
+          <ChallengeCard
+            key={ch.id}
+            challenge={ch}
+            isCompleted={completedSet.has(ch.id)}
+            index={i}
+            onClick={() => setOpen(ch)}
+          />
+        ))}
       </section>
 
-      <section className="challenges-bottom-row">
-        <div className="cs-card challenge-slim" />
-        <div className="cs-card challenge-slim" />
-        <div className="cs-card challenge-slim" />
-        <div className="cs-card challenge-slim" />
-        <div className="cs-card challenge-slim" />
-        <div className="cs-panel challenges-panel">
-          <div className="challenges-panel-main" style={{ background: 'var(--card)' }} />
-          <div className="challenges-panel-side">
-            <div className="challenges-search">
-              <span>Search challenges</span>
-              <span aria-hidden="true">⌕</span>
-            </div>
-            <span className="challenges-no">NO. #124</span>
-          </div>
-        </div>
-      </section>
-
-      <p className="stub-muted" style={{ marginTop: 24 }}>
-        Challenges are coming soon — sharpen your skills in the{' '}
-        <Link to="/playground">Playground</Link> in the meantime.
-      </p>
+      {open && (
+        <ChallengePanel
+          challenge={open}
+          onClose={() => setOpen(null)}
+        />
+      )}
     </main>
   );
 }

@@ -43,7 +43,7 @@ export default function LessonList({ topicId }) {
               key={lesson.id}
               className={`lesson-row${completed ? ' is-completed' : ''}${
                 locked ? ' is-locked' : ''
-              }`}
+              }${isNext ? ' is-next' : ''}`}
             >
               <span className="lesson-row-name">{lesson.name}</span>
               {completed && (
@@ -59,7 +59,7 @@ export default function LessonList({ topicId }) {
                     title="Open the lesson — the exercise unlocks completion"
                     onClick={() => setOpenLessonId(lesson.id)}
                   >
-                    Open lesson
+                    Start lesson
                   </button>
                 ) : (
                   <button

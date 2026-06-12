@@ -22,8 +22,27 @@ function safeQueryAll(doc, selector) {
   }
 }
 
+/** All CSS authored in the document: <style> blocks + style="" attributes,
+ *  whitespace-stripped and lowercased for forgiving declaration matching. */
+function allStyleText(doc) {
+  const blocks = [...doc.querySelectorAll('style')].map((el) => el.textContent);
+  const inline = [...doc.querySelectorAll('[style]')].map((el) =>
+    el.getAttribute('style')
+  );
+  return [...blocks, ...inline].join('\n').replace(/\s+/g, '').toLowerCase();
+}
+
 function runCheck(doc, check) {
   switch (check.type) {
+    case 'styleIncludes': {
+      // Matches a CSS fragment regardless of spacing: text "display:flex"
+      // matches `display : flex`, `display:flex;` etc. in any <style> block
+      // or style attribute.
+      const needle = String(check.text ?? '')
+        .replace(/\s+/g, '')
+        .toLowerCase();
+      return needle.length > 0 && allStyleText(doc).includes(needle);
+    }
     case 'selectorExists': {
       const matches = safeQueryAll(doc, check.selector);
       if (!matches) return false;

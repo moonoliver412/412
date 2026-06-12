@@ -1,0 +1,240 @@
+/* Leaderboard page — weekly focus league.
+   T2 staggered row entrances, T1 hover, T0 "you" row pulse.
+   Reduced-motion block at bottom. */
+
+/* ---- Header ---- */
+
+.lb-header {
+  margin-bottom: 32px;
+}
+
+.lb-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 48px;
+  margin: 8px 0 10px;
+}
+
+.lb-title-icon {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.lb-subtitle {
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #666;
+  margin: 0;
+}
+
+/* ---- Table ---- */
+
+.lb-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 680px;
+}
+
+/* T2 staggered entrance */
+.lb-row {
+  animation: lb-rise var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 9) * 50ms);
+}
+
+@keyframes lb-rise {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.lb-row-inner {
+  background: var(--panel);
+  border-radius: 18px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1.5px solid transparent;
+  transition: transform var(--mo-fast) var(--ease-out),
+    box-shadow var(--mo-fast) var(--ease-out),
+    border-color var(--mo-fast) var(--ease-out);
+}
+
+/* T1 hover */
+.lb-row-inner:hover {
+  transform: translateX(4px);
+  box-shadow: 4px 4px 24px rgba(0, 0, 0, 0.24);
+  border-color: #2c2c2c;
+}
+
+/* "You" row: orange highlight */
+.lb-row-inner.is-you {
+  border-color: rgba(255, 69, 0, 0.45);
+  background: linear-gradient(120deg, #1a0c08, #0d0d0d);
+}
+
+.lb-row-inner.is-you:hover {
+  border-color: var(--orange);
+}
+
+/* Top-3 medals */
+.lb-row-inner.is-gold   { border-color: rgba(255, 200, 60, 0.4); }
+.lb-row-inner.is-silver { border-color: rgba(180, 180, 180, 0.4); }
+.lb-row-inner.is-bronze { border-color: rgba(200, 130, 70, 0.4); }
+
+/* ---- Rank number ---- */
+
+.lb-rank {
+  flex: none;
+  width: 36px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0;
+  color: #6f6f6f;
+}
+
+.lb-rank-medal {
+  font-size: 20px;
+  line-height: 1;
+}
+
+/* ---- Handle + YOU chip ---- */
+
+.lb-handle-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lb-handle {
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lb-row-inner.is-you .lb-handle {
+  color: var(--orange);
+}
+
+.lb-you-chip {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--orange);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  padding: 2px 9px;
+}
+
+/* ---- Bar ---- */
+
+.lb-bar-wrap {
+  flex: 2;
+  min-width: 0;
+}
+
+.lb-bar-track {
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: #2a2a2a;
+  overflow: hidden;
+}
+
+.lb-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: #4a4a4a;
+  transition: width var(--mo-slow) var(--ease-out);
+}
+
+.lb-row-inner.is-you .lb-bar-fill {
+  background: var(--orange);
+}
+
+.lb-row-inner.is-gold   .lb-bar-fill { background: #ffc83c; }
+.lb-row-inner.is-silver .lb-bar-fill { background: #b4b4b4; }
+.lb-row-inner.is-bronze .lb-bar-fill { background: #c88246; }
+
+/* ---- Minutes label ---- */
+
+.lb-minutes {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #8f8f8f;
+  text-align: right;
+  min-width: 60px;
+}
+
+.lb-row-inner.is-you .lb-minutes { color: var(--orange); }
+
+/* ---- Empty state ---- */
+
+.lb-empty {
+  background: var(--panel);
+  border-radius: var(--radius-xl);
+  padding: 48px 32px;
+  text-align: center;
+  max-width: 480px;
+}
+
+.lb-empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.lb-empty-title {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.lb-empty-sub {
+  margin: 0;
+  font-size: 15px;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+/* ---- Footer note ---- */
+
+.lb-footer-note {
+  margin-top: 24px;
+  font-size: 13px;
+  color: #666;
+  max-width: 480px;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  .lb-title { font-size: 36px; }
+  .lb-bar-wrap { display: none; }
+}
+
+/* Reduced motion = instant, not absent */
+@media (prefers-reduced-motion: reduce) {
+  .lb-row,
+  .lb-row-inner,
+  .lb-bar-fill {
+    animation: none !important;
+    transition: none !important;
+  }
+}

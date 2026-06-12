@@ -1,0 +1,279 @@
+/* FocusDiary — heat strip + session log panel */
+
+/* T2 entrance: panel rises + fades in on mount */
+@keyframes fd-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fd-panel {
+  padding: 28px 32px 32px;
+  margin-bottom: 40px;
+  animation: fd-panel-in var(--mo-base) var(--ease-out) both;
+}
+
+.fd-title {
+  font-size: 22px;
+  margin: 0 0 24px;
+}
+
+/* ---- Heat strip ---------------------------------------------------------- */
+
+.fd-heat {
+  margin-bottom: 28px;
+}
+
+/* Month label row */
+.fd-month-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 4px;
+}
+
+.fd-dow-gutter {
+  /* matches the dow gutter width below */
+  width: 34px;
+  flex-shrink: 0;
+}
+
+.fd-month-labels {
+  position: relative;
+  flex: 1;
+  height: 16px;
+}
+
+.fd-month-label {
+  position: absolute;
+  left: calc(var(--col) * (10px + 3px)); /* cell width + gap */
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-body);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  top: 0;
+}
+
+/* Grid body row: dow gutter + cells */
+.fd-grid-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* Day-of-week labels (Mon/Wed/Fri only) */
+.fd-dow-gutter {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.fd-dow-label {
+  height: 10px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-body);
+  line-height: 10px;
+  text-align: right;
+}
+
+/* The grid itself: laid out as columns (weeks) × rows (days).
+   CSS grid with auto-fill columns so the cells pack left-to-right week by week. */
+.fd-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 10px);
+  grid-template-rows: repeat(7, 10px);
+  grid-auto-flow: column; /* fill column by column so each column = one week */
+  gap: 3px;
+}
+
+/* Individual heat cells */
+.fd-cell {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  transition: opacity var(--mo-fast) var(--ease-out);
+}
+
+.fd-cell--0 {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* grass tints — 3 intensity steps */
+.fd-cell--1 {
+  background: rgba(110, 140, 138, 0.45); /* grass @ 45% */
+}
+
+.fd-cell--2 {
+  background: rgba(110, 140, 138, 0.75); /* grass @ 75% */
+}
+
+.fd-cell--3 {
+  background: var(--amber); /* full amber for heavy days */
+}
+
+/* abandoned-only days: wilt tint */
+.fd-cell--wilt {
+  background: rgba(154, 143, 106, 0.45); /* --wilt @ 45% */
+}
+
+/* T1 hover: tiny lift so the cell reads as interactive info */
+.fd-cell:not(.fd-legend-cell):hover {
+  opacity: 0.7;
+}
+
+/* ---- Legend ---- */
+
+.fd-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding-left: 34px; /* align under the grid, past the dow gutter */
+}
+
+.fd-legend-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-body);
+}
+
+.fd-legend-cell {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ---- Session list --------------------------------------------------------- */
+
+.fd-sessions {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.fd-empty {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-style: italic;
+  margin: 0;
+}
+
+.fd-session-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* T2 stagger: each row rises in with a 50ms delay per index */
+@keyframes fd-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fd-session-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  animation: fd-row-in var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(var(--i) * 50ms);
+}
+
+/* T1 hover */
+.fd-session-row:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transition: background var(--mo-fast) var(--ease-out);
+}
+
+.fd-session-time {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  min-width: 130px;
+}
+
+.fd-session-topic {
+  font-size: 14px;
+  color: #fff;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fd-session-minutes {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--amber);
+  white-space: nowrap;
+}
+
+/* Outcome chips */
+.fd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  font-size: 12px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  flex-shrink: 0;
+}
+
+.fd-chip--done {
+  background: rgba(197, 210, 194, 0.18); /* sage tint */
+  color: var(--bg);
+  border: 1px solid rgba(197, 210, 194, 0.4);
+}
+
+.fd-chip--wilt {
+  background: rgba(154, 143, 106, 0.18);
+  color: var(--wilt);
+  border: 1px solid rgba(154, 143, 106, 0.4);
+}
+
+/* tick SVG inside the done chip */
+.fd-tick {
+  color: var(--bg);
+  flex-shrink: 0;
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-panel {
+    animation: none;
+  }
+
+  .fd-session-row {
+    animation: none;
+  }
+
+  .fd-cell {
+    transition: none;
+  }
+
+  .fd-session-row:hover {
+    transition: none;
+  }
+}

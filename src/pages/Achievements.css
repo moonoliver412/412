@@ -1,0 +1,192 @@
+/* Achievements page — motion follows .claude/skills/motion-graphics.
+   T2 staggered grid entrance, T1 hover on cards, T0 shimmer on progress rail.
+   Reduced-motion block at the bottom. */
+
+/* ---- Header ---- */
+
+.ach-header {
+  margin-bottom: 32px;
+}
+
+.ach-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 48px;
+  margin: 8px 0 16px;
+  color: var(--ink);
+}
+
+.ach-title-icon {
+  font-size: 44px;
+  line-height: 1;
+}
+
+.ach-counter {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  margin: 0 0 12px;
+}
+
+.ach-counter strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* T0 amber progress rail with shimmer on the current fill */
+.ach-rail {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  max-width: 360px;
+}
+
+.ach-rail-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--amber);
+  transition: width var(--mo-slow) var(--ease-out);
+  background: linear-gradient(90deg, var(--amber), #f5d085, var(--amber));
+  background-size: 200% 100%;
+  animation: ach-rail-shimmer 2s linear infinite;
+}
+
+@keyframes ach-rail-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: 0 0; }
+}
+
+/* ---- Achievement grid ---- */
+
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+/* T2 staggered entrance: --i set inline per card, max 11 children staggered */
+.ach-card {
+  animation: ach-rise var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(min(var(--i, 0), 10) * 50ms);
+}
+
+@keyframes ach-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Unlocked: bright black panel */
+.ach-card--unlocked {
+  background: var(--panel);
+  border-radius: var(--radius-xl);
+  padding: 24px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform var(--mo-fast) var(--ease-out),
+              box-shadow var(--mo-fast) var(--ease-out);
+}
+
+/* T1 hover lift */
+.ach-card--unlocked:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Locked: desaturated, dimmed */
+.ach-card--locked {
+  background: rgba(13, 13, 13, 0.72);
+  border-radius: var(--radius-xl);
+  padding: 24px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  filter: saturate(0.3);
+  opacity: 0.9;
+  transition: opacity var(--mo-fast) var(--ease-out),
+              filter var(--mo-fast) var(--ease-out),
+              transform var(--mo-fast) var(--ease-out);
+}
+
+.ach-card--locked:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.ach-icon {
+  font-size: 38px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.ach-lock-glyph {
+  font-size: 34px;
+  line-height: 1;
+  margin-bottom: 4px;
+  opacity: 0.6;
+}
+
+.ach-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--amber);
+  margin: 0;
+}
+
+.ach-card--locked .ach-name {
+  color: #aaa;
+}
+
+.ach-blurb {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #c8c8c8;
+}
+
+.ach-card--locked .ach-blurb {
+  color: #b9b9b9;
+}
+
+.ach-date {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6f6f6f;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  .ach-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .ach-title {
+    font-size: 36px;
+  }
+}
+
+/* Reduced motion = instant, not absent */
+@media (prefers-reduced-motion: reduce) {
+  .ach-card,
+  .ach-rail-fill,
+  .ach-card--unlocked,
+  .ach-card--locked {
+    animation: none !important;
+    transition: none !important;
+  }
+}

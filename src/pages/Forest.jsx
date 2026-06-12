@@ -3,6 +3,8 @@ import { LANGUAGES, STAGES_PER_TOPIC } from '../data/curriculum';
 import { useProgress } from '../state/useProgress';
 import Tree from '../components/Tree';
 import IsoTile from '../components/IsoTile';
+import FocusDiary from '../components/FocusDiary';
+import ShareCard from '../components/ShareCard';
 import './Forest.css';
 
 /** Stable small numeric seed from a topic id so each tree gets its own shape. */
@@ -192,19 +194,22 @@ export default function Forest() {
         maturity.
       </p>
 
-      <div className="forest-summary cs-panel">
-        <div className="forest-summary-stat">
-          <span className="forest-summary-number">
-            {totalGrown}
-            <small>/{topics.length}</small>
-          </span>
-          <span className="forest-summary-label">Trees grown</span>
+      <div className="forest-header-row">
+        <div className="forest-summary cs-panel">
+          <div className="forest-summary-stat">
+            <span className="forest-summary-number">
+              {totalGrown}
+              <small>/{topics.length}</small>
+            </span>
+            <span className="forest-summary-label">Trees grown</span>
+          </div>
+          <span className="forest-summary-divider" aria-hidden="true" />
+          <div className="forest-summary-stat">
+            <span className="forest-summary-number">{totalMinutes}</span>
+            <span className="forest-summary-label">Focus minutes</span>
+          </div>
         </div>
-        <span className="forest-summary-divider" aria-hidden="true" />
-        <div className="forest-summary-stat">
-          <span className="forest-summary-number">{totalMinutes}</span>
-          <span className="forest-summary-label">Focus minutes</span>
-        </div>
+        <ShareCard />
       </div>
 
       {LANGUAGES.map((lang) => {
@@ -264,6 +269,8 @@ export default function Forest() {
           </section>
         );
       })}
+
+      <FocusDiary />
 
       <div className="forest-footer">
         <button type="button" className="forest-reset" onClick={handleReset}>

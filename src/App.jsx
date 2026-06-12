@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
+import AchievementToasts from './components/AchievementToasts';
 import Home from './pages/Home';
 import Playground from './pages/Playground';
 import Forest from './pages/Forest';
@@ -13,6 +14,7 @@ export default function App() {
   return (
     <>
       <NavBar />
+      <AchievementToasts />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/playground" element={<Playground />} />

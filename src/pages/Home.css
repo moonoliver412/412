@@ -1,0 +1,411 @@
+/* Home dashboard — greeting + CTA, stat strip, daily goal, badges, forest.
+   Motion: T2 staggered section rise on entry, T1 hover/press feedback,
+   one T0 loop (the current daily-goal segment shimmer). */
+
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ---- T2 entrance: sections rise + fade, 50ms stagger via --i ------------- */
+
+.home-section {
+  animation: home-rise var(--mo-base) var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+@keyframes home-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ---- Hero ----------------------------------------------------------------- */
+
+.home-hero {
+  padding: 40px 8px 0;
+}
+
+.home-greeting {
+  font-size: 72px;
+  line-height: 1;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.home-tagline {
+  margin: 0 0 28px;
+  font-size: 18px;
+  color: #3b3b3b;
+}
+
+.home-cta-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.home-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--orange);
+  color: #fff;
+  border: 1.5px solid var(--orange);
+  border-radius: var(--radius-pill);
+  padding: 14px 34px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform var(--mo-fast) var(--ease-out),
+    background var(--mo-fast) var(--ease-out);
+}
+
+.home-cta:hover {
+  background: #e63e00;
+  transform: translateY(-1px);
+}
+
+.home-cta:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.home-cta-arrow {
+  display: inline-block;
+  transition: transform var(--mo-fast) var(--ease-out);
+}
+
+.home-cta:hover .home-cta-arrow {
+  transform: translateX(4px);
+}
+
+.home-cta-hint {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #3b3b3b;
+}
+
+/* ---- Stat strip (black panel) --------------------------------------------- */
+
+.home-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 26px 36px;
+}
+
+.home-stat {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  column-gap: 12px;
+  justify-content: start;
+}
+
+.home-stat + .home-stat {
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  padding-left: 32px;
+}
+
+.home-stat-icon {
+  grid-row: 1 / 3;
+  font-size: 26px;
+  align-self: center;
+}
+
+.home-stat-value {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-stat-label {
+  grid-column: 2;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.66);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Card grid ------------------------------------------------------------ */
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.home-card {
+  padding: 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.home-card-title {
+  margin: 0;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+/* ---- Daily goal ----------------------------------------------------------- */
+
+.home-goal-status {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3b3b3b;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-goal-pill {
+  display: flex;
+  gap: 6px;
+}
+
+.home-goal-seg {
+  position: relative;
+  flex: 1;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--ink);
+  background: rgba(255, 255, 255, 0.45);
+  overflow: hidden;
+  transition: background var(--mo-base) var(--ease-out);
+}
+
+.home-goal-seg.is-done {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+/* T0 (the page's one loop): the current segment carries a slow light sweep —
+   a translating overlay, transform/opacity only. */
+.home-goal-seg.is-current::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 69, 0, 0.35) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: home-goal-sweep 2.4s var(--ease-out) infinite;
+}
+
+@keyframes home-goal-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.home-goal-targets {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.home-goal-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  transition:
+    transform var(--mo-fast) var(--ease-out),
+    background var(--mo-fast) var(--ease-out),
+    color var(--mo-fast) var(--ease-out);
+}
+
+.home-goal-btn:hover {
+  transform: translateY(-1px);
+  background: #fff;
+}
+
+.home-goal-btn:active {
+  transform: scale(0.92);
+}
+
+.home-goal-btn.is-active {
+  background: var(--ink);
+  color: var(--amber);
+}
+
+.home-goal-btn-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3b3b3b;
+}
+
+/* ---- Recent badges -------------------------------------------------------- */
+
+.home-badge-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.home-badge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.home-badge-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.home-badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-badge-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.home-badge-blurb {
+  font-size: 13px;
+  color: #3b3b3b;
+}
+
+.home-badges-empty {
+  margin: auto 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3b3b3b;
+}
+
+/* ---- Your forest (black panel) -------------------------------------------- */
+
+.home-forest {
+  gap: 14px;
+}
+
+.home-forest-title {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.home-forest-row {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  border-radius: 12px;
+  padding: 6px 8px;
+  margin: -6px -8px;
+  transition: background var(--mo-fast) var(--ease-out);
+}
+
+.home-forest-row:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.home-forest-lang {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.home-forest-bar {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.home-forest-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+}
+
+.home-forest-count {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 980px) {
+  .home-greeting {
+    font-size: 48px;
+  }
+  .home-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .home-stat + .home-stat {
+    border-left: none;
+    padding-left: 0;
+  }
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Reduced motion: instant, not absent ---------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-section {
+    animation: none;
+  }
+  .home-goal-seg.is-current::after {
+    animation: none;
+    transform: none;
+    opacity: 0.35;
+  }
+  .home-cta,
+  .home-cta-arrow,
+  .home-goal-seg,
+  .home-goal-btn,
+  .home-forest-row {
+    transition: none;
+  }
+  .home-cta:hover,
+  .home-cta:active,
+  .home-cta:hover .home-cta-arrow,
+  .home-goal-btn:hover,
+  .home-goal-btn:active {
+    transform: none;
+  }
+}

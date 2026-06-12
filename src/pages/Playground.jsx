@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { LANGUAGES, STAGES_PER_TOPIC } from '../data/curriculum';
+import { useSearchParams } from 'react-router-dom';
+import { LANGUAGES, STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
 import { useProgress, visualStage } from '../state/useProgress';
 import IsometricPlot from '../components/IsometricPlot';
 import Tree from '../components/Tree';
@@ -47,7 +48,15 @@ const RAIN_DROPS = Array.from({ length: 10 }, (_, i) => ({
 }));
 
 export default function Playground() {
-  const [topicId, setTopicId] = useState(LANGUAGES[0].topics[0].id);
+  // Deep link: /playground?topic=<id> opens with that topic selected.
+  // Read once on mount (state initializer); unknown ids fall back to default.
+  const [searchParams] = useSearchParams();
+  const [topicId, setTopicId] = useState(() => {
+    const fromUrl = searchParams.get('topic');
+    return fromUrl && findTopic(fromUrl)
+      ? fromUrl
+      : LANGUAGES[0].topics[0].id;
+  });
   const { session, getTopicProgress, getSessionElapsed, getTreeKind } =
     useProgress();
   const [, setTick] = useState(0);

@@ -96,3 +96,45 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
+
+/* Price chip on species that still cost sprouts. */
+.species-price {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill, 999px);
+  border: 1.5px solid rgba(229, 185, 94, 0.5);
+  color: var(--amber, #e5b95e);
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* T1 error feedback: can't afford — quick shake, transform only. */
+.species-option.is-denied {
+  animation: species-deny var(--mo-base) var(--ease-out);
+}
+
+@keyframes species-deny {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .species-option.is-denied {
+    animation: none !important;
+  }
+}

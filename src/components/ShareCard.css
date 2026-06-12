@@ -1,0 +1,159 @@
+/* ShareCard — share modal + trigger button */
+
+/* ---- Trigger button ---- */
+
+.sc-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  /* T1 hover via cs-pill-btn base */
+}
+
+/* T1 micro-lift */
+.sc-trigger:hover {
+  transform: translateY(-1px);
+  transition: transform var(--mo-fast) var(--ease-out),
+    background var(--mo-fast) var(--ease-out);
+}
+
+.sc-trigger:active {
+  transform: translateY(0);
+}
+
+/* ---- Overlay ---- */
+
+@keyframes sc-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sc-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 24px;
+  animation: sc-overlay-in var(--mo-base) var(--ease-out) both;
+  /* backdrop blur for premium feel — allowed per skill (one-shot, ≤300ms) */
+  backdrop-filter: blur(4px);
+}
+
+/* ---- Modal dialog ---- */
+
+@keyframes sc-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.sc-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 32px 32px;
+  max-width: 840px;
+  width: 100%;
+  animation: sc-modal-in var(--mo-slow) var(--ease-out) both;
+  outline: none;
+}
+
+/* ---- Modal header ---- */
+
+.sc-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sc-modal-title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.sc-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  /* T1 */
+  transition: color var(--mo-fast) var(--ease-out),
+    background var(--mo-fast) var(--ease-out);
+}
+
+.sc-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---- Canvas preview ---- */
+
+.sc-canvas-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #c5d2c2;
+  line-height: 0;
+}
+
+.sc-canvas {
+  /* Scale down the 1200×630 canvas for the modal preview while keeping sharpness. */
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 776px; /* modal inner width */
+}
+
+/* ---- Actions row ---- */
+
+.sc-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sc-copy-status {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  min-width: 80px; /* prevent layout shift as text toggles */
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .sc-overlay {
+    animation: none;
+    backdrop-filter: none;
+  }
+
+  .sc-modal {
+    animation: none;
+  }
+
+  .sc-trigger:hover {
+    transform: none;
+    transition: none;
+  }
+
+  .sc-trigger:active {
+    transform: none;
+  }
+
+  .sc-close {
+    transition: none;
+  }
+}

@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { LANGUAGES, STAGES_PER_TOPIC, findTopic } from '../data/curriculum';
+import { useGame } from './useGame';
 
 // ---------------------------------------------------------------------------
 // Progress state — the contract every feature codes against.
@@ -63,6 +64,9 @@ export function ProgressProvider({ children }) {
   const [progress, setProgress] = useState(loadProgress);
   const [langKinds, setLangKinds] = useState(() => loadLangKinds(loadProgress()));
   const [session, setSession] = useState(null);
+  // Economy/streak/achievements live in GameProvider (which wraps us);
+  // progress reports learning events upward.
+  const { recordEvent } = useGame();
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
@@ -139,35 +143,57 @@ export function ProgressProvider({ children }) {
 
   /** Soft penalty: session growth is lost and the tree wilts. */
   const abandonSession = useCallback(() => {
-    setSession((s) => {
-      if (s) updateTopic(s.topicId, { wilted: true });
-      return null;
-    });
-  }, [updateTopic]);
+    if (session) {
+      updateTopic(session.topicId, { wilted: true });
+      recordEvent(
+        {
+          type: 'sessionAbandoned',
+          topicId: session.topicId,
+          minutes: Math.round(getSessionElapsed() / 60_000),
+        },
+        progress
+      );
+    }
+    setSession(null);
+  }, [session, updateTopic, recordEvent, getSessionElapsed, progress]);
 
   /** Timer ran to completion: bank the focus minutes, no penalty. */
   const finishSession = useCallback(() => {
-    setSession((s) => {
-      if (s) {
-        const prev = progress[s.topicId] ?? emptyTopic();
-        updateTopic(s.topicId, {
-          focusMinutes: prev.focusMinutes + s.durationMin,
-        });
-      }
-      return null;
-    });
-  }, [progress, updateTopic]);
+    if (session) {
+      const prev = progress[session.topicId] ?? emptyTopic();
+      const focusMinutes = prev.focusMinutes + session.durationMin;
+      updateTopic(session.topicId, { focusMinutes });
+      recordEvent(
+        {
+          type: 'sessionFinished',
+          topicId: session.topicId,
+          minutes: session.durationMin,
+        },
+        {
+          ...progress,
+          [session.topicId]: { ...emptyTopic(), ...prev, focusMinutes },
+        }
+      );
+    }
+    setSession(null);
+  }, [session, progress, updateTopic, recordEvent]);
 
   /** Lock in the next growth stage. Clears wilt. */
   const completeLesson = useCallback(
     (topicId) => {
       const prev = progress[topicId] ?? emptyTopic();
-      updateTopic(topicId, {
-        lockedStage: Math.min(prev.lockedStage + 1, STAGES_PER_TOPIC),
-        wilted: false,
-      });
+      const nextStage = Math.min(prev.lockedStage + 1, STAGES_PER_TOPIC);
+      updateTopic(topicId, { lockedStage: nextStage, wilted: false });
+      const snapshot = {
+        ...progress,
+        [topicId]: { ...emptyTopic(), ...prev, lockedStage: nextStage },
+      };
+      recordEvent({ type: 'lesson', topicId }, snapshot);
+      if (nextStage >= STAGES_PER_TOPIC && prev.lockedStage < STAGES_PER_TOPIC) {
+        recordEvent({ type: 'topicMastered', topicId }, snapshot);
+      }
     },
-    [progress, updateTopic]
+    [progress, updateTopic, recordEvent]
   );
 
   /** True once ANY tree of the language has locked growth — species is then fixed. */

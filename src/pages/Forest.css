@@ -22,6 +22,22 @@
   font-weight: 600;
 }
 
+/* ---- header row: summary strip + share trigger --------------------------- */
+
+.forest-header-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+/* When present, the summary strip loses its own bottom margin
+   (the row owns the spacing now). */
+.forest-header-row .forest-summary {
+  margin-bottom: 0;
+}
+
 /* ---- summary strip ------------------------------------------------------ */
 
 .forest-summary {

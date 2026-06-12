@@ -1,0 +1,559 @@
+/* ChallengePanel — Clear Field challenge modal.
+   Mirrors LessonPanel's layout patterns with its own class namespace (cp-).
+   Motion: T2 dialog pop, T1 hover, T3 tick-draw + pop celebrations, T3 claim ceremony.
+   Reduced-motion block at the bottom. */
+
+/* ---- Overlay ---- */
+
+.cp-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(13, 13, 13, 0.55);
+  backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: cp-fade var(--mo-base) var(--ease-out);
+}
+
+@keyframes cp-fade {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to   { opacity: 1; backdrop-filter: blur(10px); }
+}
+
+/* T2 dialog entrance */
+.cp-dialog {
+  width: min(1180px, 94vw);
+  height: min(700px, 88vh);
+  padding: 22px 28px 24px;
+  background: linear-gradient(160deg, #141414, #0a0a0a);
+  border: 1.5px solid #2c2c2c;
+  border-radius: var(--radius-xl);
+  color: #fff;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: cp-pop var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes cp-pop {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Head ---- */
+
+.cp-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cp-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--amber);
+  flex: 1;
+  min-width: 0;
+}
+
+.cp-lang-chip {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1.5px solid #3a3a3a;
+  border-radius: var(--radius-pill);
+  padding: 3px 12px;
+  color: #8f8f8f;
+}
+
+.cp-lang-chip--html { border-color: rgba(255, 120, 60, 0.5); color: #ff8c52; }
+.cp-lang-chip--css  { border-color: rgba(100, 160, 255, 0.5); color: #78aaff; }
+.cp-lang-chip--js   { border-color: rgba(255, 210, 60, 0.5);  color: #ffd23c; }
+
+.cp-close {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border: 1.5px solid #4a4a4a;
+  border-radius: var(--radius-pill);
+  color: var(--card);
+  font-size: 15px;
+  line-height: 1;
+  transition: transform var(--mo-fast) var(--ease-out),
+    border-color var(--mo-fast) var(--ease-out),
+    color var(--mo-fast) var(--ease-out);
+}
+
+.cp-close:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+  transform: scale(1.08);
+}
+
+/* ---- Body ---- */
+
+.cp-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+/* T2 child stagger */
+.cp-enter {
+  animation: cp-rise var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+@keyframes cp-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Lab layout (mirrors lp-step--lab) ---- */
+
+.cp-lab {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cp-brief {
+  background: rgba(110, 140, 138, 0.16);
+  border: 1.5px solid var(--grass);
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+.cp-brief-kicker {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #9fc0bd;
+}
+
+.cp-brief p {
+  margin: 0;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.cp-lab-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.cp-lab-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cp-lab-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cp-lab-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8f8f8f;
+}
+
+/* ---- Editor ---- */
+
+.cp-editor {
+  flex: 1;
+  width: 100%;
+  min-height: 240px;
+  resize: none;
+  background: #161616;
+  color: #e8e8e8;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas,
+    Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  tab-size: 2;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    box-shadow var(--mo-fast) var(--ease-out);
+}
+
+.cp-editor:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(229, 185, 94, 0.18);
+}
+
+/* ---- Preview browser frame ---- */
+
+.cp-browser {
+  border: 1.5px solid #3a3a3a;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.cp-browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  background: #1d1d1d;
+  border-bottom: 1.5px solid #3a3a3a;
+}
+
+.cp-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4a4a4a;
+}
+
+.cp-browser-url {
+  margin-left: 8px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #6f6f6f;
+}
+
+.cp-preview {
+  display: block;
+  width: 100%;
+  height: 190px;
+  border: none;
+  background: #fff;
+}
+
+/* ---- JS console ---- */
+
+.cp-console {
+  background: #101010;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 14px;
+  padding: 10px 14px;
+  max-height: 110px;
+  overflow-y: auto;
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Consolas,
+    Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.cp-console-line {
+  margin: 0;
+  color: #9fd08c;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cp-console-err  { color: #e07a5f; }
+.cp-console-dim  { color: #5a5a5a; }
+
+/* ---- Quest checks (same tick-draw + pop as LessonPanel) ---- */
+
+.cp-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8f8f8f;
+  transition: color var(--mo-base) var(--ease-out);
+}
+
+.cp-check.is-pass { color: #fff; }
+
+.cp-check-mark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid #4a4a4a;
+  border-radius: 50%;
+  color: #8f8f8f;
+  transition: border-color var(--mo-base) var(--ease-out),
+    color var(--mo-base) var(--ease-out);
+}
+
+.cp-check-mark svg {
+  width: 13px;
+  height: 13px;
+}
+
+.cp-check-mark path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 15;
+  stroke-dashoffset: 15;
+  transition: stroke-dashoffset var(--mo-base) var(--ease-out);
+}
+
+.cp-check.is-pass .cp-check-mark {
+  border-color: #7aa05f;
+  color: #8fbc70;
+}
+
+.cp-check.is-pass .cp-check-mark path {
+  stroke-dashoffset: 0;
+}
+
+/* T3 micro: fires on the false→true edge */
+.cp-check.is-just-passed .cp-check-mark {
+  animation: cp-check-pop var(--mo-slow) var(--ease-spring);
+}
+
+@keyframes cp-check-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ---- Footer ---- */
+
+.cp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-top: 1.5px solid #2c2c2c;
+  padding-top: 14px;
+}
+
+.cp-footer-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cp-reward-note {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #6f6f6f;
+}
+
+.cp-footer-status {
+  margin: 0;
+  font-size: 13.5px;
+  color: #8f8f8f;
+  transition: color var(--mo-base) var(--ease-out);
+}
+
+.cp-footer-status.is-ready { color: #8fbc70; }
+
+.cp-claim-btn {
+  font-size: 16px;
+  padding: 9px 26px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  transition: opacity var(--mo-base) var(--ease-out),
+    transform var(--mo-fast) var(--ease-out);
+}
+
+.cp-claim-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* T0 breathe when armed */
+.cp-claim-btn.is-armed {
+  box-shadow: 0 0 18px rgba(255, 69, 0, 0.45);
+  animation: cp-breathe 2.2s var(--ease-out) infinite;
+}
+
+@keyframes cp-breathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.03); }
+}
+
+/* ---- Already-completed review banner ---- */
+
+.cp-review-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(229, 185, 94, 0.1);
+  border: 1.5px solid rgba(229, 185, 94, 0.35);
+  border-radius: 14px;
+  padding: 10px 16px;
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.cp-review-banner-icon { font-size: 18px; }
+
+/* ---- T3 claim celebration ---- */
+
+.cp-ceremony {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.cp-burst {
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.cp-leaf {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 70% 0 70% 0;
+  background: #8aa86f;
+  --angle: calc(var(--n) * 25.7deg);
+  --dist: calc(96px + var(--n) * 5px);
+  animation: cp-leaf-fly var(--mo-epic) var(--ease-out) both;
+  animation-delay: calc(var(--n) * 12ms);
+}
+
+.cp-leaf:nth-child(even) {
+  background: var(--amber);
+  border-radius: 0 70% 0 70%;
+}
+
+@keyframes cp-leaf-fly {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(0.4);
+    opacity: 0;
+  }
+  12% { opacity: 1; }
+  100% {
+    transform: translate(
+        calc(cos(var(--angle)) * var(--dist)),
+        calc(sin(var(--angle)) * var(--dist) - 34px)
+      )
+      rotate(calc(var(--angle) * 2)) scale(1);
+    opacity: 0;
+  }
+}
+
+.cp-ceremony-kicker {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #8f8f8f;
+}
+
+.cp-ceremony-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 44px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.cp-ceremony-sub {
+  margin: 0;
+  font-size: 15px;
+  color: var(--amber);
+}
+
+.cp-ceremony-reward {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--amber);
+  margin: 4px 0 16px;
+}
+
+.cp-ceremony-btn {
+  font-size: 16px;
+  padding: 9px 30px;
+  background: var(--orange);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  transition: background var(--mo-fast) var(--ease-out);
+}
+
+.cp-ceremony-btn:hover { background: #e63e00; }
+
+/* ---- Responsive ---- */
+
+@media (max-width: 900px) {
+  .cp-dialog {
+    height: auto;
+    max-height: 90vh;
+  }
+  .cp-lab-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Reduced motion = instant, not absent */
+@media (prefers-reduced-motion: reduce) {
+  .cp-overlay,
+  .cp-overlay * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

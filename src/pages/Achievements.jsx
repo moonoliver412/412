@@ -1,43 +1,81 @@
-import { Link } from 'react-router-dom';
-import './stubs.css';
+import { useGame } from '../state/useGame';
+import { ACHIEVEMENTS } from '../data/achievements';
+import './Achievements.css';
 
-function MedalBadge() {
+function formatDate(ms) {
+  if (!ms) return null;
+  const d = new Date(ms);
+  return d.toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function AchievementCard({ def, unlockedAtMs, index }) {
+  const unlocked = unlockedAtMs != null;
   return (
-    <span className="stub-badge" aria-hidden="true">
-      {/* medal glyph */}
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#111" strokeWidth="1.8">
-        <circle cx="12" cy="14" r="5" />
-        <path d="M9 10 6 3M15 10l3-7M12 9.2 10 3M12 9.2 14 3" strokeLinecap="round" />
-      </svg>
-    </span>
+    <article
+      className={`ach-card ach-card--${unlocked ? 'unlocked' : 'locked'}`}
+      style={{ '--i': index }}
+      aria-label={`${def.name} — ${unlocked ? 'unlocked' : 'locked'}`}
+    >
+      {unlocked ? (
+        <span className="ach-icon" aria-hidden="true">{def.icon}</span>
+      ) : (
+        <span className="ach-lock-glyph" aria-hidden="true">🔒</span>
+      )}
+      <h3 className="ach-name">{def.name}</h3>
+      <p className="ach-blurb">{def.blurb}</p>
+      {unlocked && (
+        <p className="ach-date" role="status">
+          Unlocked {formatDate(unlockedAtMs)}
+        </p>
+      )}
+    </article>
   );
 }
 
-const PLACEHOLDERS = [
-  'First sprout',
-  'Focus streak',
-  'Grove keeper',
-  'Bug squasher',
-  'Night owl',
-  'Forest master',
-];
-
 export default function Achievements() {
+  const { game } = useGame();
+  const unlockedCount = Object.keys(game.achievements).length;
+  const total = ACHIEVEMENTS.length;
+  const pct = total > 0 ? (unlockedCount / total) * 100 : 0;
+
   return (
     <main className="cs-page">
-      <h1 className="cs-page-title">
-        <MedalBadge />
-        Achievements
-      </h1>
-      <p className="stub-muted" style={{ marginBottom: 24 }}>
-        Badges you earn as your forest grows. Coming soon — start a session in
-        the <Link to="/playground">Playground</Link> to get a head start.
-      </p>
-      <section className="stub-grid">
-        {PLACEHOLDERS.map((name) => (
-          <div key={name} className="cs-card stub-placeholder">
-            {name}
-          </div>
+      <header className="ach-header">
+        <h1 className="ach-title">
+          <span className="ach-title-icon" aria-hidden="true">🏅</span>
+          Achievements
+        </h1>
+        <p className="ach-counter">
+          <strong>{unlockedCount}</strong> of <strong>{total}</strong> unlocked
+        </p>
+        <div
+          className="ach-rail"
+          role="progressbar"
+          aria-valuenow={unlockedCount}
+          aria-valuemin={0}
+          aria-valuemax={total}
+          aria-label="Achievements progress"
+        >
+          <div
+            className="ach-rail-fill"
+            aria-hidden="true"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      </header>
+
+      <section className="ach-grid" aria-label="All achievements">
+        {ACHIEVEMENTS.map((def, i) => (
+          <AchievementCard
+            key={def.id}
+            def={def}
+            unlockedAtMs={game.achievements[def.id] ?? null}
+            index={i}
+          />
         ))}
       </section>
     </main>
