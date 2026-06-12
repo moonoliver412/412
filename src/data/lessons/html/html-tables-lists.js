@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Whenever you catch yourself writing "first… second… third…" in a paragraph, HTML has a better tool: a list. There are two kinds. An unordered list, <ul>, gets bullet points — use it when the order does not matter. An ordered list, <ol>, gets numbers — use it when it does, like steps in a recipe.',
+        text: 'Sometimes a paragraph tries to say "first… second… third…". HTML has a better tool: a list. There are two kinds. An unordered list (<ul>) gets bullet points — use it when order does not matter. An ordered list (<ol>) gets numbers — use it when order does matter, like steps in a recipe.',
       },
       {
         type: 'code',
@@ -14,11 +14,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Both kinds hold the same thing inside: <li> elements, one per list item. The only direct children a <ul> or <ol> should have are <li>s — no stray paragraphs floating between them. Swap the wrapper from <ul> to <ol> and the bullets become numbers; the items themselves never change.',
+        text: 'Both kinds hold the same thing inside: <li> elements, one per list item. The only direct children a <ul> or <ol> should have are <li>s. Swap the wrapper from <ul> to <ol> and bullets become numbers. The items themselves never change.',
       },
       {
         type: 'tip',
-        text: 'The browser does the numbering for an <ol> automatically. Add, remove, or reorder items and the numbers fix themselves — never type "1." by hand.',
+        text: 'The browser numbers an <ol> for you. Add, remove, or reorder items and the numbers fix themselves. Never type "1." by hand.',
       },
     ],
     exercise: {
@@ -45,7 +45,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'There is a third, lesser-known list made for pairs: the definition list, <dl>. Instead of <li>, it alternates two elements — <dt>, the term, and <dd>, the description of that term. It is perfect for glossaries, FAQs, or any name-and-value data like "Author: Robin Moss".',
+        text: 'There is a third list type made for pairs: the definition list, <dl>. Instead of <li>, it uses two elements. <dt> holds the term. <dd> holds the description. Use it for glossaries, FAQs, or any name-and-value data like "Author: Robin Moss".',
       },
       {
         type: 'code',
@@ -53,11 +53,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Read it as a rhythm: term, description, term, description. A term may even have several <dd>s when one definition is not enough. Browsers indent each <dd> beneath its <dt>, so the pairing is visible at a glance.',
+        text: 'Think of it as a rhythm: term, description, term, description. A term can have several <dd>s when one description is not enough. Browsers indent each <dd> under its <dt>, so the pairing is easy to see.',
       },
       {
         type: 'tip',
-        text: 'Mnemonic: dt = definition term, dd = definition description. The <dt> is the word in bold in a dictionary; the <dd> is everything after it.',
+        text: 'Memory trick: dt = definition term, dd = definition description. The <dt> is the bold word in a dictionary. The <dd> is everything after it.',
       },
     ],
     exercise: {
@@ -89,7 +89,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'When data has rows and columns — scores, schedules, prices — it belongs in a <table>. You build one from the outside in: the <table> wraps everything, each <tr> is a table row, and each <td> inside a row is one table-data cell.',
+        text: 'When data has rows and columns — scores, schedules, prices — it belongs in a <table>. You build one from the outside in. <table> wraps everything. Each <tr> is a table row. Each <td> inside a row is one data cell.',
       },
       {
         type: 'code',
@@ -97,11 +97,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Notice there is no "column" element — columns simply emerge when every row has the same number of cells. Two <td>s per row means two columns. Keep the counts matching and the grid lines up; let one row run long and the table goes wonky.',
+        text: 'There is no "column" element. Columns appear when every row has the same number of cells. Two <td>s per row means two columns. Keep the counts matching and the grid lines up. Let one row run long and the table breaks.',
       },
       {
         type: 'tip',
-        text: 'Tables are for data, not page layout. If you are tempted to position a sidebar with a table, hold that thought until you meet CSS.',
+        text: 'Tables are for data, not page layout. If you want to position a sidebar with a table, wait until you meet CSS — it has better tools for that.',
       },
     ],
     exercise: {
@@ -133,11 +133,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A grid of bare numbers is a puzzle. Three additions turn it into information. First, <th> — a table-header cell. Use it instead of <td> for the cells that label a column or row; browsers make them bold and centered, and screen readers announce them with every cell.',
+        text: 'A grid of bare numbers is hard to read. Three additions turn it into clear information. First, <th> — a table-header cell. Use it instead of <td> to label a column or row. Browsers make <th> bold and centered, and screen readers read them out with every cell.',
       },
       {
         type: 'p',
-        text: 'Second, <caption>: a title for the whole table, written as the first element inside <table>. Third, when one cell needs to stretch across several columns or rows, give it a colspan or rowspan attribute with the number to span.',
+        text: 'Second, <caption>: a title for the whole table. Write it as the first element inside <table>. Third, when one cell needs to stretch across several columns or rows, add a colspan or rowspan attribute with the number to span.',
       },
       {
         type: 'code',
@@ -145,7 +145,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'If a spanned table looks scrambled, count cells: a colspan="2" cell takes the seat of two — its row needs one fewer cell than the others.',
+        text: 'If a spanned table looks scrambled, count cells. A colspan="2" cell takes the space of two. Its row needs one fewer cell than the others.',
       },
     ],
     exercise: {
@@ -178,7 +178,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Project time: a pricing table, the kind every product site has. Real-world tables organize their rows into three named regions: <thead> for the header row, <tbody> for the data, and <tfoot> for a closing row like a total or a footnote. Each one simply wraps <tr>s.',
+        text: 'Project time: a pricing table — the kind every product site has. Real tables organize their rows into three named sections. <thead> holds the header row. <tbody> holds the data. <tfoot> holds a closing row like a total or footnote. Each section just wraps <tr>s.',
       },
       {
         type: 'code',
@@ -186,11 +186,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Build yours for a sapling-delivery service: a caption naming the table, a header row with <th>s for the plan and the price, at least two plans in the body, and a <tfoot> row with a note (say, "All prices in acorns"). Structure first, beauty later.',
+        text: 'Build one for a sapling-delivery service. Add a caption, a header row with <th>s for plan and price, at least two plans in the body, and a <tfoot> row with a short note (try "All prices in acorns"). Structure first, style later.',
       },
       {
         type: 'tip',
-        text: 'Keep the order caption → thead → tbody → tfoot. The browser is forgiving, but future-you reading the code will not be.',
+        text: 'Keep the order: caption → thead → tbody → tfoot. The browser is flexible, but anyone reading your code later will thank you for it.',
       },
     ],
     exercise: {

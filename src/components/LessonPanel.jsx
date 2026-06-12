@@ -91,7 +91,7 @@ function Ceremony({ stage, kind, water, onClose }) {
       </h3>
       <p className="lp-ceremony-sub lp-enter" style={{ '--i': 3 }}>
         {water
-          ? `Your ${kind} drinks deep — the knowledge stays green.`
+          ? `Your ${kind} is watered — the knowledge stays fresh.`
           : mastered
             ? `Topic mastered — your ${kind} stands fully grown.`
             : `Your ${kind} just grew taller.`}
@@ -249,7 +249,7 @@ export default function LessonPanel({
   const reasons = [];
   if (!ready) reasons.push('Pass every check');
   if (!isReview && !runningHere)
-    reasons.push('Start a focus session for this topic');
+    reasons.push('Start a focus session for this topic first');
   const note = reasons.length
     ? reasons.join(' · ')
     : isReview

@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Plain paragraphs are fine, but real writing has emphasis. HTML gives you tags that add meaning to words right inside a sentence. The two you will use constantly are <strong> for something important and <em> for something stressed — say the sentence out loud and <em> is the word your voice leans on.',
+        text: 'Plain paragraphs are fine, but real writing has emphasis. HTML gives you tags that add meaning to words inside a sentence. The two you will use most are <strong> for something important and <em> for something stressed. Say the sentence out loud — <em> is the word your voice naturally emphasizes.',
       },
       {
         type: 'code',
@@ -14,7 +14,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Browsers show <strong> as bold and <em> as italics, but the meaning is the point: screen readers can change tone for them, and search engines treat them as signals. There are more in the family — <mark> highlights text like a marker pen, and <small> is for fine print.',
+        text: 'Browsers show <strong> as bold and <em> as italic, but the meaning is the point. Screen readers can change tone for them, and search engines pay attention. There are more — <mark> highlights text like a highlighter pen, and <small> is for fine print.',
       },
       {
         type: 'tip',
@@ -45,7 +45,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every element belongs to one of two big families. Block elements — like <h1>, <p>, and <ul> — claim a whole line for themselves and stack vertically, like boxes on shelves. Inline elements — like <strong>, <em>, and <a> — flow along inside the text without breaking the line, like beads on a string.',
+        text: 'Every element belongs to one of two groups. Block elements — like <h1>, <p>, and <ul> — take up a full line and stack on top of each other. Inline elements — like <strong>, <em>, and <a> — flow inside the text without breaking the line.',
       },
       {
         type: 'code',
@@ -53,7 +53,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Each family has a generic, meaning-free member: <div> is a plain block box and <span> is a plain inline wrapper. They say nothing about their contents — they exist so you can group things, usually to style them later with CSS. Use them when no meaningful tag fits.',
+        text: 'Each group has a plain, meaning-free member. <div> is a block box and <span> is an inline wrapper. Neither says anything about its contents. They exist so you can group things, usually to style them later with CSS. Use them only when no meaningful tag fits.',
       },
       {
         type: 'tip',
@@ -85,7 +85,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Links are the “hyper” in HyperText. The anchor element, <a>, turns anything into something clickable, and its href attribute says where clicking leads. Everything between the opening and closing tag becomes the clickable part.',
+        text: 'Links are the “hyper” in HyperText Markup Language. The anchor element, <a>, turns anything into a clickable link. Its href attribute — short for “hypertext reference” — says where clicking leads. Everything between the opening and closing tag becomes the clickable part.',
       },
       {
         type: 'code',
@@ -93,7 +93,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'An href starting with https:// is absolute — it can point anywhere on the web. A plain filename like about.html is relative — it points to a page sitting next to yours. And #something jumps to a spot on the same page. Make the link text describe the destination: "Visit Example" beats "click here" every time.',
+        text: 'An href starting with https:// is an absolute link — it can point anywhere on the web. A plain filename like about.html is a relative link — it points to a page next to yours. And #something jumps to a spot on the same page. Make the link text describe the destination: "Visit Example" is much better than "click here".',
       },
       {
         type: 'tip',
@@ -126,7 +126,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Images arrive with the <img> element. It is a void element — no closing tag — and it needs two attributes: src, the path to the picture, and alt, a short text description. The alt text appears if the image fails to load, and it is what screen readers speak aloud, so write what the picture shows.',
+        text: 'Images use the <img> element. It is a void element — meaning no closing tag. It needs two attributes every time. src is the path to the picture. alt is a short text description — what screen readers speak aloud, and what shows if the image fails to load. Write what the picture actually shows.',
       },
       {
         type: 'code',
@@ -134,7 +134,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'When an image deserves a visible caption, wrap the pair in a <figure>. The <figcaption> inside it is the caption the browser shows on the page — different job from alt, which is the description for when the image cannot be seen. A good figure often has both.',
+        text: 'When an image deserves a visible caption, wrap the pair in a <figure>. The <figcaption> inside it is the caption shown on the page. That is a different job from alt — alt is the description for when the image cannot be seen. A good figure often has both.',
       },
       {
         type: 'tip',
@@ -170,11 +170,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'You now know enough to write a real piece of web content: paragraphs with emphasis, links that lead somewhere, and captioned images. Time to combine them into one page — a short set of field notes about a tree you (let us pretend) have been watching all spring.',
+        text: 'You now know enough to write a real piece of web content: paragraphs with emphasis, links that lead somewhere, and captioned images. Time to combine them into one page — a short set of field notes about a tree you have been watching.',
       },
       {
         type: 'p',
-        text: 'Approach it like a writer, not a robot. Say something in a paragraph and bold the key phrase. Point readers somewhere useful with a descriptive link. Show, not just tell, with a captioned figure. Each element earns its place.',
+        text: 'Think like a writer. Say something in a paragraph and bold the key phrase. Point readers somewhere useful with a descriptive link. Show your subject with a captioned figure. Each element should earn its place.',
       },
       {
         type: 'code',

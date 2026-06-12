@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'An <iframe> is a window in your page with another page inside it. The browser loads a second, completely separate document into the frame — its own HTML, its own styles — and the two pages largely cannot touch each other.',
+        text: 'An <iframe> is a window in your page with another page inside it. The browser loads a second, completely separate document into the frame — its own HTML, its own styles. The two pages mostly cannot interact with each other.',
       },
       {
         type: 'p',
-        text: 'You already use iframes constantly without noticing: every embedded video player, map, and payment form on the web is one. The src attribute says which page to load, width and height size the window, and title — required manners, not decoration — tells screen-reader users what the frame contains before they step into it.',
+        text: 'You already use iframes without noticing: every embedded video player, map, and payment form is one. The src attribute tells the browser which page to load. width and height size the window. title — required, not optional — tells screen-reader users what is inside before they step into it.',
       },
       {
         type: 'code',
@@ -18,11 +18,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Unlike <img>, an iframe needs its closing tag. Anything written between the tags is shown only by museum-grade browsers that cannot render frames at all — leave that space empty.',
+        text: 'Unlike <img>, an iframe needs its closing tag. Text between the tags is shown only by very old browsers that cannot display frames at all — leave that space empty.',
       },
       {
         type: 'tip',
-        text: 'In this editor’s sandboxed preview, embedded sites may appear as empty frames. Your HTML is still correct — the checks read your markup, not the network.',
+        text: 'In this editor\'s sandboxed preview, embedded sites may appear as empty frames. Your HTML is still correct. The checks read your markup, not the network.',
       },
     ],
     exercise: {
@@ -49,11 +49,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Video sites do not hand you a video file; they hand you an iframe. The page inside the frame contains their entire player — controls, captions, quality switching — which is why one copied snippet gives you a full cinema.',
+        text: 'Video sites do not give you a video file. They give you an iframe. The page inside the frame contains the full player — controls, captions, quality switching. That is why one copied snippet gives you a complete video player.',
       },
       {
         type: 'p',
-        text: 'Two attributes matter beyond src. allowfullscreen lets the player expand to fill the screen when someone clicks the fullscreen button; leave it off and that button silently does nothing. And title earns its keep again: "Video: how to repot a fern" beats a screen reader announcing only "frame".',
+        text: 'Two attributes matter beyond src. allowfullscreen lets the player expand to fill the screen when someone clicks the fullscreen button. Leave it off and that button silently does nothing. title earns its keep again: "Video: how to repot a fern" beats a screen reader saying just "frame".',
       },
       {
         type: 'code',
@@ -61,7 +61,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Real embed codes from video sites are exactly this pattern with a longer src. Paste them next to the content they support, not in a pile at the bottom of the page.',
+        text: 'Real embed codes from video sites are exactly this pattern with a longer src. Place them next to the content they go with, not dumped at the bottom of the page.',
       },
     ],
     exercise: {
@@ -88,11 +88,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Maps, calendars, weather panels, booking forms — anything a service offers under "embed this" arrives as an iframe. The tag never changes; only the src does. What changes from embed to embed is how you size and load it.',
+        text: 'Maps, calendars, weather panels, booking forms — anything a service offers under "embed this" arrives as an iframe. The tag never changes; only the src does. What changes between embeds is how you size and load each one.',
       },
       {
         type: 'p',
-        text: 'Size with width and height attributes so the page reserves space before the frame arrives — otherwise content jumps around as embeds pop in. And iframes accept the same loading="lazy" you used on images: a map at the bottom of a contact page has no business loading before the visitor scrolls toward it.',
+        text: 'Set width and height so the page reserves space before the frame loads — otherwise content jumps around as embeds pop in. Iframes also accept loading="lazy", just like images. A map at the bottom of a page should not load until the visitor scrolls toward it.',
       },
       {
         type: 'code',
@@ -100,7 +100,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Every embedded widget is someone else’s code running in your page’s lap. Embed services you trust — and next lesson, learn to put the rest on a leash.',
+        text: 'Every embedded widget is someone else\'s code running inside your page. Embed services you trust — and next lesson you will learn how to limit what they can do.',
       },
     ],
     exercise: {
@@ -134,11 +134,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'An iframe runs someone else’s page inside yours, so HTML gives you a leash. The sandbox attribute strips the embedded page of almost every power: no scripts, no forms, no popups, no navigating your page somewhere else. An empty sandbox="" is maximum lockdown.',
+        text: 'An iframe runs someone else\'s page inside yours, so HTML gives you a way to limit its power. The sandbox attribute — short for sandboxing, locking a page into a safe container — strips the embedded page of almost everything: no scripts, no forms, no popups, no navigation. An empty sandbox="" is maximum lockdown.',
       },
       {
         type: 'p',
-        text: 'From there you grant back only what the embed needs, as space-separated tokens: sandbox="allow-scripts" lets it run JavaScript but nothing more; add allow-forms only if it has a form to submit. One more polite habit: referrerpolicy="no-referrer" stops the frame from being told which page embedded it.',
+        text: 'From there you grant back only what the embed needs. Use space-separated tokens: sandbox="allow-scripts" lets it run JavaScript but nothing else. Add allow-forms only if it has a form to submit. One extra habit: referrerpolicy="no-referrer" stops the frame from learning which page embedded it.',
       },
       {
         type: 'code',
@@ -146,7 +146,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Never grant allow-scripts and allow-same-origin together to an untrusted page — that combination lets the embed unlock its own sandbox.',
+        text: 'Never grant allow-scripts and allow-same-origin together to an untrusted page. That combination lets the embed unlock its own sandbox.',
       },
     ],
     exercise: {
@@ -177,11 +177,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to curate. Your showcase page gathers three embeds — a video, a map, and a widget — each used the way this topic taught: titled for screen readers, lazy where it helps, sandboxed where trust is thin.',
+        text: 'Time to put it all together. Your showcase page holds three embeds — a video, a map, and a widget — each used the way this topic taught: titled for screen readers, lazy where it helps, sandboxed where trust is low.',
       },
       {
         type: 'p',
-        text: 'Give each embed a small section with a heading so visitors know what they are looking at. All three iframes get a title. The map, living far down the page, gets loading="lazy". The third-party widget gets sandbox="allow-scripts". Notice how the attributes, not the tag, carry all the differences.',
+        text: 'Give each embed a heading so visitors know what they are looking at. All three iframes get a title. The map, which is far down the page, gets loading="lazy". The third-party widget gets sandbox="allow-scripts". Notice how attributes — not the tag — carry all the differences.',
       },
       {
         type: 'code',
@@ -189,11 +189,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Dummy example.com addresses are perfect here — in the sandboxed preview nothing loads anyway, and that is fine. The structure and the safety habits are the lesson, and both transfer directly to real embed codes.',
+        text: 'Placeholder example.com addresses are fine here — nothing loads in the sandboxed preview anyway. The structure and safety habits are the lesson. Both apply directly to real embed codes.',
       },
       {
         type: 'tip',
-        text: 'Three frames, three jobs: video wants allowfullscreen, below-the-fold embeds want loading="lazy", and untrusted widgets want sandbox.',
+        text: 'Three frames, three jobs. Video wants allowfullscreen. Below-the-fold embeds want loading="lazy". Untrusted widgets want sandbox.',
       },
     ],
     exercise: {

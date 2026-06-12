@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every element on a web page is a rectangular box — even text, even circles. Understanding the box model means understanding exactly how big that box is and where it sits. The box has four layers: content at the centre, then padding around it, then a border around that, then margin pushing other boxes away.',
+        text: 'Every element on a web page is a rectangle — even text, even circles. The box model describes how big that box is. It has four layers: content in the middle, padding (space inside the border) around it, the border itself, then margin (space outside the border) pushing other boxes away.',
       },
       {
         type: 'code',
@@ -14,16 +14,16 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'By default, width and height measure only the content box. A 300px-wide element with 20px padding ends up 340px wide on screen — which surprises everyone. The fix is one line added to every project: box-sizing: border-box makes width include the padding and border, so 300px always means 300px total.',
+        text: 'By default, width only counts the content. So a 300px element with 20px padding ends up 340px wide on screen. That surprises a lot of people. The fix: box-sizing: border-box makes width include the padding and border. Now 300px always means 300px total.',
       },
       {
         type: 'tip',
-        text: 'Add "*, *::before, *::after { box-sizing: border-box; }" to the top of every stylesheet. It is the single most useful reset in CSS.',
+        text: 'Add "*, *::before, *::after { box-sizing: border-box; }" to the top of every stylesheet. It\'s the most useful one-liner in CSS.',
       },
     ],
     exercise: {
       instructions:
-        'Give the .card a width of 280px, padding of 24px, and a border of "2px solid #aaa". Add box-sizing: border-box so the card stays 280px wide.',
+        'Give the .card a width of 280px, a padding of 24px, and a border of "2px solid #aaa". Add box-sizing: border-box so the card stays 280px wide.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">\n      <h2>Seed Packet</h2>\n      <p>Sow in spring, harvest in summer.</p>\n    </div>\n  </body>\n</html>',
       checks: [
@@ -50,7 +50,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Margin, padding, and border each accept between one and four values. One value sets all four sides at once. Two values set vertical (top/bottom) then horizontal (left/right). Four values go clockwise: top, right, bottom, left. Knowing this shorthand cuts down on repetition.',
+        text: 'Margin, padding, and border each accept one to four values. One value sets all four sides. Two values set top/bottom then left/right. Four values go clockwise: top, right, bottom, left. This shorthand cuts down on repetition.',
       },
       {
         type: 'code',
@@ -58,16 +58,16 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Borders also have individual style, width, and color properties. The shorthand border: 2px dashed coral sets all three at once. You can mix-and-match: border-bottom: 3px solid seagreen gives a single accent line under an element — a classic design trick for section headings.',
+        text: 'Borders have individual style, width, and color properties. The shorthand border: 2px dashed coral sets all three at once. You can mix them: border-bottom: 3px solid seagreen gives one accent line under an element. That\'s a classic look for section headings.',
       },
       {
         type: 'tip',
-        text: 'Margin collapse: when two vertical margins meet (a paragraph\'s bottom margin and the next paragraph\'s top margin), they merge into the larger of the two rather than adding. Padding and borders never collapse.',
+        text: 'Margin collapse: when two vertical margins meet (like a paragraph\'s bottom and the next paragraph\'s top), they merge into the larger one instead of adding together. Padding and borders never collapse.',
       },
     ],
     exercise: {
       instructions:
-        'Give the .section a padding of "16px 32px" (vertical then horizontal) and a border-bottom of "3px solid seagreen". Add a margin-bottom of 24px to separate it from the next section.',
+        'Give the .section a padding of "16px 32px" (top/bottom then left/right), a border-bottom of "3px solid seagreen", and a margin-bottom of 24px.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .section {\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="section">\n      <h2>Watering Guide</h2>\n      <p>Water deeply and infrequently.</p>\n    </div>\n    <div class="section">\n      <h2>Pruning Guide</h2>\n      <p>Cut just above a leaf node.</p>\n    </div>\n  </body>\n</html>',
       checks: [
@@ -94,7 +94,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The display property decides how an element participates in the page flow. Block elements (div, p, h1) take up the full width and stack vertically. Inline elements (span, a, strong) flow with the text and only take the space they need. Inline-block sits between the two: it flows inline but accepts width and height.',
+        text: 'The display property controls how an element fits into the page. Block elements (div, p, h1) take the full width and stack vertically. Inline elements (span, a, strong) flow with the text and take only the space they need. inline-block sits between: it flows with text but still accepts width and height.',
       },
       {
         type: 'code',
@@ -102,16 +102,16 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Position gives you escape hatches from normal flow. position: relative nudges an element from where it would normally sit, without disturbing its neighbours. position: absolute removes it from flow entirely and places it relative to the nearest positioned ancestor. position: fixed pins it to the viewport so it stays put when the page scrolls.',
+        text: 'The position property lets you move elements out of the normal flow. position: relative nudges an element from where it would normally sit, without moving its neighbors. position: absolute pulls it out of the flow and places it inside the nearest positioned ancestor. position: fixed pins it to the screen so it stays put when you scroll.',
       },
       {
         type: 'tip',
-        text: 'An absolutely positioned element needs a positioned ancestor to anchor to. If none exists it anchors to the page root. Add position: relative to the parent to contain it.',
+        text: 'An absolutely positioned element anchors to the nearest ancestor that has a position set. If none exists, it anchors to the page itself. Add position: relative to the parent to keep it contained.',
       },
     ],
     exercise: {
       instructions:
-        'Give the .badge a display of "inline-block", a background-color of "seagreen", and a color of "white". Position the .container as "relative" so it can contain positioned children.',
+        'Give the .badge a display of "inline-block", a background-color of "seagreen", and a color of "white". Give the .container position: relative so it can hold positioned children.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .container {\n        /* your css here */\n      }\n      .badge {\n        padding: 4px 12px;\n        border-radius: 4px;\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="container">\n      <h2>Cherry Tree <span class="badge">New</span></h2>\n      <p>Just added to the grove.</p>\n    </div>\n  </body>\n</html>',
       checks: [
@@ -138,7 +138,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Cards are one of the most common UI patterns: a self-contained box with an image, a title, and some text. Building a card means combining everything from this topic — sizing, padding, borders, and a dash of border-radius to round off the corners.',
+        text: 'A card is a self-contained box with a title, some text, and maybe an image. It\'s one of the most common patterns on the web. Building one uses everything from this topic: sizing, padding, borders, and border-radius to round the corners.',
       },
       {
         type: 'code',
@@ -146,11 +146,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'box-shadow takes horizontal offset, vertical offset, blur radius, and a color. Keep offsets small and blur generous for a soft, natural look. rgba() lets you use a transparent black, which adapts gracefully to any background color rather than fighting it.',
+        text: 'box-shadow takes horizontal offset, vertical offset, blur radius, and a color. Keep offsets small and blur generous for a soft look. rgba() lets you use a semi-transparent black. That adapts to any background color instead of clashing with it.',
       },
       {
         type: 'tip',
-        text: 'Combine border-radius: 50% with equal width and height to make a perfect circle — handy for avatar images.',
+        text: 'Use border-radius: 50% with equal width and height to make a perfect circle. That\'s how avatar images get their round shape.',
       },
     ],
     exercise: {
@@ -182,7 +182,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Stacking context is what determines which element appears on top when boxes overlap. Every element has a z-index of "auto" by default. Set a numeric z-index on any positioned element and it joins the stacking order: higher numbers sit in front, lower numbers sit behind.',
+        text: 'When boxes overlap, something has to be on top. z-index (a number you set) controls that order. Higher numbers sit in front, lower numbers sit behind. z-index only works on positioned elements — anything with position set to relative, absolute, or fixed.',
       },
       {
         type: 'code',
@@ -190,16 +190,16 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'For a capstone challenge, you will build a plant card with an overlaid label. The card is the positioned container, a semi-transparent overlay covers the bottom, and a "New" badge pokes out of the top corner. Box model + positioning + z-index all working together.',
+        text: 'You\'ll build a plant card with a layered label. The card is the positioned container. A semi-transparent overlay covers the bottom. A "New" badge sits in the top corner. Box model, positioning, and z-index — all working together.',
       },
       {
         type: 'tip',
-        text: 'z-index only works on positioned elements (anything other than position: static). If your z-index seems to do nothing, check the position property first.',
+        text: 'z-index only works on positioned elements — anything other than position: static (the default). If your z-index does nothing, check that the element has a position set.',
       },
     ],
     exercise: {
       instructions:
-        'Complete the layered card: give .card position "relative" and border-radius "12px". Give .overlay a z-index of 2. Give .corner-badge position "absolute", top "8px", right "8px", and z-index of 3.',
+        'Complete the layered card: give .card position "relative" and border-radius "12px". Give .overlay a z-index of 2. Give .corner-badge position "absolute", top "8px", right "8px", and z-index of 3 so it sits above the overlay.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .card {\n        width: 260px;\n        height: 160px;\n        overflow: hidden;\n        background: #c8e6c9;\n        /* your css here */\n      }\n      .overlay {\n        position: absolute;\n        bottom: 0; left: 0;\n        width: 100%;\n        padding: 8px 12px;\n        background: rgba(0,0,0,0.45);\n        color: white;\n        /* your css here */\n      }\n      .corner-badge {\n        background: gold;\n        padding: 4px 8px;\n        border-radius: 4px;\n        font-size: 0.75rem;\n        font-weight: bold;\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="card">\n      <span class="corner-badge">New</span>\n      <div class="overlay">Birch tree — zone 4</div>\n    </div>\n  </body>\n</html>',
       checks: [

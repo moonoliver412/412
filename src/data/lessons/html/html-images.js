@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A web page without pictures is a wall of text, so images get a whole topic of their own. You have met <img> before: a void element — no closing tag — that needs two attributes every single time. src points at the image file, and alt describes it in words.',
+        text: 'A web page without pictures is just a wall of text, so images get a whole topic of their own. You have seen <img> before. It is a void element — no closing tag — and it needs two attributes every time. src points at the image file, and alt describes it in words.',
       },
       {
         type: 'p',
-        text: 'Which file you point src at matters. JPG compresses photographs beautifully but smudges sharp edges. PNG keeps edges crisp and supports transparency — perfect for screenshots and logos with see-through corners. SVG stores drawings as math, so icons stay sharp at any size. And WebP is the modern all-rounder: photo-friendly like JPG, transparent like PNG, usually smaller than both.',
+        text: 'Which file format you use matters. JPG compresses photos well but blurs sharp edges. PNG keeps edges crisp and supports transparency — great for logos with see-through corners. SVG stores drawings as math, so icons stay sharp at any size. WebP is the modern all-rounder: photo quality like JPG, transparency like PNG, and usually a smaller file than both.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The alt-text habits from Accessibility Basics apply here in full force: describe what matters, as you would to a friend on the phone, and use an empty alt="" only when an image is pure decoration. Search engines read alt text too, so honest descriptions also help your photos get found.',
+        text: 'The alt-text rules from Accessibility Basics apply here. Describe what matters — write what you would say to describe the picture to a friend. Use an empty alt="" only when an image is pure decoration. Search engines read alt text too, so good descriptions also help your photos get found.',
       },
       {
         type: 'tip',
@@ -49,11 +49,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Phones, laptops, and 4K monitors all download the same page — but they should not all download the same image. A 2000-pixel-wide photo is wasted bandwidth on a small phone screen. The srcset attribute fixes this: you list several sizes of the same image, and the browser picks the best fit.',
+        text: 'Phones, laptops, and big monitors all load the same page — but they should not all load the same image. A 2000-pixel-wide photo wastes data on a small phone screen. The srcset attribute fixes this. You list several sizes of the same image, and the browser picks the best fit.',
       },
       {
         type: 'p',
-        text: 'Each entry in srcset is a filename plus its real pixel width, written with a w: meadow-small.jpg 480w. The companion sizes attribute tells the browser how wide the image will actually display, so it can do the math and fetch the smallest file that still looks sharp.',
+        text: 'Each entry in srcset is a filename plus its real pixel width, written with a w — like meadow-small.jpg 480w. The companion sizes attribute tells the browser how wide the image will display. The browser uses that to pick the smallest file that still looks sharp.',
       },
       {
         type: 'code',
@@ -61,7 +61,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Keep the plain src as a fallback for older browsers. And remember the browser, not you, makes the final call — it may even reuse a bigger image it already has in cache. Your job is only to offer honest options.',
+        text: 'Keep the plain src as a fallback for older browsers. The browser — not you — makes the final choice. It may reuse a bigger image it already saved. Your job is to give it honest options to choose from.',
       },
       {
         type: 'tip',
@@ -92,11 +92,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Some images are content with a caption — a photo in a news story, a chart in a report. HTML packages those as a <figure>: the image plus everything that belongs with it, and a <figcaption> holding the visible caption text.',
+        text: 'Some images belong with a caption — a photo in a news story, a chart in a report. HTML packages those as a <figure>: the image plus everything that goes with it, and a <figcaption> holding the visible caption text.',
       },
       {
         type: 'p',
-        text: 'The figcaption may sit first or last inside the figure, and there can be only one. Captions and alt text do different jobs: everyone sees the caption, while alt text replaces the image when it cannot be seen. Writing the same sentence in both wastes one of them.',
+        text: 'The figcaption can go first or last inside the figure, but there can only be one. Captions and alt text do different jobs. Everyone sees the caption. Alt text replaces the image when it cannot be seen. Writing the same sentence in both wastes one of them.',
       },
       {
         type: 'code',
@@ -104,7 +104,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'A figure can also hold two images sharing one caption, a code listing, or a poem — anything that could move to an appendix without breaking the surrounding text. That is the real test of whether <figure> is the right element.',
+        text: 'A figure can also hold two images sharing one caption, a code listing, or a poem — anything that could be moved to a separate section without breaking the surrounding text. That is the real test for whether <figure> is the right element.',
       },
       {
         type: 'tip',
@@ -135,11 +135,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Two finishing touches for image-heavy pages. The first is old-school but charming: an image map makes regions of one image clickable. Give the <img> a usemap attribute pointing at a named <map>, and each <area> inside the map defines a clickable shape with coords, its own href, and its own alt.',
+        text: 'Two finishing touches for image-heavy pages. The first is a classic trick: an image map makes regions of one image clickable. Give the <img> a usemap attribute pointing at a named <map>. Each <area> inside the map defines a clickable shape with coords, its own href, and its own alt.',
       },
       {
         type: 'p',
-        text: 'The second is loading="lazy", one of the best performance bargains in HTML. It tells the browser not to download an image until the visitor scrolls near it. Use it on images far down the page — never on the first thing visitors see, which should load immediately.',
+        text: 'The second is loading="lazy" — one of the best free speed tricks in HTML. It tells the browser not to download an image until the visitor scrolls close to it. Use it on images far down the page. Never use it on the first thing visitors see — that should load right away.',
       },
       {
         type: 'code',
@@ -178,11 +178,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Project time: a photo gallery, the classic finale for an images topic. Galleries are where everything you just learned meets — figures give each photo a home, captions give context, alt text keeps it accessible, and lazy loading keeps it fast.',
+        text: 'Project time: a photo gallery. Galleries bring together everything you just learned. Figures give each photo a home, captions add context, alt text keeps it accessible, and lazy loading keeps it fast.',
       },
       {
         type: 'p',
-        text: 'Structure first: a heading introduces the collection, then one <figure> per photo, each holding an <img> and a <figcaption>. With CSS (a later track) this exact markup becomes a responsive grid without changing a single tag — good structure now pays off later.',
+        text: 'Structure first: a heading introduces the collection, then one <figure> per photo, each holding an <img> and a <figcaption>. With CSS (a later topic) this exact markup becomes a responsive grid — without changing a single tag. Good structure now pays off later.',
       },
       {
         type: 'code',
@@ -190,7 +190,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Placeholder filenames like dunes.jpg are perfect — in this sandbox nothing actually downloads, and that is fine, because the structure is what we are practicing. Write each alt as if describing the shot aloud, and keep captions short.',
+        text: 'Placeholder filenames like dunes.jpg are fine here — nothing actually downloads in this sandbox, and that is OK. The structure is what we are practicing. Write each alt as if describing the photo to someone, and keep captions short.',
       },
       {
         type: 'tip',

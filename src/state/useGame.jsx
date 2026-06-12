@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import { ACHIEVEMENTS } from '../data/achievements';
+import { advanceStreak, todayStr } from '../lib/streak';
 
 // ---------------------------------------------------------------------------
 // Game state — economy, streak, daily goal, achievements, focus history.
@@ -45,16 +46,6 @@ const REWARDS = {
   water: { sprouts: 5, xp: 10 },
 };
 
-function todayStr(now = new Date()) {
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  return `${now.getFullYear()}-${m}-${d}`;
-}
-
-function dayGap(fromDay, toDay) {
-  return Math.round((Date.parse(toDay) - Date.parse(fromDay)) / 86_400_000);
-}
-
 function emptyGame() {
   return {
     sprouts: 0,
@@ -84,29 +75,6 @@ function loadGame() {
   } catch {
     return emptyGame();
   }
-}
-
-/** Streak advance for an activity on `today`. A 2-day gap auto-spends one
- *  freeze (covers exactly one missed day); bigger gaps reset to 1. */
-function advanceStreak(streak, today) {
-  if (streak.lastActiveDay === today) return streak;
-  let { current, freezes } = streak;
-  if (!streak.lastActiveDay) {
-    current = 1;
-  } else {
-    const gap = dayGap(streak.lastActiveDay, today);
-    if (gap === 1) current += 1;
-    else if (gap === 2 && freezes > 0) {
-      freezes -= 1;
-      current += 1;
-    } else current = 1;
-  }
-  return {
-    lastActiveDay: today,
-    current,
-    longest: Math.max(streak.longest, current),
-    freezes,
-  };
 }
 
 const GameContext = createContext(null);

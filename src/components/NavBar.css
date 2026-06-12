@@ -115,3 +115,37 @@
   font-family: var(--font-display);
   font-size: 15px;
 }
+
+/* Small screens: logo + stats on top, the nav pill scrolls on its own row. */
+@media (max-width: 900px) {
+  .nav {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px 8px;
+  }
+
+  .nav-pill {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-pill::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+
+  /* The stub icon buttons add nothing on a phone — keep chips + avatar. */
+  .nav-icon-btn {
+    display: none;
+  }
+}

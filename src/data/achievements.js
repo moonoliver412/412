@@ -41,14 +41,14 @@ export const ACHIEVEMENTS = [
   {
     id: 'taking-root',
     name: 'Taking Root',
-    blurb: 'Reached a 3-day streak',
+    blurb: 'Learned 3 days in a row',
     icon: '🌿',
     test: ({ game }) => game.streak.current >= 3,
   },
   {
     id: 'deep-roots',
     name: 'Deep Roots',
-    blurb: 'Reached a 10-day streak',
+    blurb: 'Learned 10 days in a row',
     icon: '🌲',
     test: ({ game }) => game.streak.current >= 10,
   },
@@ -79,7 +79,7 @@ export const ACHIEVEMENTS = [
   {
     id: 'night-owl',
     name: 'Night Owl',
-    blurb: 'Finished a focus session in the small hours',
+    blurb: 'Finished a focus session after midnight',
     icon: '🦉',
     test: ({ event, now }) =>
       event.type === 'sessionFinished' && now.getHours() < 5,
@@ -87,7 +87,7 @@ export const ACHIEVEMENTS = [
   {
     id: 'centurion',
     name: 'Centurion',
-    blurb: 'Banked 100 lifetime focus minutes',
+    blurb: 'Focused for 100 minutes in total',
     icon: '⏳',
     test: ({ progress }) => totalFocusMinutes(progress) >= 100,
   },

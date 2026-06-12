@@ -75,7 +75,7 @@ export default function LessonList({ topicId }) {
                   <button
                     type="button"
                     className="lesson-complete-btn"
-                    title="Open the lesson — the exercise unlocks completion"
+                    title="Open the lesson and complete the exercise to finish it"
                     onClick={() => setOpenLessonId(lesson.id)}
                   >
                     Start lesson

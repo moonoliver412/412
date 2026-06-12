@@ -1,0 +1,12 @@
+import puppeteer from 'puppeteer-core';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+const page = await browser.newPage();
+await page.setViewport({ width: 390, height: 844, isMobile: true });
+await page.goto('http://localhost:5179/learn', { waitUntil: 'networkidle0' });
+await page.evaluate(() => localStorage.setItem('codesprout-onboarded-v1', '1'));
+await page.goto('http://localhost:5179/', { waitUntil: 'networkidle0' });
+await sleep(900);
+await page.screenshot({ path: '/tmp/mob-home3.png' });
+console.log('done');
+await browser.close();

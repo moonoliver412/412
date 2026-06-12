@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A function is a named recipe: you describe the steps once, give the recipe a name, and then you can run those steps any time just by calling the name. Without functions, you would copy-paste the same code everywhere — and fixing a bug would mean fixing every copy.',
+        text: 'A function is a named recipe. You write the steps once, give the recipe a name, and run those steps any time by calling that name. Without functions you would copy-paste code everywhere. Then fixing one bug would mean fixing every copy.',
       },
       {
         type: 'p',
-        text: 'There are two popular ways to write a function. The classic declaration uses the function keyword. The modern arrow function uses =>. Both work the same way in most situations; the arrow form is shorter and is the style you will see most often in new codebases.',
+        text: 'There are two common ways to write a function. The classic style uses the function keyword. The modern style uses => and is called an arrow function. Both work the same way in most situations. You will see arrow functions most often in newer code.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'A function that reaches its closing } without a return statement quietly returns undefined. If your function should produce a value, always double-check there is a return on every code path.',
+        text: 'A function that reaches its closing } without a return statement quietly returns undefined. If your function should produce a value, check that every path through it has a return.',
       },
     ],
     exercise: {
@@ -51,7 +51,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A function that always does exactly the same thing is useful but limited. Conditionals let a function make decisions. The if / else if / else chain says: "try this condition; if it does not match, try the next one; if none match, do this fallback."',
+        text: 'A function that always does the same thing is useful but limited. Conditionals let a function make decisions. The if / else if / else chain works like this: try this condition; if it does not match, try the next; if none match, use the fallback.',
       },
       {
         type: 'code',
@@ -59,11 +59,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Conditions can combine with && (both true), || (either true), and ! (flip true/false). You can also use the ternary operator for short two-way decisions: condition ? valueIfTrue : valueIfFalse. Keep ternaries shallow — deeply nested ones are hard to read.',
+        text: 'Conditions can combine with && (both must be true), || (either can be true), and ! (flips true to false and back). You can also use the ternary operator for quick two-way decisions: condition ? valueIfTrue : valueIfFalse. Do not nest ternaries — they get hard to read fast.',
       },
       {
         type: 'tip',
-        text: 'Resist the urge to write else after a return. If the if block always returns, the else is redundant — the code below the if only runs when the condition was false anyway.',
+        text: 'Skip the else after a return. If the if block always returns, the else does nothing extra — the code after the if block only runs when the condition was false anyway.',
       },
     ],
     exercise: {
@@ -96,7 +96,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'When you need to repeat an action a known number of times, or work through every item in a collection, you reach for a loop. The for loop is the workhorse: it sets a counter, runs the body while the condition is true, and steps the counter after each run.',
+        text: 'When you need to repeat an action a set number of times, or go through every item in a list, you use a loop. The for loop is the most common one. It sets a counter, runs the body while the condition is true, and steps the counter after each run.',
       },
       {
         type: 'code',
@@ -104,11 +104,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The while loop is simpler when you do not know upfront how many times to run — you keep going as long as a condition stays true. But be careful: if the condition never becomes false, the loop runs forever and locks up the program.',
+        text: 'The while loop is useful when you do not know in advance how many times to run. It keeps going as long as a condition is true. Be careful: if the condition never becomes false, the loop runs forever and freezes the program.',
       },
       {
         type: 'tip',
-        text: 'Prefer for...of when you want every item in an array without needing the index: for (const item of fruits) { ... }. It is cleaner and almost impossible to get wrong.',
+        text: 'Use for...of when you want every item in an array and do not need the index number: for (const item of fruits) { ... }. It is cleaner and hard to get wrong.',
       },
     ],
     exercise: {
@@ -141,7 +141,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Scope is the rule about which code can see which variables. A variable declared inside a function only exists inside that function — it vanishes the moment the function returns. That is called local scope, and it keeps functions from accidentally interfering with each other.',
+        text: 'Scope is the rule about which code can see which variables. A variable declared inside a function only exists inside that function. It disappears when the function returns. That is called local scope. It keeps functions from accidentally changing each other\'s data.',
       },
       {
         type: 'code',
@@ -149,11 +149,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The inner function above is a closure: it was born inside makeCounter and still has access to that count variable even after makeCounter has finished running. The closure keeps count alive in its memory. This is one of JavaScript\'s most powerful patterns.',
+        text: 'The inner function above is a closure — it was created inside makeCounter and still has access to the count variable even after makeCounter has finished. The closure keeps count alive in memory. This is one of the most powerful patterns in JavaScript.',
       },
       {
         type: 'tip',
-        text: 'Closures are not magic — they are just functions that remember where they were born. Any time you see a function returning another function, there is probably a closure involved.',
+        text: 'Closures are not magic. They are just functions that remember where they were created. When you see a function returning another function, there is almost always a closure involved.',
       },
     ],
     exercise: {
@@ -186,7 +186,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Let us build something that uses every idea from this topic: a number-guessing game. The program picks a secret number, the player submits a guess, and the game returns a hint — "too low", "too high", or "correct!" — until the player wins.',
+        text: 'Let\'s build something that uses every idea from this topic: a number-guessing game. The program picks a secret number. The player submits a guess. The game returns a hint — "too low", "too high", or "correct!" — until the player wins.',
       },
       {
         type: 'code',
@@ -194,11 +194,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The secret is locked inside the closure, invisible to the outside world. The attempts counter persists across calls because the inner function keeps the outer scope alive. Notice how functions, conditionals, loops (implicit in repeated calls), and closures all play together here.',
+        text: 'The secret is locked inside the closure. Nothing outside can reach it. The attempts counter survives between calls because the inner function keeps the outer scope alive. Functions, conditionals, and closures all work together here.',
       },
       {
         type: 'tip',
-        text: 'Separating "make a game" from "take a guess" is good design — the factory function handles setup, the returned function handles play. This pattern shows up in real libraries all the time.',
+        text: 'Keeping "make a game" separate from "take a guess" is good design. The outer function handles setup. The returned function handles play. This pattern appears in real libraries all the time.',
       },
     ],
     exercise: {

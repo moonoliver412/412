@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'CSS custom properties — usually called CSS variables — let you name a value once and reuse it everywhere. Change the name, and every element that uses it updates automatically. No find-and-replace, no missed instances, no out-of-sync colour palette.',
+        text: 'CSS custom properties — usually called CSS variables — let you name a value once and reuse it everywhere. Change the name, and every element that uses it updates automatically. No find-and-replace, no missed spots, no out-of-sync colors.',
       },
       {
         type: 'p',
-        text: 'Custom property names start with two dashes. You define them inside a selector\'s rule block; the special :root selector means "the very top of the document," making the variable available everywhere on the page. You read a variable back with the var() function.',
+        text: 'Custom property names always start with two dashes. You define them inside any rule block. The special :root selector means "the very top of the document" — so a variable defined there is available everywhere on the page. You read a variable back with the var() function.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'var() accepts a fallback as a second argument: var(--color-leaf, green). If the variable is not defined, the browser uses the fallback instead of breaking.',
+        text: 'var() takes a fallback as a second argument: var(--color-leaf, green). If the variable is not defined, the browser uses the fallback instead of breaking.',
       },
     ],
     exercise: {
@@ -50,7 +50,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Custom properties follow the CSS cascade — they inherit down the tree just like color or font-size. A variable defined on a parent is visible to all its descendants, but a variable defined on a child is invisible to its parent or siblings. This scope rule lets you override a variable for one branch of the page without touching anything else.',
+        text: 'Custom properties follow the CSS cascade. They inherit down the tree just like color or font-size. A variable defined on a parent is visible to all its descendants. A variable defined on a child is not visible to its parent or siblings. This lets you override a variable for one section of the page without changing anything else.',
       },
       {
         type: 'code',
@@ -58,11 +58,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The p inside .dark-section sees --text: #f5f5f5. The p outside sees --text: #1a1a1a. Same rule — different inherited value. This is what makes component-level theming so clean.',
+        text: 'The p inside .dark-section sees --text: #f5f5f5. The p outside sees --text: #1a1a1a. Same CSS rule — different inherited value. This is what makes section-level theming so clean.',
       },
       {
         type: 'tip',
-        text: 'Unlike Sass variables which are compiled away, CSS variables are live in the browser. JavaScript can read and write them with getComputedStyle and style.setProperty.',
+        text: 'Unlike Sass variables (which disappear after compilation), CSS variables are live in the browser. JavaScript can read and write them using getComputedStyle and style.setProperty.',
       },
     ],
     exercise: {
@@ -94,7 +94,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A design token system is just CSS variables done deliberately: one :root block that names every colour, spacing value, and type size in the design, while every component rule uses only var() references. Change the token, everything updates. This is the engine behind every modern design system.',
+        text: 'A design token system is CSS variables used deliberately. One :root block names every color, spacing value, and font size in the design. Every other rule uses only var() references. Change one token and everything updates. This is how modern design systems work.',
       },
       {
         type: 'code',
@@ -102,7 +102,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Name tokens by role, not by value. --clr-primary is a good token; --green-500 is not — a token named for its value ties your hand when you want to adjust the shade.',
+        text: 'Name tokens by their role, not their value. --clr-primary is a good token. --green-500 is not — a name that describes the value ties your hands when you want to change the shade later.',
       },
     ],
     exercise: {
@@ -134,7 +134,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'CSS variables work inside calc() — which turns them into a kind of primitive maths engine. Define one base spacing value and derive the rest: double it, halve it, multiply it by any number. Your whole spacing scale stays mathematically in sync even if you change the base.',
+        text: 'CSS variables work inside calc(), turning them into a simple math engine. Define one base spacing value and derive the rest — double it, halve it, multiply by any number. Your whole spacing scale stays in sync even when you change the base value.',
       },
       {
         type: 'code',
@@ -142,11 +142,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'This pattern scales beyond spacing. A --base-font-size variable combined with calc() gives you a full modular type scale — every heading and caption mathematically related to one root value.',
+        text: 'This pattern works beyond spacing too. A --base-font-size variable combined with calc() gives you a full type scale. Every heading and caption is mathematically tied to one root value.',
       },
       {
         type: 'tip',
-        text: 'calc() requires a space on either side of + and - operators (calc(var(--space) + 4px) not calc(var(--space)+4px)), but * and / work without spaces.',
+        text: 'calc() requires a space on both sides of + and - operators: calc(var(--space) + 4px), not calc(var(--space)+4px). The * and / operators work without spaces.',
       },
     ],
     exercise: {
@@ -178,7 +178,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A theme switcher is the classic demonstration of CSS variables\' live nature. You define a light set of tokens on :root and a dark override on a [data-theme="dark"] attribute. Toggle the attribute — with a button click or a prefers-color-scheme media query — and the whole page re-colours instantly, with zero JavaScript touching individual elements.',
+        text: 'A theme switcher is the classic way to show CSS variables in action. You define light tokens on :root and dark overrides on a [data-theme="dark"] attribute. Toggle the attribute — with a button click or a prefers-color-scheme media query — and the whole page recolors instantly. No JavaScript needs to touch individual elements.',
       },
       {
         type: 'code',
@@ -186,7 +186,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'You can also hand the theme decision to the user\'s OS with @media (prefers-color-scheme: dark) — same token override technique, no JS at all. The tree-house stays comfortable whatever the ambient light.',
+        text: 'You can also let the OS decide with @media (prefers-color-scheme: dark). Same token override technique, no JavaScript at all. The treehouse stays comfortable in any light.',
       },
     ],
     exercise: {

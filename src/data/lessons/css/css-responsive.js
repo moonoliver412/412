@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A page that looks great at 1400px but breaks at 390px is only half built. Responsive design is the craft of making one set of HTML speak fluently to every screen — the phone in a pocket, the tablet on a kitchen counter, the monitor in an office.',
+        text: 'A page that looks great at 1400px but breaks at 390px is only half built. Responsive design means making one set of HTML work well on every screen — the phone in a pocket, the tablet on a desk, the monitor in an office.',
       },
       {
         type: 'p',
-        text: 'The main tool is the media query. It is a conditional block in your CSS: "apply these rules only when the screen is at least this wide." Everything outside the block is the default; everything inside the block is the exception.',
+        text: 'The main tool is the media query — a conditional block in your CSS. It says "apply these rules only when the screen is at least this wide." Everything outside the block is the default. Everything inside the block is the exception.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'A media query does not override anything by itself — it just opens a door. The CSS inside still follows the normal cascade, so specificity still matters.',
+        text: 'A media query does not override anything on its own. It just opens a door. The CSS inside still follows the normal cascade, so specificity still matters.',
       },
     ],
     exercise: {
@@ -50,11 +50,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Fixed pixel values are brittle. A 320px sidebar that seemed fine on your monitor is a disaster on a small phone. Fluid units like percentages, em, rem, vw, and vh let elements breathe — they grow and shrink with their container or the viewport.',
+        text: 'Fixed pixel values are fragile. A 320px sidebar that looks fine on your monitor can be a disaster on a small phone. Fluid units like percentages, em, rem, vw, and vh let elements grow and shrink with their container or the viewport.',
       },
       {
         type: 'p',
-        text: 'The modern sweet spot is clamp(). It takes three arguments: a minimum value, a preferred value (usually a viewport-relative expression), and a maximum value. The browser picks the preferred, but never goes below the minimum or above the maximum.',
+        text: 'The modern solution is clamp(). It takes three arguments: a minimum value, a preferred value (usually a viewport-relative expression), and a maximum value. The browser uses the preferred size, but never goes below the minimum or above the maximum.',
       },
       {
         type: 'code',
@@ -62,7 +62,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'clamp() is a replacement for the classic pattern of setting a width in percent and then capping it with min-width / max-width. One declaration, cleaner intent.',
+        text: 'clamp() replaces the old pattern of setting a width in percent and then capping it with min-width / max-width. One declaration, clearer intent.',
       },
     ],
     exercise: {
@@ -94,11 +94,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Mobile-first is a workflow philosophy: write your base styles for the smallest screen, then use min-width media queries to layer on complexity as the viewport grows. It is the opposite of the old habit of designing for desktop and then shrinking down — which always felt like pruning a tree that had already grown the wrong shape.',
+        text: 'Mobile-first is a way of working: write your base styles for the smallest screen, then use min-width media queries to add more as the screen gets wider. It is the opposite of the old approach of designing for desktop first and then shrinking down. Shrinking down always left things feeling wrong.',
       },
       {
         type: 'p',
-        text: 'The practical payoff is leaner CSS. A narrow phone never downloads rules for a three-column layout it will never use — those rules live inside a media query that never fires. Styles cascade outward, not inward.',
+        text: 'The practical benefit is leaner CSS. A narrow phone never needs rules for a three-column layout — those rules live inside a media query that never fires. Styles layer outward, adding complexity only when there is space for it.',
       },
       {
         type: 'code',
@@ -106,7 +106,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'If you reach for max-width in a media query, pause — you are likely writing desktop-first. Flip the model: default = mobile, media queries = upgrades.',
+        text: 'If you find yourself using max-width in a media query, pause. You are probably writing desktop-first. Flip the model: default = mobile, media queries = upgrades.',
       },
     ],
     exercise: {
@@ -138,7 +138,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A fluid layout built with good units is already most of the battle — but images need their own attention. An <img> with no width rule will overflow its container on narrow screens, blowing the layout wide open. One line prevents it: max-width: 100%.',
+        text: 'A fluid layout built with good units handles most screens well. But images need their own attention. An <img> with no width rule will overflow its container on narrow screens and break the layout. One line prevents that: max-width: 100%.',
       },
       {
         type: 'code',
@@ -146,11 +146,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'For situations where you want an image to fill a container at a specific aspect ratio — a hero banner, a card thumbnail — combine object-fit with a fixed or fluid height. object-fit: cover crops to fill without distortion. Think of it as a window onto the image, not a stretching frame.',
+        text: 'When you want an image to fill a container at a specific aspect ratio — like a hero banner or a card thumbnail — combine object-fit with a fixed or fluid height. object-fit: cover crops the image to fill without distortion. Think of it as a window onto the image, not a stretching frame.',
       },
       {
         type: 'tip',
-        text: 'Set these rules on img in a global reset and you will never need to think about overflowing images again.',
+        text: 'Add these rules to img in a global reset and you will never have to think about overflowing images again.',
       },
     ],
     exercise: {
@@ -177,7 +177,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to bring it all together. A responsive page is not a collection of separate designs — it is one design with intelligently layered rules. Start with the mobile shell, let fluid units do the heavy lifting, and reach for media queries only when the layout genuinely needs to shift.',
+        text: 'Time to bring it all together. A responsive page is not a collection of separate designs. It is one design with carefully layered rules. Start with the mobile layout. Let fluid units do most of the work. Use media queries only when the layout truly needs to shift.',
       },
       {
         type: 'code',
@@ -185,7 +185,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Build this capstone page: a centered container, a fluid heading, and a two-card grid that starts as one column on mobile and becomes two columns on wider screens. Every layout decision gets a reason.',
+        text: 'Build this capstone page: a centered container, a fluid heading, and a two-card grid that starts as one column on mobile and grows to two columns on wider screens.',
       },
     ],
     exercise: {

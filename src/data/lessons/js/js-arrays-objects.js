@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'An array is an ordered list — a single variable that holds many values at once. You can store the names of every tree in a grove, a list of scores, or any sequence of things in one tidy container. Arrays are created with square brackets and a comma between items.',
+        text: 'An array is an ordered list — one variable that holds many values at once. You can store every tree name in a grove, a list of scores, or any sequence of things in one container. Arrays are created with square brackets and commas between items.',
       },
       {
         type: 'code',
@@ -14,11 +14,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Items are accessed by index, and the first index is always 0 — so a four-item array has indices 0, 1, 2, and 3. The length property tells you how many items are inside. push() adds an item to the end; pop() removes and returns the last item.',
+        text: 'Items are accessed by index. The first index is always 0, so a four-item array has indices 0, 1, 2, and 3. The length property tells you how many items are inside. push() adds an item to the end. pop() removes and returns the last item.',
       },
       {
         type: 'tip',
-        text: 'Arrays declared with const can still be modified (push, pop, sort…) — const only prevents you from replacing the array itself with a new one. To iterate over every item without a counter, use for...of.',
+        text: 'Arrays declared with const can still be changed — push, pop, sort, and so on. const only stops you from replacing the array itself with a new one. To visit every item without a counter, use for...of.',
       },
     ],
     exercise: {
@@ -46,7 +46,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Three array methods — map, filter, and reduce — are the power tools of data transformation. They each take a callback function and apply it to every item, but they do different jobs: map transforms, filter selects, and reduce collapses the array into a single value.',
+        text: 'Three array methods — map, filter, and reduce — are your main tools for working with data. Each takes a callback function and applies it to every item, but they do different jobs. map transforms each item. filter keeps only matching items. reduce collapses the whole array into one value.',
       },
       {
         type: 'code',
@@ -54,11 +54,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'These methods never mutate the original array — they each return a brand-new one (or, for reduce, a new value). You can chain them: heights.filter(h => h > 4).map(h => h * 2) first keeps only items above 4, then doubles each of those.',
+        text: 'These methods never change the original array. They each return a new one — or, for reduce, a new value. You can chain them: heights.filter(h => h > 4).map(h => h * 2) first keeps only items above 4, then doubles each of those.',
       },
       {
         type: 'tip',
-        text: 'The second argument to reduce is the initial accumulator value — always provide it. Without it, reduce uses the first item as the start, which silently breaks when the array is empty.',
+        text: 'The second argument to reduce is the starting value for the accumulator — always provide it. Without it, reduce uses the first item as the start. That silently breaks when the array is empty.',
       },
     ],
     exercise: {

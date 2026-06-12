@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'HTML builds the skeleton; CSS paints it. CSS is a stylesheet language — a list of rules that say "find these elements and apply these styles to them." Every rule has two halves: a selector that targets elements and a declaration block that describes how they should look.',
+        text: 'HTML builds the skeleton. CSS paints it. CSS is a stylesheet language — a list of rules that tell the browser which elements to style and how. Every rule has two halves: a selector that picks the elements, and a declaration block that says how they should look.',
       },
       {
         type: 'p',
-        text: 'The most direct way to connect CSS to an HTML page is a <link> tag in the <head>, pointing to a .css file. For quick experiments a <style> block inside <head> works too — that is what you will use in these exercises, so you can see everything in one place.',
+        text: 'The most direct way to connect CSS to a page is a <link> tag in the <head>, pointing to a .css file. For quick experiments, a <style> block inside <head> works too. That is what you will use in these exercises, so you can see everything in one place.',
       },
       {
         type: 'code',
@@ -18,11 +18,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Read that rule aloud: "For every h1, set the color to forestgreen and the font-size to 2rem." The selector is h1. The declarations are the lines between the braces. Each declaration ends with a semicolon — forgetting it is the most common beginner slip.',
+        text: 'Read that rule aloud: "For every h1, set the color to forestgreen and the font-size to 2rem." The selector is h1. The declarations — the property: value pairs — sit between the braces. Each declaration ends with a semicolon. Forgetting it is the most common mistake.',
       },
       {
         type: 'tip',
-        text: 'One selector, many declarations. You can stack as many property: value pairs as you like inside a single rule block.',
+        text: 'One selector, many declarations. You can add as many property: value pairs as you like inside a single rule block.',
       },
     ],
     exercise: {
@@ -49,7 +49,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Type selectors like h1 or p grab every element of that kind — useful, but sometimes too broad. When you need to style one particular element, you reach for an id selector, written with a #. When you want to style a group of related elements, you use a class selector, written with a dot.',
+        text: 'Type selectors like h1 or p grab every element of that kind. That is useful, but sometimes too broad. When you need to style one specific element, use an id selector — write a # before the name. When you want to style a group of related elements, use a class selector — write a dot before the name.',
       },
       {
         type: 'code',
@@ -57,11 +57,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'An id must be unique on the page — one element owns it. A class is reusable: you can put class="highlight" on a dozen different elements and the style applies to all of them at once. In day-to-day CSS, classes do the heavy lifting; ids are for JavaScript hooks and anchor links.',
+        text: 'An id must be unique on the page — only one element can own it. A class is reusable. You can put class="highlight" on many elements and the style applies to all of them. In everyday CSS, classes do most of the work. Ids are mainly used for JavaScript and anchor links.',
       },
       {
         type: 'tip',
-        text: 'A single element can carry multiple classes: class="card highlight featured". Each class in the list applies its styles independently.',
+        text: 'One element can have multiple classes: class="card highlight featured". Each class in the list applies its styles on its own.',
       },
     ],
     exercise: {
@@ -93,7 +93,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Color is one of the first things learners reach for, and CSS gives you several ways to name it. Keywords like "tomato" or "cornflowerblue" are easy to remember. Hex codes like #3a7d44 pack precise red, green, and blue values into six digits. The rgb() and hsl() functions let you describe color more intuitively.',
+        text: 'Color is one of the first things you will want to change. CSS gives you several ways to write a color. Keywords like "tomato" or "cornflowerblue" are easy to remember. Hex codes like #3a7d44 pack red, green, and blue values into six digits. The rgb() and hsl() functions give you more control.',
       },
       {
         type: 'code',
@@ -101,11 +101,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'HSL — hue, saturation, lightness — is the friendliest for tweaking. Hue is the color wheel position (0–360), saturation is how vivid (0% is grey), and lightness is how bright (0% is black, 100% is white). Nudge just the lightness to make a darker or lighter version of the same hue.',
+        text: 'HSL stands for hue, saturation, lightness. It is the easiest format for tweaking. Hue is the position on the color wheel (0–360). Saturation is how vivid the color is (0% is grey). Lightness is how bright (0% is black, 100% is white). Change just the lightness to get a darker or lighter version of the same color.',
       },
       {
         type: 'tip',
-        text: 'Browser dev tools have a color picker built right into the CSS inspector — click any color swatch to open it and experiment live.',
+        text: 'Your browser\'s dev tools have a color picker built into the CSS inspector. Click any color swatch to open it and try colors live.',
       },
     ],
     exercise: {
@@ -132,7 +132,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Typography is the art of making text readable and beautiful. Three properties cover most of the ground: font-size controls how big the text is, font-weight controls thickness (bold vs normal), and line-height sets the breathing room between lines.',
+        text: 'Typography means styling text so it is easy to read. Three properties do most of the work. font-size controls how big the text is. font-weight controls thickness (bold or normal). line-height sets the space between lines.',
       },
       {
         type: 'code',
@@ -140,11 +140,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Prefer rem and em over px for font sizes — they scale with the user\'s browser preference. A line-height without a unit is a multiplier of the current font size, which is almost always what you want. Anything between 1.4 and 1.8 keeps long paragraphs comfortable to read.',
+        text: 'Use rem or em instead of px for font sizes. They scale with the reader\'s browser settings. A line-height with no unit is a multiplier of the current font size — that is almost always what you want. Values between 1.4 and 1.8 keep long paragraphs comfortable to read.',
       },
       {
         type: 'tip',
-        text: 'Set font-family on body and it cascades down to every element automatically. Only override it where you genuinely want a different face.',
+        text: 'Set font-family on body and it flows down to every element automatically. Only change it where you truly want a different font.',
       },
     ],
     exercise: {
@@ -171,15 +171,15 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to put selectors and colors together on a real page. You know element selectors, class and id selectors, color values, and the core typography properties. A handful of those rules is enough to transform a plain HTML page into something that feels designed.',
+        text: 'Time to put selectors and colors together on a real page. You know element selectors, class and id selectors, color values, and the key typography properties. A few rules is enough to turn a plain HTML page into something that looks designed.',
       },
       {
         type: 'p',
-        text: 'Work top to bottom through your HTML: start with body defaults (font, line-height, background), then style each section heading, then fine-tune specific classes. Cascade is your friend — base rules inherit down, and more specific rules override only what they need to.',
+        text: 'Work top to bottom through your HTML. Start with body defaults — font, line-height, background. Then style each heading. Then adjust specific classes. The cascade helps: base rules flow down to every element, and more specific rules only change what they need to.',
       },
       {
         type: 'tip',
-        text: 'Pick two colors that work together (a background and an accent), keep your font choices to one or two, and you will be surprised how polished the result looks.',
+        text: 'Pick two colors that work together — a background and an accent. Keep fonts to one or two. The result will look more polished than you expect.',
       },
     ],
     exercise: {

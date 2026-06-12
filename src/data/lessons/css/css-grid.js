@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'CSS Grid is a two-dimensional layout system: you define columns and rows at the same time and place items anywhere on that grid. It is the right tool when you need to control both axes — think magazine spreads, dashboards, and photo galleries.',
+        text: 'CSS Grid is a two-dimensional layout system. You define columns and rows at the same time and place items anywhere on that grid. It is the right tool when you need to control both directions at once — think magazine spreads, dashboards, and photo galleries.',
       },
       {
         type: 'code',
@@ -14,11 +14,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'grid-template-columns accepts a list of track sizes separated by spaces. Each value defines one column\'s width. The fr unit (fraction) is Grid-specific: 1fr means "one share of the leftover space." Three columns of 1fr each split the container into thirds, automatically.',
+        text: 'grid-template-columns accepts a list of sizes separated by spaces. Each value defines one column\'s width. The fr unit means fraction — it is specific to Grid. 1fr means "one share of the leftover space." Three columns of 1fr each split the container into equal thirds automatically.',
       },
       {
         type: 'tip',
-        text: 'repeat(3, 1fr) is shorthand for "1fr 1fr 1fr" — and repeat(12, 1fr) for a 12-column grid. Much less typing.',
+        text: 'repeat(3, 1fr) is shorthand for "1fr 1fr 1fr". repeat(12, 1fr) gives you a 12-column grid. Much less typing.',
       },
     ],
     exercise: {
@@ -50,7 +50,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Grid items can span multiple columns or rows. grid-column: 1 / 3 places an item starting at column line 1 and ending at column line 3 — so it occupies columns 1 and 2. You can also use the span keyword: grid-column: span 2 means "take up 2 columns from wherever I start."',
+        text: 'Grid items can span multiple columns or rows. grid-column: 1 / 3 places an item from column line 1 to column line 3 — so it fills columns 1 and 2. You can also use the span keyword: grid-column: span 2 means "take up 2 columns from wherever I start."',
       },
       {
         type: 'code',
@@ -58,11 +58,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Grid lines are numbered from 1. A four-column grid has five column lines: 1, 2, 3, 4, and 5. Negative line numbers count from the end: -1 is always the last line, so grid-column: 1 / -1 always stretches from the very first to the very last column, regardless of how many columns there are.',
+        text: 'Grid lines are numbered from 1. A four-column grid has five column lines: 1, 2, 3, 4, and 5. Negative numbers count from the end. -1 is always the last line. So grid-column: 1 / -1 stretches from the first to the last column, no matter how many columns there are.',
       },
       {
         type: 'tip',
-        text: 'Browser dev tools overlay the grid lines when you click the grid icon in the inspector — use it to see exactly where your items are landing.',
+        text: 'Browser dev tools show the grid lines when you click the grid icon in the inspector. Use it to see exactly where your items land.',
       },
     ],
     exercise: {
@@ -71,6 +71,11 @@ const lessons = [
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .grove {\n        display: grid;\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n      }\n      .tree {\n        background: #c8e6c9;\n        padding: 16px;\n        border-radius: 8px;\n        text-align: center;\n      }\n      .featured {\n        background: #388e3c;\n        color: white;\n        /* your css here */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="grove">\n      <div class="tree featured">Ancient Willow</div>\n      <div class="tree">Birch</div>\n      <div class="tree">Pine</div>\n      <div class="tree">Bamboo</div>\n    </div>\n  </body>\n</html>',
       checks: [
+        {
+          type: 'styleIncludes',
+          text: 'grid-column:',
+          label: 'You set the grid-column property',
+        },
         {
           type: 'styleIncludes',
           text: 'grid-column:span2',
@@ -84,7 +89,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Named template areas make complex layouts readable. Instead of counting column and row numbers, you draw an ASCII map of your layout and give each zone a name. Items then say grid-area: header and go exactly where the map says.',
+        text: 'Named template areas make complex layouts easy to read. Instead of counting column and row numbers, you draw a text map of your layout and give each zone a name. Then each item says grid-area: header and lands exactly where the map says.',
       },
       {
         type: 'code',
@@ -92,11 +97,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Each string in grid-template-areas is a row. Same name repeated across columns = spans those columns. A period (.) is an empty cell. The names are freeform, but matching them to the HTML element\'s role makes the layout self-documenting.',
+        text: 'Each string in grid-template-areas is one row. Repeating a name across columns makes that item span those columns. A period (.) marks an empty cell. You can name areas anything, but naming them after their role makes the code easy to understand.',
       },
       {
         type: 'tip',
-        text: 'Template areas must form a rectangle — you cannot make an L-shaped named area. If your layout needs that, use line-based placement instead.',
+        text: 'Template areas must form a rectangle. You cannot make an L-shaped named area. If your layout needs that shape, use line-based placement instead.',
       },
     ],
     exercise: {
@@ -133,7 +138,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The real superpower of CSS Grid is auto-fit combined with minmax(). These two functions let a grid decide its own column count based on available space — giving you a responsive layout with zero media queries.',
+        text: 'The superpower of CSS Grid is auto-fit combined with minmax(). These two features let the grid decide how many columns to make based on available space. You get a responsive layout with zero media queries.',
       },
       {
         type: 'code',
@@ -141,11 +146,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Read it as: "create as many columns as fit, where each column is at least 200px wide but grows to fill its share of the space." On a wide screen you get five or six columns; on a phone you get one. The grid adapts without a single breakpoint.',
+        text: 'Read it as: "make as many columns as fit, where each is at least 200px wide but grows to fill its share." On a wide screen you get five or six columns. On a phone you get one. The grid adapts without a single media query.',
       },
       {
         type: 'tip',
-        text: 'auto-fill is similar to auto-fit but keeps empty track slots; auto-fit collapses them. For most galleries, auto-fit is what you want.',
+        text: 'auto-fill is similar to auto-fit but keeps empty track slots. auto-fit collapses them. For most galleries, auto-fit is what you want.',
       },
     ],
     exercise: {
@@ -172,15 +177,15 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Magazine layouts were once the exclusive domain of print. CSS Grid brings them to the web. You can have a wide headline spanning all columns, a pull-quote tucked into a specific cell, and an image bleeding across two rows — all with a handful of grid rules.',
+        text: 'Magazine layouts used to be only for print. CSS Grid brings them to the web. You can have a wide headline spanning all columns, a quote in a specific cell, and an image stretching across two rows — all with a few grid rules.',
       },
       {
         type: 'p',
-        text: 'The recipe: define your columns and rows with named areas, place each element with grid-area, and let a feature item span multiple tracks with grid-column or grid-row. The capstone below is a real four-region editorial layout.',
+        text: 'The recipe: define columns and rows with named areas. Place each element with grid-area. Let a featured item span multiple tracks with grid-column or grid-row. The capstone below is a real four-region editorial layout.',
       },
       {
         type: 'tip',
-        text: 'Start by sketching the zones on paper: which regions span multiple columns, which row is the tallest. Translate that sketch directly into grid-template-areas.',
+        text: 'Start by sketching the zones on paper. Which areas span multiple columns? Which row is the tallest? Then translate that sketch directly into grid-template-areas.',
       },
     ],
     exercise: {

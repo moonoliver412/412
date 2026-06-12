@@ -6,15 +6,15 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Accessibility — a11y for short, because eleven letters sit between the a and the y — means building pages that work for everyone: people using screen readers, people navigating by keyboard, people zoomed in to 400%. Here is the encouraging secret: most of it is not extra work. It is the HTML you already know, used honestly.',
+        text: 'Accessibility — a11y for short, because eleven letters sit between the a and the y — means building pages that work for everyone. That includes people using screen readers, people navigating by keyboard, and people zoomed in to 400%. The good news: most of it is not extra work. It is the HTML you already know, used correctly.',
       },
       {
         type: 'p',
-        text: 'Start with images. The alt attribute is what a screen reader speaks in place of the picture, so describe what matters: alt="A robin perched on a snowy branch", not alt="photo". If an image is purely decorative, give it an empty alt="" and screen readers skip it in silence. Leave alt off entirely and many will read the filename aloud instead — riveting stuff like IMG-4032.jpg.',
+        text: 'Start with images. The alt attribute is what a screen reader speaks instead of showing the picture. Describe what matters: alt="A robin perched on a snowy branch", not alt="photo". If an image is purely decorative, write alt="" and screen readers skip it quietly. Leave alt off entirely and many readers will say the filename out loud — thrilling things like IMG-4032.jpg.',
       },
       {
         type: 'p',
-        text: 'Headings come next, because screen-reader users often pull up a list of a page’s headings and navigate from it like a table of contents. That only works when levels descend without gaps: <h1>, then <h2>, then <h3>. Jumping straight from <h1> to <h4> tears holes in the outline.',
+        text: 'Headings come next. Screen-reader users often pull up a list of a page\'s headings and jump through them like a table of contents. That only works when levels go down without gaps: <h1>, then <h2>, then <h3>. Jumping from <h1> straight to <h4> breaks the outline.',
       },
       {
         type: 'code',
@@ -22,7 +22,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Stuck on alt text? Imagine reading the page to a friend over the phone — whatever you would say when you reach the picture is the alt text.',
+        text: 'Stuck on alt text? Imagine reading the page out loud to a friend. Whatever you would say when you reach the picture is the alt text.',
       },
     ],
     exercise: {
@@ -55,11 +55,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'You wired <label> to inputs with for and id back in Forms & Media. Now, the why. A screen reader landing on an unlabelled input announces only "edit text" — a question with the question missing. Connect a label and it announces "Your name, edit text" instead. The difference between guessing and knowing, in one attribute pair.',
+        text: 'You wired <label> to inputs with for and id back in Forms & Media. Now for the why. A screen reader landing on an unlabelled input says only "edit text" — no clue what to type. Connect a label and it says "Your name, edit text" instead. One attribute pair makes the difference between guessing and knowing.',
       },
       {
         type: 'p',
-        text: 'Tempted to let placeholder do the job? It cannot. Placeholder text vanishes the instant someone types, is often too faint to read, and some assistive software ignores it entirely. It is a hint, never a name. Labels also help people with unsteady hands: clicking a label focuses its control, doubling the size of the target. Every <input>, <select>, and <textarea> deserves exactly one.',
+        text: 'Tempted to use placeholder instead of a label? Do not. Placeholder text vanishes the moment someone types, is often too faint to read, and some assistive software ignores it. It is a hint, never a label. Labels also help people with unsteady hands: clicking a label focuses its control, making the target much easier to hit. Every <input>, <select>, and <textarea> deserves exactly one label.',
       },
       {
         type: 'code',
@@ -67,7 +67,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Test like a user: click every label on your page. If the matching box does not light up with focus, the for/id pair is broken.',
+        text: 'Test it yourself: click every label on your page. If the matching box does not get focus, the for/id pair is broken.',
       },
     ],
     exercise: {
@@ -98,11 +98,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Occasionally HTML has no element that says what you mean. ARIA — Accessible Rich Internet Applications — is a set of attributes for exactly those gaps. The two you will use first: role, which declares what something is, and aria-label, which gives an element a spoken name when it shows no visible text.',
+        text: 'Sometimes HTML has no element that says what you mean. ARIA — Accessible Rich Internet Applications — is a set of attributes for exactly those gaps. The two you will use first: role, which declares what something is, and aria-label, which gives an element a spoken name when it shows no visible text.',
       },
       {
         type: 'p',
-        text: 'Now the famous first rule of ARIA: do not use ARIA when a real element exists. A <div role="button"> claims to be a button but brings none of the keyboard behavior; a real <button> brings everything. Where ARIA earns its keep is the icon-only button — sighted visitors see a magnifying glass, but a screen reader finds an empty, nameless button unless you hand it aria-label="Search". And role="search" turns a form into a landmark, jumpable like <nav> and <main>.',
+        text: 'The first rule of ARIA: do not use ARIA when a real element already exists. A <div role="button"> says it is a button but brings none of the keyboard behavior. A real <button> brings everything. Where ARIA is genuinely useful is the icon-only button. Sighted visitors see a magnifying glass, but a screen reader finds an empty nameless button — unless you add aria-label="Search". And role="search" turns a form into a landmark, jumpable like <nav> and <main>.',
       },
       {
         type: 'code',
@@ -110,7 +110,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'No ARIA beats bad ARIA. A wrong role tells a confident lie; a plain element at least tells the truth.',
+        text: 'No ARIA is better than wrong ARIA. A bad role tells a confident lie. A plain element at least tells the truth.',
       },
     ],
     exercise: {
@@ -139,11 +139,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Plenty of people browse without a mouse — a broken wrist, a tremor, a screen reader, or sheer speed. Their world is the Tab key: each press moves focus to the next interactive element, Shift+Tab steps back, and Enter activates. Links, buttons, and form fields join this chain automatically. A clickable <div> does not — Tab sails straight past it, so for keyboard users it may as well not exist.',
+        text: 'Many people browse without a mouse — a broken wrist, a tremor, a screen reader, or just speed. Their world is the Tab key. Each press moves focus to the next interactive element. Shift+Tab steps back. Enter activates. Links, buttons, and form fields are in this chain automatically. A clickable <div> is not — Tab skips straight past it, so keyboard users cannot reach it at all.',
       },
       {
         type: 'p',
-        text: 'Two habits cover most of it. First: anything clickable must be a real <a> (goes somewhere) or <button> (does something) — never a styled <div>. Second: offer a skip link, the kindest trick in web development. It is simply the first link on the page, pointing at <main id="main">, so a keyboard user’s very first Tab can leap over the entire menu instead of stepping through every link in it.',
+        text: 'Two habits cover most of the problem. First: anything clickable must be a real <a> (goes somewhere) or <button> (does something) — never a styled <div>. Second: add a skip link. It is the first link on the page and points at <main id="main">. A keyboard user\'s first Tab press can jump over the whole menu instead of stepping through every link one by one.',
       },
       {
         type: 'code',
@@ -151,7 +151,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Try it now: put the mouse down and Tab through a site you love. You will feel immediately where the focus order is kind — and where it is chaos.',
+        text: 'Try it now: put the mouse down and Tab through a site you like. You will feel right away where focus order is easy — and where it is a mess.',
       },
     ],
     exercise: {
@@ -186,11 +186,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Final lesson: you become the auditor. A teammate shipped the page below and complaints are arriving — and you, pleasingly, now know how to find every problem. An accessibility audit is nothing mystical; it is a calm pass through the page with a checklist, top to bottom, fixing as you go.',
+        text: 'Final lesson: you become the auditor. Someone shipped the page below and problems are showing up. You now know how to find every one of them. An accessibility audit is not mysterious — it is a calm walk through the page with a checklist, top to bottom, fixing as you go.',
       },
       {
         type: 'p',
-        text: 'Your checklist from this topic: every <img> carries honest alt text (or an empty alt="" if decorative); heading levels descend without skipping; every form field has a connected <label>; and everything clickable is a real link or button. Four questions that catch a remarkable share of real-world barriers.',
+        text: 'Your checklist from this topic: every <img> has real alt text (or alt="" if decorative); heading levels go down without skipping; every form field has a connected <label>; and everything clickable is a real link or button. Four questions that catch most real-world barriers.',
       },
       {
         type: 'code',
@@ -198,11 +198,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'This is a genuine professional skill: teams run exactly this loop before every release, and the developer who can do it calmly — find, fix, re-check — is the one everybody wants around. Read the starter like an auditor, not an author: slowly, suspiciously, one element at a time.',
+        text: 'This is a real professional skill. Teams run this exact checklist before every release. Read the starter like an auditor, not a writer: slowly, carefully, one element at a time.',
       },
       {
         type: 'tip',
-        text: 'Audit in document order, top to bottom. Jumping around to whatever catches your eye is how barriers survive audits.',
+        text: 'Audit in document order, top to bottom. Jumping around is how problems survive audits.',
       },
     ],
     exercise: {

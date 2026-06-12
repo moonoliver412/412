@@ -202,7 +202,7 @@ export default function Leaderboard() {
           <span className="lb-empty-icon" aria-hidden="true">🌱</span>
           <h2 className="lb-empty-title">Enter the league</h2>
           <p className="lb-empty-sub">
-            Plant your first session to enter this week&apos;s league.
+            Finish a focus session to join this week&apos;s league.
           </p>
         </div>
       ) : (
@@ -222,7 +222,7 @@ export default function Leaderboard() {
       )}
 
       <p className="lb-footer-note">
-        Local league — rivals are simulated until accounts arrive.
+        Your rivals are simulated — real players will appear when accounts launch.
       </p>
     </main>
   );

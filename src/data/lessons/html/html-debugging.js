@@ -8,11 +8,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Here is the most important fact in HTML debugging: the browser never shows your file. It parses your file, silently repairs what it can, and renders the result. The inspector (right-click → Inspect) shows that repaired tree — so when a page misbehaves, compare what you wrote with what the inspector says you wrote.',
+        text: 'The most important fact in HTML debugging: the browser never shows your file directly. It reads your file, quietly repairs what it can, and renders the result. The inspector (right-click → Inspect) shows that repaired tree. When a page misbehaves, compare what you wrote with what the inspector says you wrote.',
       },
       {
         type: 'p',
-        text: 'Two classics to recognize. Forget a closing tag and later elements get swallowed: write <h1>Shop without </h1> and the inspector shows your paragraphs nested inside the heading — which is why everything below it is suddenly enormous. Misspell an attribute — scr instead of src — and the inspector shows the element dutifully carrying a useless scr while the image displays nothing.',
+        text: 'Two classic bugs to know. Forget a closing tag and later elements get pulled inside the unclosed one. Write <h1>Shop without </h1> and the inspector shows your paragraphs nested inside the heading — everything below it turns giant. Misspell an attribute — scr instead of src — and the inspector shows the element carrying a useless scr while the image shows nothing.',
       },
       {
         type: 'code',
@@ -20,7 +20,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'The inspector is honest; your memory is not. When markup misbehaves, read the tree in the inspector before re-reading your source.',
+        text: 'The inspector shows the truth. When markup misbehaves, read the tree in the inspector before going back to your source.',
       },
     ],
     exercise: {
@@ -48,11 +48,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every element has rules about what it may contain, and the browser does not always enforce them — it just renders something, often something subtly wrong. The most common offender: lists. A <ul> may contain only <li> elements. Links, text, images — all of it belongs inside the <li>s, never directly inside the list.',
+        text: 'Every element has rules about what it may contain. The browser does not always enforce them — it just renders something, often something subtly wrong. The most common case: lists. A <ul> may only contain <li> elements directly. Links, text, images — all of that belongs inside the <li>s, never loose inside the list.',
       },
       {
         type: 'p',
-        text: 'Other repeat offenders: block elements like <div> inside a <p> (the browser snaps the paragraph shut early), interactive elements inside each other (a link inside a button), and overlapping pairs like <em><strong></em></strong>. The fix is always the same: close inner elements before outer ones, and check each parent’s guest list.',
+        text: 'Other common mistakes: a block element like <div> inside a <p> (the browser closes the paragraph early); interactive elements nested inside each other like a link inside a button; and overlapping tags like <em><strong></em></strong>. The fix is always the same: close inner elements before outer ones, and check what each parent is allowed to hold.',
       },
       {
         type: 'code',
@@ -60,7 +60,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Nesting trouble shows up in the inspector as elements that "moved" — children sitting where you never put them. When the tree surprises you, suspect a nesting rule.',
+        text: 'Nesting problems show up in the inspector as elements that appear in unexpected places. When the tree surprises you, suspect a nesting rule was broken.',
       },
     ],
     exercise: {
@@ -89,11 +89,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The inspector shows what the browser built; a validator reads what you wrote and lists everything illegal in it. The W3C markup validator (validator.w3.org) is the classic: paste in your HTML, get back a numbered list of errors with line numbers. It catches the mistakes browsers paper over without a word.',
+        text: 'The inspector shows what the browser built. A validator reads what you wrote and lists everything invalid in it. The W3C markup validator at validator.w3.org is the standard one: paste your HTML in, get back a numbered list of errors with line numbers. It catches the mistakes browsers quietly fix without telling you.',
       },
       {
         type: 'p',
-        text: 'Two favorites from its catalogue. Duplicate ids: an id must be unique on the page, because ids are how labels, links, and scripts find elements — duplicates make them find the wrong one. And obsolete elements like <center> or <font>: they still render, but they are styling pretending to be structure, long since retired in favor of CSS.',
+        text: 'Two errors it catches often. Duplicate ids: an id must be unique on the page because labels, links, and scripts use ids to find elements — duplicates send them to the wrong one. Obsolete elements like <center> or <font>: they still render, but they are styling disguised as structure, retired long ago in favor of CSS.',
       },
       {
         type: 'code',
@@ -101,7 +101,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Validate whenever something is weird but the inspector looks fine — and always before blaming the browser. It is nearly always our markup.',
+        text: 'Validate whenever something is wrong but the inspector looks fine. Always validate before blaming the browser. It is nearly always the markup.',
       },
     ],
     exercise: {
@@ -135,11 +135,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Some bugs announce themselves across the whole page: everything below a certain point is bold, or italic, or one giant link. That signature — fine up here, wrong everywhere after — is the fingerprint of an unclosed formatting tag. The browser, trying to honor your <strong> forever, re-opens it inside every element that follows.',
+        text: 'Some bugs show up across the whole page: everything below a point is bold, or italic, or one giant link. That pattern — fine above, wrong everywhere after — is the sign of an unclosed formatting tag. The browser keeps trying to honor your <strong>, so it reopens it inside every element that follows.',
       },
       {
         type: 'p',
-        text: 'The forensic method: find the last healthy element and the first wrong one; the culprit was opened between them. The inspector makes it vivid — you will see <strong> cloned inside every later paragraph, copies you never wrote. Close the original tag and the epidemic ends instantly.',
+        text: 'To find the culprit: locate the last healthy element and the first broken one. The unclosed tag was opened between them. The inspector makes it clear — you will see <strong> cloned inside every paragraph below, copies you never wrote. Close the original tag and the problem stops immediately.',
       },
       {
         type: 'code',
@@ -147,7 +147,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'One bug, many symptoms is normal in HTML: a single unclosed tag can restyle the rest of the page. Fix the first wrong thing, then look again before touching anything else.',
+        text: 'One bug, many symptoms — that is normal in HTML. A single unclosed tag can restyle the whole rest of the page. Fix the first wrong thing, then look again before touching anything else.',
       },
     ],
     exercise: {
@@ -176,11 +176,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Final challenge: a fair flyer whose author reports that "something went wrong somewhere". Your whole toolkit applies — read the rendered symptoms, picture the inspector’s repaired tree, and work top to bottom like an auditor.',
+        text: 'Final challenge: a fair flyer where "something went wrong somewhere". Your whole toolkit applies. Read the symptoms, picture the inspector\'s repaired tree, and work top to bottom like an auditor.',
       },
       {
         type: 'p',
-        text: 'The symptoms, as filed: everything below the opening line renders bold; the afternoon schedule card misbehaves (a validator would mutter about ids); and the packing list at the bottom has lost its bullets. Three families of bug you have already beaten one at a time — now they are merely sharing a page.',
+        text: 'The symptoms: everything below the opening line is bold; the afternoon schedule card has a problem a validator would flag; and the packing list at the bottom has lost its bullets. Three types of bug you have already fixed one at a time — now they just happen to share a page.',
       },
       {
         type: 'code',
@@ -188,11 +188,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Order matters less than calm: fix one bug, glance at the result, then move to the next. Three small repairs and the flyer stands straight — and you will have debugged a page exactly the way working developers do it.',
+        text: 'Order matters less than calm. Fix one bug, check the result, then move to the next. Three small repairs and the flyer is clean — and you will have debugged a page exactly the way working developers do.',
       },
       {
         type: 'tip',
-        text: 'Never fix two bugs at once — you will not know which change did what. One repair, one look, repeat.',
+        text: 'Never fix two bugs at the same time. You will not know which change did what. One repair, one look, repeat.',
       },
     ],
     exercise: {

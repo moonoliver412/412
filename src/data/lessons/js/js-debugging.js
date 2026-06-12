@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every developer spends more time reading error messages than writing code. A JS error message is not an insult — it is a gift. It tells you the type of error, a human-readable description, and the file and line number where things went wrong. If you learn to read it carefully, you already know 80% of what you need to fix it.',
+        text: 'Every developer spends more time reading error messages than writing code. A JS error message is not an insult — it is useful information. It tells you the error type, a plain-language description, and the file and line number where things broke. Read it carefully and you already know most of what you need to fix it.',
       },
       {
         type: 'p',
-        text: 'The three most common error types you will see are ReferenceError (you used a name that does not exist), TypeError (you called something that is not a function, or read a property on undefined), and SyntaxError (you wrote JavaScript the parser cannot understand). Each has a distinct pattern and a distinct fix.',
+        text: 'The three most common error types are ReferenceError (you used a name that does not exist), TypeError (you called something that is not a function, or read a property from undefined), and SyntaxError (you wrote JavaScript the engine cannot read). Each has its own pattern and fix.',
       },
       {
         type: 'code',
@@ -18,25 +18,25 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Read the error type first, then the message, then look at the line number. The message usually contains the exact name or token that broke — search your code for it.',
+        text: 'Read the error type first, then the message, then the line number. The message usually contains the exact name or symbol that broke. Search your code for it.',
       },
     ],
     exercise: {
       kind: 'js',
       instructions:
-        'The starter code has a bug: it tries to log a variable that has not been declared. Fix it by declaring the variable first (use const treeName = "oak") and then log it.',
+        'The starter code has a bug. It tries to log a variable that has not been declared. Fix it by declaring the variable first using const treeName = "oak", then log it.',
       starter:
         '// This line will throw a ReferenceError — fix it!\nconsole.log(treeName);',
       checks: [
         {
           type: 'logIncludes',
           text: 'oak',
-          label: '"oak" is logged without errors',
+          label: '"oak" is logged with no errors thrown',
         },
         {
           type: 'exprTruthy',
           expr: 'typeof treeName !== "undefined"',
-          label: 'treeName is now declared',
+          label: 'treeName is declared and accessible',
         },
       ],
     },
@@ -46,11 +46,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'console.log is your first debugger, but the console has a whole toolkit. console.warn and console.error print with colored icons — useful when you want warnings to stand out. console.table turns arrays of objects into a tidy grid. console.group and console.groupEnd indent related messages so a noisy log does not become soup.',
+        text: 'console.log is your first debugging tool, but the console has a whole toolkit. console.warn and console.error print with colored icons — great when you want warnings to stand out. console.table turns arrays of objects into a tidy grid. console.group and console.groupEnd indent related messages so a busy log stays readable.',
       },
       {
         type: 'p',
-        text: 'The most underused tool is console.assert: it prints nothing if the condition is true, and fires a big error if it is false. Use it to describe what you believe to be true at a point in your code. When it starts yelling, you know exactly where your assumption broke.',
+        text: 'The most underused tool is console.assert. It prints nothing when the condition is true, and fires a loud error when it is false. Use it to state what you believe to be true at a point in your code. When it fires, you know exactly where your assumption was wrong.',
       },
       {
         type: 'code',
@@ -58,25 +58,25 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Prefix your debug logs with a label: console.log("DEBUG age:", age). That way you can grep for "DEBUG" and delete them all before shipping.',
+        text: 'Add a label to your debug logs: console.log("DEBUG age:", age). Then you can search for "DEBUG" and delete them all before you ship.',
       },
     ],
     exercise: {
       kind: 'js',
       instructions:
-        'The starter code has a bug: the assert fires because the array is empty. Fix it by adding at least one tree object to the trees array (any species and age), so the assert passes silently and the table has data to show.',
+        'The starter code has a bug. The assert fires because the array is empty. Fix it by adding at least one tree object with a species and age to the trees array, so the assert passes silently and the table has something to show.',
       starter:
         'const trees = [\n  // bug: no trees — add at least one { species, age } object\n];\n\nconsole.table(trees);\nconsole.assert(trees.length > 0, "trees array should not be empty");',
       checks: [
         {
           type: 'exprTruthy',
           expr: 'Array.isArray(trees) && trees.length > 0',
-          label: 'The trees array has at least one entry',
+          label: 'Your trees array has at least one entry',
         },
         {
           type: 'exprTruthy',
           expr: 'trees[0] && typeof trees[0].species === "string"',
-          label: 'The first entry has a species string',
+          label: 'The first entry has a species property',
         },
       ],
     },
@@ -86,11 +86,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Console logs are great for quick checks, but the browser\'s built-in debugger is more powerful. You set a breakpoint on a line, and execution pauses right there — you can inspect every variable in scope, hover over expressions to see their values, and step through the code one line at a time.',
+        text: 'Console logs are great for quick checks, but the browser\'s built-in debugger is more powerful. Set a breakpoint on a line and execution pauses right there. You can inspect every variable in scope, hover over expressions to see their values, and step through the code one line at a time.',
       },
       {
         type: 'p',
-        text: 'In your JS code you can trigger a breakpoint programmatically with the debugger statement. When the DevTools are open, execution pauses on that line exactly as if you had clicked the gutter. When DevTools are closed, debugger is silently ignored — safe to leave in while you work, just remove it before you ship.',
+        text: 'You can trigger a breakpoint in code using the debugger statement. When DevTools are open, execution pauses on that line — exactly like clicking the gutter. When DevTools are closed, debugger is silently ignored. Safe to leave in while you work, but remove it before you ship.',
       },
       {
         type: 'code',
@@ -98,25 +98,25 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Stepping "into" a function follows execution inside it. Stepping "over" treats the whole function call as one line. Use "into" when you suspect the bug is inside the function, "over" when you trust it.',
+        text: 'Stepping "into" a function follows execution inside it. Stepping "over" treats the whole function call as one line. Use "into" when you think the bug is inside the function. Use "over" when you trust it.',
       },
     ],
     exercise: {
       kind: 'js',
       instructions:
-        'The function below has a bug: it is supposed to return the tree\'s species in uppercase, but it returns undefined. Fix the bug (add the missing return statement) and log the result of calling formatSpecies("oak").',
+        'The function below has a bug. It should return the species in uppercase, but it returns undefined. Fix the bug by adding the missing return statement. Then log the result of calling formatSpecies("oak").',
       starter:
         'function formatSpecies(species) {\n  const upper = species.toUpperCase();\n  // bug: the return statement is missing!\n  // your code here\n}\n\nconsole.log(formatSpecies("oak"));',
       checks: [
         {
           type: 'logIncludes',
           text: 'OAK',
-          label: '"OAK" is logged in uppercase',
+          label: '"OAK" is logged in all caps',
         },
         {
           type: 'exprTruthy',
           expr: 'formatSpecies("maple") === "MAPLE"',
-          label: 'formatSpecies returns the uppercase species',
+          label: 'formatSpecies returns the species in uppercase',
         },
       ],
     },
@@ -126,11 +126,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Some errors are not bugs you wrote — they are conditions that can happen at runtime: a network request fails, a user types something unexpected, a value comes back null from an API. try/catch lets you handle these gracefully rather than crashing.',
+        text: 'Some errors are not bugs you wrote. They are things that can go wrong at runtime — a network request fails, a user types something unexpected, a value comes back null from an API. try/catch lets you handle these situations gracefully instead of crashing.',
       },
       {
         type: 'p',
-        text: 'Put the risky code inside try. If anything throws, execution jumps to the catch block where you receive the error object. The code after the crash point in try is skipped, but your catch can log the error, show a friendly message, or attempt a fallback. finally runs regardless — useful for cleanup like hiding a spinner.',
+        text: 'Put the risky code inside try. If anything throws an error, execution jumps straight to the catch block, where you get the error object. The remaining code in try is skipped. Your catch can log the error, show a friendly message, or try a fallback. The finally block runs no matter what — useful for cleanup like hiding a loading spinner.',
       },
       {
         type: 'code',
@@ -138,25 +138,25 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'throw new Error("message") is the right way to signal a problem. You can throw anything, but Error objects carry a .message and a .stack — both invaluable when debugging.',
+        text: 'throw new Error("message") is the right way to signal a problem in your code. You can throw anything, but Error objects carry a .message and a .stack property — both very helpful when debugging.',
       },
     ],
     exercise: {
       kind: 'js',
       instructions:
-        'The starter code calls JSON.parse on a broken string, which throws a SyntaxError. Wrap the call in a try/catch. In the catch, log the string "parse failed" and fall back to an empty object {}. Log the result either way.',
+        'The starter code calls JSON.parse on a broken string, which throws a SyntaxError. Wrap the call in a try/catch. In the catch block, log "parse failed" and fall back to an empty object {}. Log the result either way.',
       starter:
         'const broken = "{ bad json ";\n\n// Wrap in try/catch:\n// - try: parse broken with JSON.parse, log the result\n// - catch: log "parse failed", use {} as fallback and log it\n// your code here',
       checks: [
         {
           type: 'logIncludes',
           text: 'parse failed',
-          label: '"parse failed" is logged when parsing throws',
+          label: '"parse failed" is logged when the parse throws',
         },
         {
           type: 'logIncludes',
           text: '{}',
-          label: 'The fallback empty object is logged',
+          label: 'The fallback empty object {} is logged',
         },
       ],
     },
@@ -166,11 +166,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to put your detective hat on. This capstone gives you a small app with three bugs hidden inside it — the kind that do not throw obvious errors but quietly produce wrong output. Your job: read the code carefully, trace what each line does, and fix every bug.',
+        text: 'Time to be a detective. This capstone gives you a small app with three bugs hidden inside it. These bugs do not throw obvious errors — they quietly produce wrong output. Your job: read the code carefully, trace what each line does, and fix every bug.',
       },
       {
         type: 'p',
-        text: 'Professional debugging is a loop: form a hypothesis ("I think the sum is wrong because…"), add a console.log to test it, look at the output, revise the hypothesis. The rubber-duck technique — explaining the code aloud to an imaginary friend — finds bugs faster than staring in silence. Say out loud what each line does. The wrong one will announce itself.',
+        text: 'Professional debugging is a loop. Form a hypothesis — "I think the sum is wrong because…". Add a console.log to test it. Look at the output. Revise your hypothesis. Repeat. Try explaining the code out loud to nobody. Say what each line does. The wrong line will stand out.',
       },
       {
         type: 'code',
@@ -178,14 +178,14 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Fix one bug at a time. Changing three things at once means you do not know which fix worked — and you might accidentally cancel two fixes out.',
+        text: 'Fix one bug at a time. Change three things at once and you will not know which fix worked — and two fixes might accidentally cancel each other out.',
       },
     ],
     exercise: {
       kind: 'js',
       html: '<ul id="list"></ul><p id="total"></p>',
       instructions:
-        'The code below has three bugs. Bug 1: the area function uses + instead of * to compute width × height — fix the operator. Bug 2: the for loop condition uses >= instead of < so the loop body never runs — fix the condition. Bug 3: appendChild is misspelled as appendChld — fix the typo. Correct all three so the list shows three items and the total displays 6.',
+        'The code below has three bugs. Bug 1: the area function uses + instead of * to multiply width × height — fix the operator. Bug 2: the for loop uses >= instead of < so it never runs — fix the condition. Bug 3: appendChild is misspelled as appendChld — fix the typo. Fix all three so the list shows three items and the total shows 6.',
       starter:
         'function area(w, h) {\n  // Bug 1: should multiply, not add\n  return w + h;\n}\n\nconst sizes = [{ w: 1, h: 1 }, { w: 2, h: 1 }, { w: 3, h: 1 }];\nlet total = 0;\n\n// Bug 2: loop condition is wrong — should be i < sizes.length\nfor (let i = 0; i >= sizes.length; i++) {\n  const s = sizes[i];\n  total += area(s.w, s.h);\n\n  const li = document.createElement("li");\n  li.textContent = `${s.w}×${s.h} = ${area(s.w, s.h)}`;\n  // Bug 3: typo in method name\n  document.getElementById("list").appendChld(li);\n}\n\ndocument.getElementById("total").textContent = "total: " + total;',
       checks: [
@@ -193,13 +193,13 @@ const lessons = [
           type: 'textIncludes',
           text: '6',
           selector: '#total',
-          label: 'The total of 6 is shown on the page',
+          label: 'The total of 6 appears on the page',
         },
         {
           type: 'selectorExists',
           selector: '#list li',
           count: 3,
-          label: 'Three list items are rendered',
+          label: 'Three list items show up on the page',
         },
       ],
     },

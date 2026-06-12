@@ -109,3 +109,15 @@ button {
 }
 
 .cs-pill-btn--orange:hover { background: #e63e00; }
+
+/* Global small-screen baseline. */
+@media (max-width: 700px) {
+  .cs-page {
+    padding: 16px 16px 40px;
+  }
+
+  .cs-page-title {
+    font-size: 38px;
+    gap: 10px;
+  }
+}

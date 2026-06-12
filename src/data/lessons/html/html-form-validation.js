@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Forms collect answers; validation makes sure the answers make sense before they travel anywhere. You met required back in Forms & Media — the attribute that blocks submission while a field sits empty. This topic turns that one trick into a toolkit, starting with rules you write yourself.',
+        text: 'Forms collect answers. Validation makes sure the answers make sense before they go anywhere. You met required back in Forms & Media — the attribute that blocks submission while a field is empty. This topic turns that one tool into a full toolkit, starting with rules you write yourself.',
       },
       {
         type: 'p',
-        text: 'pattern holds a regular expression — a compact rule the value must match in full. pattern="[a-z]+" means "one or more lowercase letters, nothing else". Add minlength and maxlength to bound the size. The browser enforces all of it at submit time, free of charge, before any code of yours would ever run.',
+        text: 'pattern holds a regular expression — a compact rule the value must fully match. pattern="[a-z]+" means "one or more lowercase letters, nothing else". Add minlength and maxlength to limit the size. The browser checks all of it at submit time, for free, before any of your code runs.',
       },
       {
         type: 'code',
@@ -18,11 +18,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Validation only fires when the form tries to submit, so always test by clicking the button. Until that moment, an invalid field just sits there looking innocent.',
+        text: 'Validation only runs when the form is submitted. Always test by clicking the button. Until then, an invalid field just sits there looking fine.',
       },
       {
         type: 'tip',
-        text: 'Regular expressions go deep, but three symbols cover most form patterns: [a-z] is a letter range, + means "one or more", and {3} means "exactly three".',
+        text: 'Regular expressions can get complex, but three symbols cover most form patterns: [a-z] is a letter range, + means "one or more", and {3} means "exactly three".',
       },
     ],
     exercise: {
@@ -49,11 +49,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The laziest validation is picking the right type. type="email" rejects anything without an @-shape, type="url" insists on a web address, and type="number" accepts only digits — with min and max to fence in the range. No patterns to write; the browser already knows these rules by heart.',
+        text: 'The easiest validation is picking the right type. type="email" rejects anything without an @-shape. type="url" requires a web address. type="number" accepts only digits — with min and max to limit the range. No patterns to write; the browser already knows these rules.',
       },
       {
         type: 'p',
-        text: 'Types are also a kindness to phone users: email summons a keyboard with @ front and center, number brings up digits. The wrong type does not just skip validation — it actively makes typing harder.',
+        text: 'The right type also helps phone users. type="email" shows a keyboard with @ up front. type="number" shows a digit pad. The wrong type does not just skip validation — it makes typing harder.',
       },
       {
         type: 'code',
@@ -61,7 +61,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'type="number" is for amounts, not numerals: phone numbers and postcodes belong in type="text" or type="tel" — nobody wants a spinner on a phone number.',
+        text: 'type="number" is for amounts, not any string of digits. Phone numbers and postcodes belong in type="text" or type="tel". Nobody wants a stepper control on a phone number field.',
       },
     ],
     exercise: {
@@ -93,11 +93,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'When a pattern fails, browsers show a shrug of a message: "Please match the requested format." Requested by whom? Matching what? You can do better. On a field with a pattern, the title attribute gets appended to that error bubble — your chance to state the rule in human words.',
+        text: 'When a pattern fails, browsers show a vague message: "Please match the requested format." Matching what, exactly? You can do better. On a field with a pattern, the title attribute gets added to the error bubble — your chance to explain the rule in plain words.',
       },
       {
         type: 'p',
-        text: 'Write titles that say what to do, not what went wrong: "Three capital letters, like KEW" beats "invalid input" every time. Pair the rule with a maxlength so visitors cannot wander past the limit, and consider repeating the rule in visible text nearby — the bubble only appears after a failed submit. (JavaScript can replace messages entirely with setCustomValidity, a treat for a later track.)',
+        text: 'Write titles that say what to do, not what went wrong. "Three capital letters, like KEW" beats "invalid input" every time. Add maxlength so visitors cannot type past the limit. Consider also repeating the rule in visible text nearby — the bubble only appears after a failed submit. JavaScript can replace messages with setCustomValidity, but that is for a later track.',
       },
       {
         type: 'code',
@@ -105,7 +105,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Test your message: type "abc" and submit. The bubble should now explain the rule — your title — instead of mumbling about formats.',
+        text: 'Test your message: type "abc" and click Submit. The bubble should now explain the rule in your title text, not the vague default.',
       },
     ],
     exercise: {
@@ -132,11 +132,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Validation rules are half the job; making sure everyone can perceive them is the other half. A sighted visitor sees the password rules printed under the field. A screen-reader user hears the field name and… nothing — unless you wire the hint to the input.',
+        text: 'Validation rules are half the job. Making sure everyone can hear them is the other half. A sighted visitor sees the password rules printed under the field. A screen-reader user hears the field name and nothing else — unless you wire the hint to the input.',
       },
       {
         type: 'p',
-        text: 'The wire is aria-describedby: give the hint element an id, point the input’s aria-describedby at that id, and screen readers append the hint when announcing the field — "Password, edit text, at least eight characters, one number." The same wiring later carries live error messages, so the habit pays twice.',
+        text: 'The link is aria-describedby. Give the hint element an id, then point the input\'s aria-describedby at that id. Screen readers then read the hint when they announce the field: "Password, edit text, at least eight characters, one number." This same pattern later carries live error messages, so the habit is worth learning now.',
       },
       {
         type: 'code',
@@ -144,7 +144,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'aria-describedby accepts several ids separated by spaces — hint and error message both, when the time comes.',
+        text: 'aria-describedby accepts several ids separated by spaces. You can point it at both a hint and an error message when the time comes.',
       },
     ],
     exercise: {
@@ -173,11 +173,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The graduation piece: a signup form that politely refuses bad data. Every technique from this topic reports for duty — required fields, validating types, patterns with human titles, and labels on everything, because accessibility is non-negotiable even in a validation lesson.',
+        text: 'The graduation build: a signup form that politely blocks bad data. Every technique from this topic is in play — required fields, the right types, patterns with human-readable titles, and labels on everything. Accessibility is non-negotiable even in a validation lesson.',
       },
       {
         type: 'p',
-        text: 'Three fields and a button: a username with a pattern (lowercase letters, say) plus a title explaining the rule; an email with type="email" and required; a password with type="password" and minlength="8". Each field gets its own <label> wired by for and id.',
+        text: 'Three fields and a button. A username with a pattern (lowercase letters) and a title explaining the rule. An email with type="email" and required. A password with type="password" and minlength="8". Each field gets its own <label> wired by for and id.',
       },
       {
         type: 'code',
@@ -185,11 +185,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'When you finish, try to break it: submit empty, type an email without an @, a six-character password. Every rejection should come with a message a human can act on. That is what bulletproof means — not that mistakes cannot happen, but that none slip through quietly.',
+        text: 'When you finish, try to break it. Submit empty. Type an email without @. Try a six-character password. Every rejection should show a message a person can act on. That is what solid validation means — not that mistakes cannot happen, but that none slip through quietly.',
       },
       {
         type: 'tip',
-        text: 'Browser validation is the first line of defense, never the only one — real sites repeat every check on the server, because not every visitor is a browser.',
+        text: 'Browser validation is the first line of defense, not the only one. Real apps repeat every check on the server, because not every visitor uses a browser.',
       },
     ],
     exercise: {

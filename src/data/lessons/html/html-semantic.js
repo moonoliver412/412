@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Here is a strange fact: you could build an entire website out of nothing but <div>s, style it with CSS, and it would look perfect. So why does HTML offer dozens of named elements? Because looks are only one audience. Your code is also read by screen readers, search engines, and other developers — and none of them can see the screen.',
+        text: 'Here is a strange fact: you could build a whole website with nothing but <div>s, style it with CSS, and it would look fine. So why does HTML offer dozens of named elements? Because looks are only part of the story. Your code is also read by screen readers, search engines, and other developers — and none of them can see the screen.',
       },
       {
         type: 'p',
-        text: 'Semantic simply means "about meaning". A semantic element names what its content is: <h2> says "section title", <li> says "item in a list", <button> says "press me". A <div> says nothing at all. To a screen reader, a page of <div>s is one long unlabelled corridor; the same page with real tags is a building with a sign on every door.',
+        text: 'Semantic means "about meaning". A semantic element names what its content is. <h2> says "section title". <li> says "item in a list". <button> says "press me". A <div> says nothing at all. To a screen reader, a page of <div>s is one long unlabelled corridor. The same page with real tags is a building with a sign on every door.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The good news: you have been writing semantic HTML all along — headings, paragraphs, lists, tables, and forms all carry meaning. This topic adds one final habit: before reaching for a <div>, pause and ask whether a tag already exists that says what this content is. Surprisingly often, one does.',
+        text: 'Good news: you have been writing semantic HTML all along. Headings, paragraphs, lists, tables, and forms all carry meaning. This topic adds one habit: before reaching for a <div>, ask whether a tag already exists that says what this content is. Surprisingly often, one does.',
       },
       {
         type: 'tip',
@@ -55,11 +55,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'You met <header>, <main>, and <footer> back in Document Structure. Meet the fourth member of the family: <nav>, the wrapper for a block of major navigation links — the main menu, a table of contents. Together these four are called landmarks, the regions of a page that assistive software can jump between directly.',
+        text: 'You met <header>, <main>, and <footer> in Document Structure. Now meet the fourth: <nav>, the wrapper for a block of major navigation links — the main menu, a table of contents. Together these four are called landmarks. Landmarks are page regions that assistive software — like screen readers — can jump between directly.',
       },
       {
         type: 'p',
-        text: 'That jumping is the whole point. Picture listening to a page through a screen reader: without landmarks, every visit starts with the site name and forty menu links before any content arrives. With them, one keystroke hops from <nav> to <main>. The usual arrangement is simple: the <nav> lives inside the <header>, the unique content fills the one-per-page <main>, and the <footer> closes with the fine print.',
+        text: 'That jumping matters a lot. Imagine listening to a page through a screen reader. Without landmarks, every visit starts with the site name and every menu link before any content arrives. With them, one keystroke skips straight from <nav> to <main>. The usual layout is simple: <nav> lives inside the <header>, the unique content fills the one-per-page <main>, and the <footer> closes with the fine print.',
       },
       {
         type: 'code',
@@ -99,11 +99,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Two containers remain, and they are the pair developers mix up most. An <article> is a self-contained piece that would still make sense somewhere else entirely — a blog post, a news story, a product card, a single comment. A <section> is a themed slice of a larger whole, like one chapter of a guide. The quick test: could you lift it out and hand it to someone on its own? <article>. Only meaningful in context? <section>.',
+        text: 'Two containers remain — and they are the pair developers mix up most. An <article> is a self-contained piece that still makes sense on its own: a blog post, a news story, a product card, a comment. A <section> is a themed part of a larger whole, like one chapter of a guide. Quick test: could you hand it to someone on its own and it still makes sense? Use <article>. Only meaningful in context? Use <section>.',
       },
       {
         type: 'p',
-        text: 'Both work best opening with a heading, and they nest in whichever direction matches your meaning: a <section> grouping three related <article>s, or one long <article> divided into <section>s. And when no meaning fits at all — you truly just need a box to style — that is the honest moment for a <div>.',
+        text: 'Both work best when they open with a heading. They can nest either way: a <section> grouping three related <article>s, or one long <article> divided into <section>s. When no meaning fits at all — you just need a box to style — that is the right moment for a <div>.',
       },
       {
         type: 'code',
@@ -144,11 +144,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Some content is a sidekick rather than the star. <aside> is the tag for it: a fun fact, a "related links" box, anything the page would survive losing. Screen readers announce an aside as complementary content, so listeners know they can skip it without missing the plot.',
+        text: 'Some content is a sidekick rather than the main event. <aside> is the tag for it: a fun fact, a "related links" box, anything the page would survive without. Screen readers announce an aside as complementary content, so listeners know they can skip it without missing anything important.',
       },
       {
         type: 'p',
-        text: 'Two more specialists complete your set. You already know <figure> from Text & Links — that was semantics too, marking an image-and-caption that supports the main flow. New today: <details>, a built-in collapsible. Its first child is a <summary>, the line that stays visible; everything after it hides until the visitor clicks to expand. An accordion with zero JavaScript.',
+        text: 'Two more elements complete your set. You already know <figure> from Text & Links — that was semantics too, marking an image-and-caption. New today: <details>, a built-in collapsible section. Its first child is a <summary> — the line that stays visible. Everything after it hides until the visitor clicks to expand. An accordion with zero JavaScript.',
       },
       {
         type: 'code',
@@ -156,7 +156,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Use each where it earns its keep: an <aside> for the fact that enriches the page but does not belong to its flow, a <figure> for the image your text points at, and <details> for the long answer most readers will not need — FAQs, spoilers, advanced options. The page stays short, and the depth stays one click away.',
+        text: 'Use each where it fits. <aside> holds facts that enrich the page but do not belong to its main flow. <figure> holds images your text refers to. <details> holds the long answer most readers will not need — FAQs, spoilers, advanced options. The page stays short, and the extra detail is one click away.',
       },
       {
         type: 'tip',
@@ -192,7 +192,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every developer eventually inherits a page made of nothing but <div>s — the dish is affectionately known as div soup. It renders fine, which is exactly the trap: nothing forces anyone to fix it, so it spreads. The cure is the classic refactor: change what every box is called without changing what it contains.',
+        text: 'Every developer eventually works on a page made of nothing but <div>s — this is called div soup. It looks fine on screen, which is exactly the trap: nothing forces anyone to fix it, so it spreads. The fix is a refactor — changing what each box is called without changing what it contains.',
       },
       {
         type: 'p',

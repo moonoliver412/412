@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'JavaScript is the layer that makes a page think. But before it can think, it needs somewhere to remember things — and that is what variables are for. A variable is a labelled box: you give it a name, and you can put any value inside.',
+        text: 'JavaScript makes a web page interactive. But first it needs to remember things — that is what variables are for. A variable is a labelled box. You give it a name, and you can put any value inside.',
       },
       {
         type: 'p',
-        text: 'Modern JavaScript has two keywords for creating variables: const and let. Use const when the value will not change — a name, a fixed price, the number of wheels on a bicycle. Use let when you know the value will be updated later.',
+        text: 'Modern JavaScript gives you two keywords for creating variables: const and let. Use const when the value will never change — a name, a fixed price, the wheel count on a bike. Use let when you know the value will change later.',
       },
       {
         type: 'code',
@@ -18,11 +18,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The = sign is not "equals" the way maths uses it — it means assign. You are putting the value on the right into the box on the left. console.log() is your best friend: it prints values to the console panel so you can see exactly what is in each box.',
+        text: 'The = sign does not mean "equals" like in maths. It means assign — you are putting the value on the right into the box on the left. console.log() prints values to the console so you can see what is inside each variable.',
       },
       {
         type: 'tip',
-        text: 'Start with const. If the linter (or your own code) complains that you tried to reassign it, change it to let. Defaulting to const catches bugs early.',
+        text: 'Start with const every time. If your code tries to reassign it, change it to let. Using const by default helps you catch bugs early.',
       },
     ],
     exercise: {
@@ -55,7 +55,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every value in JavaScript has a type. The two you will use most in your first weeks are numbers and strings. Numbers are just digits — no quotes needed. Strings are text wrapped in quotes, either single, double, or backtick.',
+        text: 'Every value in JavaScript has a type. The two you will use most are numbers and strings. Numbers are just digits — no quotes needed. Strings are text wrapped in quote marks: single, double, or backtick.',
       },
       {
         type: 'code',
@@ -63,11 +63,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The backtick string is special — it is called a template literal. Inside it, ${...} is a little window where you can drop any expression, and JavaScript will convert the result to text and stitch it right in. This is far neater than joining strings with + signs.',
+        text: 'The backtick string is special. It is called a template literal. Inside it, ${...} is a slot where you write any expression. JavaScript converts the result to text and drops it right in. That is much cleaner than joining strings with + signs.',
       },
       {
         type: 'tip',
-        text: 'You can do arithmetic on numbers directly: const area = width * height. But "3" + 4 gives "34" not 7 — that is JavaScript silently treating "3" as a string. The typeof operator reveals the type of any value.',
+        text: 'You can do maths directly on numbers: const area = width * height. But "3" + 4 gives "34" not 7 — JavaScript treats "3" as a string and joins them. The typeof operator tells you the type of any value.',
       },
     ],
     exercise: {
@@ -100,7 +100,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The third fundamental type is boolean — a value that is either true or false, nothing in between. Booleans come from comparisons. Is 5 greater than 3? Is this string equal to that string? JavaScript answers with true or false.',
+        text: 'The third important type is boolean — a value that is either true or false. Booleans come from comparisons. Is 5 greater than 3? Are these two strings equal? JavaScript answers with true or false.',
       },
       {
         type: 'code',
@@ -108,11 +108,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Use === (three equals signs) to compare values, not == (two). The triple version checks both the value AND the type, which prevents surprises. The !== operator checks "not equal." You will use these constantly inside if statements.',
+        text: 'Use === (three equals signs) to compare values. It checks both the value and the type, which prevents surprises. The !== operator checks "not equal". You will use these all the time inside if statements.',
       },
       {
         type: 'tip',
-        text: 'Six values are falsy in JavaScript — false, 0, "", null, undefined, NaN — everything else is truthy. Knowing this list saves hours of head-scratching later.',
+        text: 'Six values are falsy in JavaScript — false, 0, "", null, undefined, NaN. Everything else is truthy. Learning this list now saves you a lot of confusion later.',
       },
     ],
     exercise: {
@@ -145,7 +145,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Sometimes a value arrives as the wrong type — a number disguised as a string, or a string that should be a number. JavaScript gives you built-in tools to convert between types: Number() turns a string into a number, and String() turns a number into text.',
+        text: 'Sometimes a value has the wrong type — a number stored as a string, or a string that should be a number. JavaScript has built-in tools to convert between types. Number() turns a string into a number. String() turns a number into text.',
       },
       {
         type: 'code',
@@ -153,11 +153,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Number("hello") gives NaN — Not a Number — which is JavaScript\'s polite way of saying "that conversion failed." You can test for it with Number.isNaN(). The typeof operator is always handy to confirm what type you are actually dealing with.',
+        text: 'Number("hello") gives NaN — Not a Number — that is JavaScript saying the conversion failed. You can check for it with Number.isNaN(). Use typeof any time you want to confirm the type of a value.',
       },
       {
         type: 'tip',
-        text: 'parseInt() and parseFloat() are older cousins of Number() that stop reading at the first non-numeric character: parseInt("12px") gives 12. Handy when parsing CSS values.',
+        text: 'parseInt() and parseFloat() work like Number() but stop reading at the first non-digit character: parseInt("12px") gives 12. That is handy when you need to pull numbers out of CSS values.',
       },
     ],
     exercise: {
@@ -185,7 +185,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to put the whole topic together and build something that actually calculates. A tiny calculator needs variables for the inputs, arithmetic to process them, and template literals to display the result — exactly the three things you have practised.',
+        text: 'Time to put it all together. A tiny calculator needs variables for inputs, maths to process them, and template literals to show the result. You have practised all three of those things.',
       },
       {
         type: 'code',
@@ -193,11 +193,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Real calculators also need to handle the case where someone tries to divide by zero. In JavaScript, dividing by zero gives Infinity rather than an error, so it is kind to check first. A simple if statement — which you will study properly in the next topic — is enough.',
+        text: 'Real calculators also need to handle dividing by zero. In JavaScript, dividing by zero gives Infinity — not an error. It is good practice to check for it first. A simple if statement is enough. You will learn if statements properly in the next topic.',
       },
       {
         type: 'tip',
-        text: 'The % operator is the remainder after division (modulo): 17 % 5 is 2. It is surprisingly useful — checking whether a number is even (n % 2 === 0) is one of the most common one-liners in all of coding.',
+        text: 'The % operator gives the remainder after division — this is called modulo. 17 % 5 is 2. It is very useful. Checking whether a number is even (n % 2 === 0) is one of the most common patterns in all of coding.',
       },
     ],
     exercise: {

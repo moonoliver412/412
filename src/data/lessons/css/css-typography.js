@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every browser ships with a handful of built-in fonts — Times New Roman, Arial, Georgia — but they were chosen for safety, not beauty. Web fonts let you load any typeface you like; the browser downloads it the first time a visitor arrives and caches it for next time.',
+        text: 'Every browser has a few built-in fonts — Times New Roman, Arial, Georgia — but they were chosen for compatibility, not style. Web fonts let you load any typeface you like. The browser downloads it the first time someone visits your page and saves it for next time.',
       },
       {
         type: 'p',
-        text: 'The font-family property accepts a comma-separated list. The browser tries each name in order and uses the first one it can find. The last entry should always be a generic keyword — serif, sans-serif, or monospace — so there is always a sensible fallback if every named font fails to load.',
+        text: 'The font-family property takes a comma-separated list of font names. The browser tries each one in order and uses the first it can find. The last entry should always be a generic keyword — serif, sans-serif, or monospace — so there is always a fallback if every named font fails.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Font names with spaces must be wrapped in quotes. Single-word names like Arial do not need them, but quoting them is harmless and consistent.',
+        text: 'Font names with spaces must be wrapped in quotes. Single-word names like Arial do not need quotes, but adding them is harmless.',
       },
     ],
     exercise: {
@@ -50,7 +50,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Once you have a font family, you shape it with three properties that do most of the heavy lifting: font-size, font-weight, and line-height. Get these three right and even a default system font starts to look intentional.',
+        text: 'Once you have a font family, you shape it with three key properties: font-size, font-weight, and line-height. Get these three right and even a default system font starts to look polished.',
       },
       {
         type: 'code',
@@ -58,11 +58,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Line-height is the secret of readable text. Below 1.4 lines feel cramped; above 2.0 they feel scattered. For body text, 1.5–1.7 is the comfortable sweet spot. Notice that line-height here has no unit — a unitless value is relative to the element\'s own font-size, which is exactly what you want when nesting.',
+        text: 'line-height is the secret of readable text. Below 1.4 and lines feel cramped. Above 2.0 they feel scattered. For body text, 1.5–1.7 is the comfortable range. A unitless line-height value is relative to the element\'s own font-size — that is exactly what you want when nesting elements.',
       },
       {
         type: 'tip',
-        text: 'Avoid pixel font sizes for body text. Rem-based sizes respect the reader\'s browser preferences — someone who bumped their base size to 20px for readability deserves that choice.',
+        text: 'Avoid pixel font sizes for body text. Rem-based sizes respect the reader\'s browser settings. Someone who increased their base size for readability deserves to have that honored.',
       },
     ],
     exercise: {
@@ -94,7 +94,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Letter-spacing and word-spacing are the fine-tuning knobs of type. A small positive letter-spacing — sometimes called tracking — opens up tight all-caps labels and makes them feel deliberate rather than shouted. Too much tracking on body text, though, and the words break apart into a scattered mess.',
+        text: 'letter-spacing and word-spacing are the fine-tuning controls of type. A small positive letter-spacing — sometimes called tracking — opens up tight all-caps labels and makes them feel deliberate. Too much tracking on body text breaks words apart into a scattered mess.',
       },
       {
         type: 'code',
@@ -134,11 +134,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Fixed pixel headings make a designer cry: a 48px h1 that looks perfect on a wide monitor dominates a phone screen and forces horizontal scrolling. Fluid type fixes this by letting the font size glide smoothly between a minimum and maximum as the viewport changes.',
+        text: 'Fixed pixel headings cause problems. A 48px h1 that looks perfect on a wide monitor dominates a phone screen and forces horizontal scrolling. Fluid type fixes this by letting the font size slide smoothly between a minimum and maximum as the viewport changes.',
       },
       {
         type: 'p',
-        text: 'clamp() is the key. Supply a minimum size for small screens, a viewport-relative preferred size in the middle, and a maximum for large screens. The browser handles every viewport in between with no media query needed.',
+        text: 'clamp() is the tool for this. Give it a minimum size for small screens, a viewport-relative preferred size in the middle, and a maximum for large screens. The browser handles every viewport in between with no media query needed.',
       },
       {
         type: 'code',
@@ -146,7 +146,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'A fluid type scale keeps the hierarchy intact at every width — the h1 is always visually louder than h2, and h2 always louder than p, no matter the screen size.',
+        text: 'A fluid type scale keeps the visual hierarchy intact at every width. The h1 is always bigger than h2, and h2 is always bigger than p, no matter the screen size.',
       },
     ],
     exercise: {
@@ -178,7 +178,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Good typography is invisible — readers absorb the words without noticing the type decisions behind them. Your capstone is a type-driven article page: one font family, a clear size hierarchy, generous line-height on body text, and a small-caps label to introduce the category.',
+        text: 'Good typography is invisible. Readers absorb the words without noticing the font choices behind them. Your capstone is a type-driven article page: one font family, a clear size hierarchy, generous line-height on body text, and an uppercase label to introduce the category.',
       },
       {
         type: 'code',
@@ -186,7 +186,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The max-width: 65ch on paragraphs is a typographic classic — it keeps line length in the sweet spot of 60–75 characters where reading is most comfortable. ch is the width of the "0" character in the current font, so it scales with font-size automatically.',
+        text: 'The max-width: 65ch on paragraphs is a classic typography trick. It keeps line length in the 60–75 character range where reading is most comfortable. ch is the width of the "0" character in the current font, so it scales with font-size automatically.',
       },
     ],
     exercise: {

@@ -108,10 +108,10 @@ export default function SpeciesPicker({ topicId }) {
 
       <p className="species-hint" role="status">
         {deniedSp
-          ? `Not enough sprouts — earn more by finishing lessons and sessions.`
+          ? `Not enough sprouts. Earn more by finishing lessons and sessions.`
           : anyForSale
-            ? `Every ${language.name} tree grows as this species. New species cost sprouts; the forest locks once the first tree takes root.`
-            : `Every ${language.name} tree grows as this species. Locks once the first tree takes root.`}
+            ? `Every ${language.name} tree grows as this species. Extra species cost sprouts. Your choice locks when the first tree starts growing.`
+            : `Every ${language.name} tree grows as this species. Your choice locks when the first tree starts growing.`}
       </p>
     </section>
   );

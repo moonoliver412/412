@@ -197,9 +197,8 @@ export default function Forest() {
         Forest
       </h1>
       <p className="forest-intro">
-        Your trophy landscape. Finish lessons in the{' '}
-        <Link to="/playground">Playground</Link> to grow each topic&apos;s tree to
-        maturity.
+        Every tree you&apos;ve fully grown lives here. Finish lessons in the{' '}
+        <Link to="/playground">Playground</Link> to grow each topic&apos;s tree.
       </p>
 
       <div className="forest-header-row">

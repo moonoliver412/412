@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Before Flexbox, centering something on a page was genuinely hard. Flexbox changed that. Add display: flex to any element and it becomes a flex container: its direct children line up in a row, share the available space, and can be aligned with a handful of easy-to-read properties.',
+        text: 'Before Flexbox, centering something on a page was really hard. Flexbox changed that. Add display: flex to any element and it becomes a flex container. A flex container lines up its direct children in a row, shares the space between them, and lets you align them with a few simple properties.',
       },
       {
         type: 'code',
@@ -14,11 +14,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'flex-direction controls the main axis. row (default) runs left to right; column stacks children top to bottom, like the normal block flow but with all the flexbox powers. The gap property adds equal spacing between items without any margin arithmetic.',
+        text: 'flex-direction controls the main axis — the direction items flow. row (the default) runs left to right. column stacks children top to bottom. The gap property adds equal spacing between items without any margin math.',
       },
       {
         type: 'tip',
-        text: 'Only direct children are flex items. Grandchildren are unaffected — unless you put display: flex on them too.',
+        text: 'Only direct children become flex items. Grandchildren are not affected — unless you add display: flex to them too.',
       },
     ],
     exercise: {
@@ -45,7 +45,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Two properties do most of the alignment work in Flexbox. justify-content controls how items are distributed along the main axis (the direction flex-direction points). align-items controls how they line up on the cross axis (perpendicular to that).',
+        text: 'Two properties do most of the alignment work. justify-content controls how items are spread along the main axis — the direction flex-direction points. align-items controls how they line up on the cross axis, which runs perpendicular to that.',
       },
       {
         type: 'code',
@@ -53,11 +53,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The most magical combination is justify-content: center paired with align-items: center on a container that has a defined height. Anything you put inside will float to the exact middle — the centering technique that used to take four CSS tricks now takes two lines.',
+        text: 'The most useful combination is justify-content: center with align-items: center on a container that has a defined height. Anything inside floats to the exact middle. Centering used to take four CSS tricks. Now it takes two lines.',
       },
       {
         type: 'tip',
-        text: 'Space-between pushes items to opposite ends with equal gaps between them. Space-around gives each item equal space on both sides. Space-evenly is the same but the edges also get equal space.',
+        text: 'space-between pushes items to opposite ends with equal gaps between them. space-around gives each item equal space on both sides. space-evenly is the same but the edges also get equal space.',
       },
     ],
     exercise: {
@@ -84,7 +84,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'By default, flex items refuse to wrap — they squash themselves to fit in one line no matter how many there are. flex-wrap: wrap changes that: when items run out of room they spill onto the next line, just like text wrapping in a paragraph.',
+        text: 'By default, flex items squeeze into one line no matter how many there are. flex-wrap: wrap changes that. When items run out of room, they move to the next line — just like words wrapping in a paragraph.',
       },
       {
         type: 'code',
@@ -92,11 +92,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'gap works in both directions when items wrap — it adds space between rows and between columns simultaneously. Before gap existed, developers used negative margins and padding combinations that were easy to get wrong. Now it is one property.',
+        text: 'gap works in both directions when items wrap. It adds space between rows and between columns at the same time. Before gap existed, you had to use tricky margin combinations that were easy to get wrong. Now it is one property.',
       },
       {
         type: 'tip',
-        text: 'flex-wrap: wrap-reverse wraps items upward instead of downward — handy for chat interfaces where new messages appear at the bottom.',
+        text: 'flex-wrap: wrap-reverse wraps items upward instead of downward. This is useful for chat interfaces where new messages appear at the bottom.',
       },
     ],
     exercise: {
@@ -128,7 +128,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The flex shorthand controls how items grow and shrink to fill available space. It takes up to three values: flex-grow (how much extra space to claim), flex-shrink (how much to give up when space is tight), and flex-basis (the starting size before growing or shrinking).',
+        text: 'The flex shorthand controls how items grow and shrink. It takes up to three values. flex-grow says how much extra space to claim. flex-shrink says how much to give up when space is tight. flex-basis is the starting size before any growing or shrinking happens.',
       },
       {
         type: 'code',
@@ -136,11 +136,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'flex: 1 is the most useful value day-to-day. Put it on one item in a row and that item swallows all the remaining space, pushing everything else to its natural size. It is the secret behind sidebars that fill the page while a fixed-width navigation stays stable beside them.',
+        text: 'flex: 1 is the most useful value in everyday layouts. Put it on one item in a row and that item claims all the leftover space. Everything else stays its natural size. This is how sidebars fill the page while a fixed navigation bar stays stable beside them.',
       },
       {
         type: 'tip',
-        text: 'align-self on an individual item overrides the container\'s align-items for just that one child — handy when one item needs to stretch while the others stay centered.',
+        text: 'align-self on a single item overrides the container\'s align-items for just that one child. Use it when one item needs to stretch while the others stay centered.',
       },
     ],
     exercise: {
@@ -167,15 +167,15 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A navigation bar is one of the most common uses for Flexbox. The items in a nav need to sit in a row, align vertically, and space themselves out cleanly. Some nav designs push a logo to the left and all the links to the right — exactly what space-between delivers.',
+        text: 'A navigation bar is one of the most common uses for Flexbox. The items need to sit in a row, align vertically, and space out cleanly. Many nav designs push a logo to the left and links to the right. space-between delivers exactly that.',
       },
       {
         type: 'p',
-        text: 'For the capstone, build a full nav bar: a logo on the left, navigation links spread with space-between, and the whole bar vertically centered. Add a highlight class on the active link using a different color. Everything you have learned about containers, alignment, and gaps applies here.',
+        text: 'For this capstone, build a full nav bar. Put the logo on the left and the navigation links on the right using space-between. Center the whole bar vertically. Highlight the active link with a different color. Everything you have learned about containers, alignment, and gaps applies here.',
       },
       {
         type: 'tip',
-        text: 'Wrap the nav links in their own flex container with gap so the links stay grouped on the right while the logo stays on the left.',
+        text: 'Put the nav links in their own flex container with gap. That keeps the links grouped on the right while the logo stays on the left.',
       },
     ],
     exercise: {

@@ -3,11 +3,13 @@ import { useGame } from '../state/useGame';
 import './NavBar.css';
 
 const LINKS = [
-  { to: '/playground', label: 'Playground' },
   { to: '/', label: 'Home' },
+  { to: '/learn', label: 'Learn' },
+  { to: '/playground', label: 'Playground' },
+  { to: '/challenges', label: 'Challenges' },
   { to: '/forest', label: 'Forest' },
-  { to: '/achievements', label: 'Achievements' },
-  { to: '/leaderboard', label: 'Leaderboard' },
+  { to: '/achievements', label: 'Badges' },
+  { to: '/leaderboard', label: 'League' },
 ];
 
 export default function NavBar() {

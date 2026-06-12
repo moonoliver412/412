@@ -1,0 +1,266 @@
+/* First-run onboarding — motion per .claude/skills/motion-graphics. */
+
+.ob-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(13, 13, 13, 0.55);
+  backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: ob-fade var(--mo-base) var(--ease-out);
+}
+
+@keyframes ob-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ob-dialog {
+  position: relative;
+  width: min(520px, 94vw);
+  min-height: 430px;
+  padding: 28px 32px 26px;
+  background: linear-gradient(160deg, #141414, #0a0a0a);
+  border: 1.5px solid #2c2c2c;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  animation: ob-pop var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes ob-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ob-skip {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1.5px solid #4a4a4a;
+  border-radius: var(--radius-pill);
+  color: var(--card);
+  font-size: 14px;
+  line-height: 1;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    color var(--mo-fast) var(--ease-out);
+}
+
+.ob-skip:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.ob-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.ob-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2c2c2c;
+  transition: background-color var(--mo-base) var(--ease-out),
+    transform var(--mo-base) var(--ease-spring);
+}
+
+.ob-dot.is-done {
+  background: var(--amber);
+}
+
+.ob-dot.is-current {
+  background: var(--amber);
+  transform: scale(1.35);
+}
+
+.ob-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  animation: ob-step-in var(--mo-base) var(--ease-out) both;
+}
+
+@keyframes ob-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ob-enter {
+  animation: ob-rise var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 50ms);
+}
+
+@keyframes ob-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ob-tree {
+  display: block;
+  height: 150px;
+}
+
+.ob-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--amber);
+}
+
+.ob-text {
+  margin: 0;
+  max-width: 380px;
+  color: #d6d6d6;
+  font-size: 15.5px;
+  line-height: 1.65;
+}
+
+.ob-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+  max-width: 380px;
+}
+
+.ob-list li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  color: #d6d6d6;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.ob-list strong {
+  color: #fff;
+}
+
+.ob-li-icon {
+  flex: none;
+  font-size: 22px;
+}
+
+.ob-goals {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.ob-goal {
+  width: 88px;
+  padding: 14px 0 12px;
+  background: #161616;
+  border: 1.5px solid #3a3a3a;
+  border-radius: 18px;
+  color: #d6d6d6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    transform var(--mo-fast) var(--ease-out),
+    background-color var(--mo-fast) var(--ease-out);
+}
+
+.ob-goal:hover {
+  transform: translateY(-2px);
+}
+
+.ob-goal.is-picked {
+  border-color: var(--orange);
+  background: rgba(255, 69, 0, 0.12);
+}
+
+.ob-goal-n {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: #fff;
+}
+
+.ob-goal.is-picked .ob-goal-n {
+  color: var(--orange);
+}
+
+.ob-goal-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #8f8f8f;
+}
+
+.ob-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.ob-back {
+  background: transparent;
+  border: 1.5px solid #4a4a4a;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  color: #d6d6d6;
+  font-family: var(--font-display);
+  font-size: 14px;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    color var(--mo-fast) var(--ease-out);
+}
+
+.ob-back:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.ob-next {
+  font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-overlay,
+  .ob-overlay * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

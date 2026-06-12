@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Every web page you have ever visited — every shop, game, and meme — is an HTML document underneath. HTML is not a programming language; it is a labelling system. You wrap pieces of content in tags, and each tag tells the browser what that piece is.',
+        text: 'Every web page you have visited — every shop, game, and meme — is an HTML document underneath. HTML is not a programming language. It is a labelling system. You wrap content in tags, and each tag tells the browser what that piece is.',
       },
       {
         type: 'p',
-        text: 'A tag is a name in angle brackets. Most come in pairs: an opening tag like <h1> and a closing tag like </h1>, with content between them. The whole sandwich — opening tag, content, closing tag — is called an element.',
+        text: 'A tag is a name in angle brackets. Most tags come in pairs: an opening tag like <h1> and a closing tag like </h1>, with content between them. The whole thing — opening tag, content, closing tag — is called an element.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'This skeleton is the anatomy of every page: <!doctype html> tells the browser this is modern HTML, <html> wraps everything, <head> holds behind-the-scenes information, and <body> holds everything visible. Anything you want people to see goes inside <body>.',
+        text: 'This skeleton is the frame of every page. <!doctype html> tells the browser this is modern HTML. <html> wraps everything. <head> holds behind-the-scenes information. <body> holds everything visible. Anything you want people to see goes inside <body>.',
       },
       {
         type: 'tip',
@@ -50,11 +50,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A page has two halves with very different jobs. The <body> is the stage: everything inside it gets drawn on screen. The <head> is backstage: settings and information about the page that the browser reads but never displays in the page itself.',
+        text: 'A page has two halves with different jobs. The <body> is the stage — everything inside it gets drawn on screen. The <head> is backstage — settings and information the browser reads but never displays.',
       },
       {
         type: 'p',
-        text: 'The two most important residents of <head> are <title> and <meta>. The title is the text you see in the browser tab and in search results. Meta tags carry metadata — data about the page — like which character set it uses.',
+        text: 'The two most important tags inside <head> are <title> and <meta>. The title is the text you see in the browser tab and in search results. Meta tags carry metadata — information about the page — like which character set it uses.',
       },
       {
         type: 'code',
@@ -62,7 +62,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'charset="utf-8" tells the browser how to decode text so that accents, emoji, and symbols display correctly. Notice that <meta> has no closing tag — it carries all its information in attributes, the name="value" pairs inside the opening tag.',
+        text: 'charset="utf-8" tells the browser how to read text so accents, emoji, and symbols show correctly. Notice that <meta> has no closing tag. It carries all its information in attributes — the name="value" pairs you write inside the opening tag.',
       },
       {
         type: 'tip',
@@ -93,11 +93,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Headings give a page its outline, exactly like chapters and sub-chapters in a book. HTML gives you six levels, <h1> down to <h6>. The <h1> is the title of the whole page — use it once. <h2>s are the main sections, <h3>s are subsections inside them, and so on.',
+        text: 'Headings give a page its outline — like chapters in a book. HTML gives you six levels, <h1> down to <h6>. The <h1> is the title of the whole page. Use it once. <h2>s are the main sections, <h3>s are subsections inside those, and so on.',
       },
       {
         type: 'p',
-        text: 'Everything that is not a heading usually lives in a <p>, a paragraph. Browsers add a little breathing room around each one. Line breaks you type inside your code do not matter: the browser collapses them, and only the tags decide where paragraphs start and end.',
+        text: 'Everything that is not a heading usually goes in a <p> — a paragraph element. Browsers add a little space around each one. Line breaks you type in your code do not matter. The browser ignores them. Only the tags decide where paragraphs start and end.',
       },
       {
         type: 'code',
@@ -132,7 +132,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Look at almost any website and you will spot the same zones: a banner across the top, the main content in the middle, and the fine print at the bottom. HTML has elements named after exactly these zones: <header>, <main>, and <footer>.',
+        text: 'Look at almost any website and you will see the same zones: a banner at the top, main content in the middle, and fine print at the bottom. HTML has elements named after exactly these zones: <header>, <main>, and <footer>.',
       },
       {
         type: 'code',
@@ -140,7 +140,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'These section elements do not change how anything looks — they describe what each region is. That description is gold for screen readers (which can jump straight to <main>), for search engines, and for you, six months from now, trying to find your way around your own code. One rule to remember: a page gets exactly one <main>.',
+        text: 'These elements do not change how anything looks. They describe what each region is. That is useful for screen readers (which can jump straight to <main>), for search engines, and for you when you read your code later. One rule: a page gets exactly one <main>.',
       },
       {
         type: 'tip',
@@ -176,7 +176,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to put the whole topic together. Every page you will ever build — portfolio, shop, blog — starts from the same skeleton: a head with a title, then a body organized into header, main, and footer. Build it once from scratch and it becomes muscle memory.',
+        text: 'Time to put the whole topic together. Every page you build — portfolio, shop, blog — starts from the same skeleton: a head with a title, then a body split into header, main, and footer. Build it once from scratch and it will stick.',
       },
       {
         type: 'code',
@@ -184,7 +184,7 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Work top to bottom: title first, then the visible zones. Put an <h1> inside the header so the page introduces itself, give the main at least one paragraph of real content, and sign off in the footer. Small page, professional bones.',
+        text: 'Work top to bottom. Title first, then the visible zones. Put an <h1> inside the header, give the main at least one paragraph of real content, and sign off in the footer. Small page, solid structure.',
       },
       {
         type: 'tip',

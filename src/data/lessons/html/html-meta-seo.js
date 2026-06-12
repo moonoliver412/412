@@ -6,23 +6,23 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Search engines see your page through its <head>. The <title> becomes the clickable blue link in search results and the label on the browser tab; the meta description becomes the gray sentence underneath. Together they are your page’s shop window.',
+        text: 'Search engines see your page through its <head>. The <title> becomes the clickable link in search results and the label on the browser tab. The meta description — a <meta> tag that carries a short description of the page — becomes the gray sentence underneath. Together they are your page\'s first impression.',
       },
       {
         type: 'p',
-        text: 'A good title is specific and front-loaded — "Sourdough starter guide — Sprout Bakery", never just "Home". Keep it under roughly 60 characters so it is not cut off mid-thought. The description is one honest, inviting sentence of up to about 155 characters; search engines sometimes rewrite it, but a good one usually survives.',
+        text: 'A good title is specific and leads with the most important words — "Sourdough starter guide — Sprout Bakery", never just "Home". Keep it under about 60 characters so it is not cut off. The description is one honest, inviting sentence of up to about 155 characters. Search engines sometimes rewrite it, but a good one usually survives.',
       },
       {
         type: 'code',
-        text: '<head>\n  <meta charset="utf-8">\n  <title>Sourdough starter guide — Sprout Bakery</title>\n  <meta name="description"\n        content="Feed, fold, and bake: a beginner’s path to a lively starter.">\n</head>',
+        text: '<head>\n  <meta charset="utf-8">\n  <title>Sourdough starter guide — Sprout Bakery</title>\n  <meta name="description"\n        content="Feed, fold, and bake: a beginner\'s path to a lively starter.">\n</head>',
       },
       {
         type: 'p',
-        text: 'Notice the shape of that <meta>: a name attribute saying which setting it is, and a content attribute holding the value. You will meet this name/content pair again and again throughout this topic.',
+        text: 'Notice the shape of that <meta>: a name attribute says which setting it is, and a content attribute holds the value. You will see this name/content pair in every lesson of this topic.',
       },
       {
         type: 'tip',
-        text: 'One page, one title, one description — and make each page’s pair unique, or all your search results look like clones.',
+        text: 'One page, one title, one description. Make each page\'s pair unique — or all your search results look identical.',
       },
     ],
     exercise: {
@@ -49,11 +49,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Paste a link into a chat app and a little preview card unfurls — picture, headline, blurb. That card is built from Open Graph tags: <meta> elements that use a property attribute (instead of name) with values like og:title, og:description, and og:image.',
+        text: 'Paste a link into a chat app and a preview card appears — picture, headline, short blurb. That card is built from Open Graph tags: <meta> elements that use a property attribute (instead of name) with values like og:title, og:description, and og:image.',
       },
       {
         type: 'p',
-        text: 'The big three: og:title is the card’s headline, og:image is the picture (a full https:// address works best in the real world), and og:description supplies the supporting line. Without them, apps guess — and they have a talent for picking your navigation logo and the first stray sentence they trip over.',
+        text: 'The big three: og:title is the card\'s headline, og:image is the picture (a full https:// address works best), and og:description is the supporting line. Without them, apps guess — and they tend to pick your nav logo and the first random sentence they find.',
       },
       {
         type: 'code',
@@ -61,12 +61,12 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Card not updating after an edit? Chat apps cache previews aggressively — most offer a "sharing debugger" page that forces a refresh.',
+        text: 'Card not updating after an edit? Chat apps store previews and do not always refresh them. Most offer a "sharing debugger" page that forces a fresh fetch.',
       },
     ],
     exercise: {
       instructions:
-        'Make the bakery link unfurl nicely: add two Open Graph metas — one with property="og:title" (content: the guide’s name) and one with property="og:image" pointing at https://example.com/loaf.jpg.',
+        'Make the bakery link unfurl nicely: add two Open Graph metas — one with property="og:title" (content: the guide\'s name) and one with property="og:image" pointing at https://example.com/loaf.jpg.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Sourdough starter guide — Sprout Bakery</title>\n    <meta name="description" content="From flour and water to first loaf.">\n    <!-- Open Graph tags go here -->\n\n  </head>\n  <body>\n    <h1>Sourdough starter guide</h1>\n  </body>\n</html>',
       checks: [
@@ -92,11 +92,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'The favicon is the tiny icon riding shotgun on every tab, bookmark, and history entry. You declare it with a <link> in the head: rel="icon" names the relationship, href points at the image. Modern browsers happily accept PNG and even SVG favicons.',
+        text: 'The favicon is the tiny icon shown on every tab, bookmark, and history entry. You declare it with a <link> in the head: rel="icon" names the relationship, href points at the image. Modern browsers accept PNG and even SVG favicons.',
       },
       {
         type: 'p',
-        text: 'Two companions complete the set. Apple devices look for rel="apple-touch-icon" — the picture used when someone saves your page to their home screen. And rel="manifest" points at a small JSON file that describes your site as an installable app: its name, theme colors, and a full set of icons.',
+        text: 'Two companions complete the set. Apple devices look for rel="apple-touch-icon" — the picture shown when someone saves your page to their home screen. rel="manifest" points at a small JSON file that describes your site as an installable app: its name, theme colors, and a full set of icons.',
       },
       {
         type: 'code',
@@ -104,11 +104,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Like <meta>, the <link> element is a void tag that lives in the head and carries everything in attributes. You met it pointing at stylesheets; rel is what changes its job.',
+        text: 'Like <meta>, the <link> element is a void tag that lives in the head and carries everything in its attributes. You have seen it pointing at stylesheets. The rel attribute is what changes its job.',
       },
       {
         type: 'tip',
-        text: 'Declare no favicon and browsers quietly request /favicon.ico anyway — that mystery request in every server log is the browser guessing.',
+        text: 'Declare no favicon and browsers quietly request /favicon.ico anyway. That mystery request you see in server logs is the browser making its best guess.',
       },
     ],
     exercise: {
@@ -139,11 +139,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Some search results are fancier than blue links: recipe cards with star ratings, events with dates, products with prices. Pages earn those by speaking a second, machine-only language called structured data — a <script type="application/ld+json"> block in the head holding a JSON description of what the page is about.',
+        text: 'Some search results show rich cards: recipe cards with star ratings, events with dates, products with prices. Pages earn those by using structured data — a <script type="application/ld+json"> block in the head holding a JSON description of what the page is about. JSON is a text format for data, like a series of labelled values.',
       },
       {
         type: 'p',
-        text: 'The JSON follows a shared vocabulary from schema.org. You declare the @context (which vocabulary), an @type (Recipe, Event, Person…), and then properties that type understands. Browsers ignore the block completely; search engines read it like a form you kindly filled in for them.',
+        text: 'The JSON follows a shared vocabulary from schema.org. You declare the @context (which vocabulary), an @type (Recipe, Event, Person…), and then properties for that type. Browsers ignore the block entirely. Search engines read it like a form you filled in for them.',
       },
       {
         type: 'code',
@@ -151,7 +151,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'JSON is strict where HTML is forgiving: double quotes only, and no comma after the last property. One typo and the whole block is silently ignored.',
+        text: 'JSON is strict where HTML is forgiving. Use double quotes only, and no comma after the last property. One typo and the whole block is silently ignored.',
       },
     ],
     exercise: {
@@ -181,11 +181,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Auditor’s hat back on — this time for the <head>. The bakery’s newest page went live half-dressed: a placeholder title, no description, no social card, no favicon. Search results read "Untitled page" and shared links unfurl into gray nothing.',
+        text: 'Auditor\'s hat back on — this time for the <head>. The bakery\'s newest page went live with almost nothing: a placeholder title, no description, no social card, no favicon. Search results read "Untitled page" and shared links show a blank preview.',
       },
       {
         type: 'p',
-        text: 'Work the checklist top to bottom: a real title that includes the site name; a meta description with one inviting sentence; at least an og:title so chat previews have a headline; and a favicon link so the tab stops being anonymous.',
+        text: 'Work through the checklist: a real title that includes the site name; a meta description with one inviting sentence; at least an og:title so shared links have a headline; and a favicon link so the tab has an icon.',
       },
       {
         type: 'code',
@@ -193,11 +193,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'This four-line checklist is a genuinely professional habit. Teams run it before every launch, because head mistakes are invisible in the browser window — the page looks perfectly fine while quietly vanishing from search and social feeds.',
+        text: 'This four-line checklist is a real professional habit. Teams run it before every launch. Head mistakes are invisible in the browser window — the page looks fine while quietly disappearing from search results and social feeds.',
       },
       {
         type: 'tip',
-        text: 'The head never shows on screen, so audit it by reading the markup, not the preview. Eyes on the code, top to bottom.',
+        text: 'The head never shows on screen, so audit it by reading the code — not the preview. Eyes on the markup, top to bottom.',
       },
     ],
     exercise: {

@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'So far your pages talk at people. Forms let people talk back — search boxes, sign-ups, comment fields are all forms. The <form> element is the container, and inside it live controls, the most common being <input>.',
+        text: 'So far your pages talk at people. Forms let people talk back. Search boxes, sign-ups, and comment fields are all forms. The <form> element is the container. Inside it live controls — the most common one is <input>.',
       },
       {
         type: 'code',
@@ -14,11 +14,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: '<input> is a void element that changes personality through its type attribute: type="text" is a one-line text box, and later you will meet email, number, checkbox, and more. Two other attributes matter from day one: name, which labels the data when the form is sent (name="plant" means the answer arrives as plant=birch), and placeholder, the gray hint text shown while the box is empty.',
+        text: '<input> is a void element — it changes its behavior through the type attribute. type="text" gives you a one-line text box. Later you will meet email, number, checkbox, and more. Two other attributes matter right away. name labels the data when the form is sent — name="plant" means the answer arrives as plant=birch. placeholder is the gray hint text shown while the box is empty.',
       },
       {
         type: 'tip',
-        text: 'No name, no data — an input without a name attribute is skipped entirely when the form is submitted. Give every input one.',
+        text: 'No name, no data. An input without a name attribute is skipped when the form is sent. Give every input a name.',
       },
     ],
     exercise: {
@@ -45,7 +45,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A bare text box is a mystery — a <label> tells people what it is for. Connect the two with a matched pair of attributes: the input gets an id, and the label gets a for with the same value. Once linked, clicking the label focuses the input, and screen readers announce them together.',
+        text: 'A bare text box is a mystery. A <label> tells people what it is for. Connect the two with a matched pair of attributes: the input gets an id, and the label gets a for set to the same value. Once linked, clicking the label focuses the input. Screen readers read them together.',
       },
       {
         type: 'code',
@@ -53,11 +53,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Two more controls round out most forms. <select> is a drop-down menu; each choice inside it is an <option>. And <button> is the big friendly trigger — inside a form it submits by default, and its text goes between the tags, not in an attribute.',
+        text: 'Two more controls complete most forms. <select> is a drop-down menu. Each choice inside it is an <option>. <button> is the trigger — inside a form it submits by default. Its label text goes between the opening and closing tags, not in an attribute.',
       },
       {
         type: 'tip',
-        text: 'for and id must match exactly, character for character. A label with for="Size" will not connect to id="size".',
+        text: 'for and id must match exactly — every character counts. A label with for="Size" will not connect to id="size".',
       },
     ],
     exercise: {
@@ -91,7 +91,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'People forget fields and mistype emails — and HTML can catch much of it before any code runs. Add the required attribute (it needs no value) and the browser refuses to submit while that field is empty, complete with a polite error bubble.',
+        text: 'People forget fields and mistype emails. HTML can catch many of these mistakes before any code runs. Add the required attribute — it needs no value — and the browser blocks submission while that field is empty. It even shows a polite error bubble.',
       },
       {
         type: 'code',
@@ -99,11 +99,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The type attribute validates too: type="email" insists on something email-shaped, and type="number" only accepts digits. For lengths there are minlength and maxlength, and number inputs can set min and max. Together these are called constraint validation — guardrails you get for free, just by describing your data honestly.',
+        text: 'The type attribute validates too. type="email" requires something email-shaped. type="number" only accepts digits. For length limits, use minlength and maxlength. Number inputs can also set min and max. Together these are called constraint validation — guardrails you get for free, just by describing your data accurately.',
       },
       {
         type: 'tip',
-        text: 'Browser validation is convenience, not security. Anyone determined can bypass it, so real apps must double-check on the server too.',
+        text: 'Browser validation is a convenience, not a security wall. Anyone can bypass it, so real apps always check again on the server.',
       },
     ],
     exercise: {
@@ -135,7 +135,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Sound and moving pictures get first-class elements: <audio> and <video>. Both work the same way — point src at a media file, and add the controls attribute so the browser shows play, pause, and volume buttons. Without controls, visitors have no way to start playback at all.',
+        text: 'Sound and video get their own elements: <audio> and <video>. Both work the same way. Point src at a media file and add the controls attribute. Controls tells the browser to show play, pause, and volume buttons. Without controls, visitors have no way to start playback.',
       },
       {
         type: 'code',
@@ -143,11 +143,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The text between the tags is a fallback, shown only by browsers too old to play media. Video also takes width and height, and a poster attribute for the image shown before play. One attribute to use with care: autoplay. Browsers mostly block it with sound on — and visitors rarely forgive a page that shouts first.',
+        text: 'Text between the tags is a fallback. Only very old browsers that cannot play media will show it. Video also takes width and height, and a poster attribute for the image shown before play. Use autoplay with care. Browsers mostly block it when sound is on — and nobody likes a page that blasts audio at them.',
       },
       {
         type: 'tip',
-        text: 'Like images with placeholder paths, a player with a made-up src will not actually play here — the structure is what we are practicing.',
+        text: 'A player with a made-up src will not play here — and that is fine. The structure is what you are practicing, not the media file.',
       },
     ],
     exercise: {
@@ -174,7 +174,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to assemble a proper contact form — labels, validation, the lot. One new element joins the team: <textarea>, a multi-line text box for messages. Unlike <input> it has a closing tag, and a rows attribute sets its visible height.',
+        text: 'Time to build a proper contact form — labels, validation, everything. One new element joins the team: <textarea>, a multi-line text box for messages. Unlike <input>, it has a closing tag. The rows attribute sets its visible height.',
       },
       {
         type: 'code',
@@ -182,11 +182,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'A trustworthy contact form has a labelled field for the name, a labelled email field that is required and email-typed, a labelled textarea for the message, and a clear button to send it. Work field by field: label first, control second, ids matching the fors. This is the exact form you will wire up for real once you learn some JavaScript.',
+        text: 'A good contact form has a labelled name field, a labelled email field (required and type="email"), a labelled textarea for the message, and a clear send button. Work field by field: label first, control second, ids matching the fors. This is the form you will wire up for real once you meet JavaScript.',
       },
       {
         type: 'tip',
-        text: 'Leave nothing unlabelled. If every control has a matching label, keyboard and screen-reader users glide through your form like everyone else.',
+        text: 'Leave nothing unlabelled. When every control has a matching label, keyboard and screen-reader users can use your form just as easily as anyone else.',
       },
     ],
     exercise: {

@@ -14,28 +14,28 @@ export const CHALLENGES = [
     language: 'html',
     brief:
       'Build a pricing table with three plan cards: Free, Pro, and Enterprise. ' +
-      'Each card must show the plan name in a heading and a list of at least two features.',
+      'Each card needs the plan name in a heading and a list of at least two features.',
     checks: [
       {
         type: 'selectorExists',
         selector: 'h2, h3',
         count: 3,
-        label: 'Three plan headings exist',
+        label: 'Three plan headings are on the page',
       },
       {
         type: 'textIncludes',
         text: 'free',
-        label: 'Free plan is present',
+        label: 'The Free plan is on the page',
       },
       {
         type: 'textIncludes',
         text: 'pro',
-        label: 'Pro plan is present',
+        label: 'The Pro plan is on the page',
       },
       {
         type: 'selectorExists',
         selector: 'li',
-        label: 'Feature list items are present',
+        label: 'Feature list items appear in the cards',
       },
     ],
     reward: 15,
@@ -45,30 +45,30 @@ export const CHALLENGES = [
     name: 'Navigation Bar',
     language: 'html',
     brief:
-      'Create an HTML navigation bar inside a <nav> element. ' +
-      'It should contain at least four anchor links: Home, About, Projects, and Contact.',
+      'Create a navigation bar inside a <nav> element. ' +
+      'Include at least four anchor links: Home, About, Projects, and Contact.',
     checks: [
       {
         type: 'selectorExists',
         selector: 'nav',
-        label: 'A <nav> element exists',
+        label: 'A <nav> element is on the page',
       },
       {
         type: 'selectorExists',
         selector: 'nav a',
-        label: 'Navigation links are inside <nav>',
+        label: 'Your links are inside the <nav>',
       },
       {
         type: 'textIncludes',
         selector: 'nav',
         text: 'home',
-        label: 'Home link is present',
+        label: 'A Home link is in the nav',
       },
       {
         type: 'textIncludes',
         selector: 'nav',
         text: 'contact',
-        label: 'Contact link is present',
+        label: 'A Contact link is in the nav',
       },
     ],
     reward: 15,
@@ -78,29 +78,29 @@ export const CHALLENGES = [
     name: 'Article Card',
     language: 'html',
     brief:
-      'Build a blog article card using semantic HTML. ' +
-      'It should include an <article> wrapper, an <h2> title, a <p> excerpt, and a "Read more" link.',
+      'Build a blog article card using semantic HTML elements. ' +
+      'Include an <article> wrapper, an <h2> title, a <p> excerpt, and a "Read more" link.',
     checks: [
       {
         type: 'selectorExists',
         selector: 'article',
-        label: 'An <article> element wraps the card',
+        label: 'An <article> element wraps your card',
       },
       {
         type: 'selectorExists',
         selector: 'article h2',
-        label: 'An <h2> title is inside the article',
+        label: 'An <h2> title sits inside the article',
       },
       {
         type: 'selectorExists',
         selector: 'article p',
-        label: 'A paragraph excerpt is present',
+        label: 'A paragraph excerpt is in the card',
       },
       {
         type: 'textIncludes',
         selector: 'article',
         text: 'read more',
-        label: '"Read more" link text is present',
+        label: 'The "Read more" link text is there',
       },
     ],
     reward: 15,
@@ -113,27 +113,27 @@ export const CHALLENGES = [
     language: 'html',
     brief:
       'Build a horizontal navigation bar styled with Flexbox. ' +
-      'The nav items should sit on one row with space between them, and each link should change color on hover.',
+      'The nav items should line up in one row with space between them. Each link should change color on hover.',
     checks: [
       {
         type: 'selectorExists',
         selector: 'nav',
-        label: 'A <nav> element exists',
+        label: 'A <nav> element is on the page',
       },
       {
         type: 'styleIncludes',
         text: 'display:flex',
-        label: 'Flexbox is applied',
+        label: 'Flexbox is applied to the nav',
       },
       {
         type: 'styleIncludes',
         text: 'justify-content',
-        label: 'Items are distributed along the row',
+        label: 'Items are spread along the row',
       },
       {
         type: 'selectorExists',
         selector: 'nav a, nav li',
-        label: 'Navigation items are present',
+        label: 'Navigation items are in the nav',
       },
     ],
     reward: 15,
@@ -144,27 +144,27 @@ export const CHALLENGES = [
     language: 'html',
     brief:
       'Create a grid of at least four cards using CSS Grid. ' +
-      'The grid must be responsive — use a repeat(auto-fill, ...) or auto-fit pattern so columns reflow on smaller screens.',
+      'Make it responsive — use a repeat(auto-fill, ...) or auto-fit pattern so the columns reflow on smaller screens.',
     checks: [
       {
         type: 'styleIncludes',
         text: 'display:grid',
-        label: 'CSS Grid is applied',
+        label: 'CSS Grid is applied to the layout',
       },
       {
         type: 'styleIncludes',
         text: 'repeat(',
-        label: 'repeat() is used for the column definition',
+        label: 'repeat() defines your columns',
       },
       {
         type: 'selectorExists',
         selector: 'div, article, section',
-        label: 'Card elements are present',
+        label: 'Card elements are in the grid',
       },
       {
         type: 'styleIncludes',
         text: 'gap',
-        label: 'Gap spacing is set between cards',
+        label: 'Gap spacing separates the cards',
       },
     ],
     reward: 15,
@@ -174,28 +174,28 @@ export const CHALLENGES = [
     name: 'Button States',
     language: 'html',
     brief:
-      'Design a styled button with three distinct visual states: default, hover, and active. ' +
-      'Use background color and a smooth transition to show each state change.',
+      'Design a button with three clear visual states: default, hover, and active. ' +
+      'Use background color and a smooth CSS transition to show each state change.',
     checks: [
       {
         type: 'selectorExists',
         selector: 'button, .btn, [class*="btn"]',
-        label: 'A button element is present',
+        label: 'A button element is on the page',
       },
       {
         type: 'styleIncludes',
         text: 'background',
-        label: 'Background color is styled',
+        label: 'The button has a styled background color',
       },
       {
         type: 'styleIncludes',
         text: 'transition',
-        label: 'A transition is applied for smooth state changes',
+        label: 'A CSS transition makes the state changes smooth',
       },
       {
         type: 'styleIncludes',
         text: ':hover',
-        label: 'Hover state is styled',
+        label: 'The hover state has its own style',
       },
     ],
     reward: 15,
@@ -209,28 +209,28 @@ export const CHALLENGES = [
     kind: 'js',
     brief:
       'Write a function called countVowels that takes a string and returns ' +
-      'the number of vowel characters (a, e, i, o, u, case-insensitive) in it. ' +
+      'the number of vowels (a, e, i, o, u — case-insensitive) in it. ' +
       'Call countVowels("Hello World") and log the result.',
     checks: [
       {
         type: 'exprTruthy',
         expr: 'typeof countVowels === "function"',
-        label: 'countVowels is a function',
+        label: 'countVowels is defined as a function',
       },
       {
         type: 'exprTruthy',
         expr: 'countVowels("Hello World") === 3',
-        label: 'countVowels("Hello World") returns 3',
+        label: 'countVowels("Hello World") correctly returns 3',
       },
       {
         type: 'exprTruthy',
         expr: 'countVowels("aeiou") === 5',
-        label: 'countVowels("aeiou") returns 5',
+        label: 'countVowels("aeiou") correctly returns 5',
       },
       {
         type: 'logIncludes',
         text: '3',
-        label: 'The result is logged to the console',
+        label: 'The vowel count is logged to the console',
       },
     ],
     reward: 15,
@@ -242,29 +242,29 @@ export const CHALLENGES = [
     kind: 'js',
     brief:
       'Write a function called fizzBuzz that takes a number n and returns an array ' +
-      'of strings from 1 to n: "Fizz" for multiples of 3, "Buzz" for multiples of 5, ' +
-      '"FizzBuzz" for multiples of both, and the number as a string otherwise. ' +
+      'of strings from 1 to n. Use "Fizz" for multiples of 3, "Buzz" for multiples of 5, ' +
+      '"FizzBuzz" for multiples of both, and the number as a string for everything else. ' +
       'Log the result of fizzBuzz(15).',
     checks: [
       {
         type: 'exprTruthy',
         expr: 'typeof fizzBuzz === "function"',
-        label: 'fizzBuzz is a function',
+        label: 'fizzBuzz is defined as a function',
       },
       {
         type: 'exprTruthy',
         expr: 'fizzBuzz(15)[2] === "Fizz"',
-        label: 'Returns "Fizz" for multiples of 3',
+        label: '"Fizz" appears for multiples of 3',
       },
       {
         type: 'exprTruthy',
         expr: 'fizzBuzz(15)[4] === "Buzz"',
-        label: 'Returns "Buzz" for multiples of 5',
+        label: '"Buzz" appears for multiples of 5',
       },
       {
         type: 'exprTruthy',
         expr: 'fizzBuzz(15)[14] === "FizzBuzz"',
-        label: 'Returns "FizzBuzz" for multiples of 15',
+        label: '"FizzBuzz" appears for multiples of both 3 and 5',
       },
     ],
     reward: 15,

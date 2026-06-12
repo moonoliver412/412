@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'SVG — Scalable Vector Graphics — describes pictures as shapes and coordinates instead of pixels, which is why an SVG logo stays razor sharp at any size. You can keep SVGs in files, but the fun starts when you write one inline: an <svg> element right in your HTML, with shapes as child elements you can read and edit like any other markup.',
+        text: 'SVG — Scalable Vector Graphics — describes pictures as shapes and coordinates, not pixels. That is why an SVG logo stays sharp at any size. You can keep SVGs in separate files, but the real fun starts when you write one inline: an <svg> element right in your HTML, with shapes as child elements you can read and edit like any other tag.',
       },
       {
         type: 'p',
-        text: 'The <svg> tag opens a drawing area sized by width and height. Inside, <circle> is the friendliest first shape: cx and cy place its center, r sets the radius, and fill pours in a color.',
+        text: 'The <svg> tag opens a drawing area. width and height set its size. Inside, <circle> is the easiest first shape: cx and cy place its center, r sets the radius, and fill sets the color.',
       },
       {
         type: 'code',
@@ -18,11 +18,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Coordinates start at the top-left corner and grow rightward and downward — y increases as you go down, the opposite of math class. Every shape lands on that grid, so a ten-second paper sketch before coding never hurts.',
+        text: 'Coordinates start at the top-left corner and grow right and down — y increases as you go down, the opposite of math class. Every shape lands on that grid, so a quick pencil sketch before coding never hurts.',
       },
       {
         type: 'tip',
-        text: 'Inline SVG is real markup: the inspector shows every shape, and later on CSS and JavaScript can style and animate each one individually.',
+        text: 'Inline SVG is real markup. The inspector shows every shape. Later, CSS and JavaScript can style and animate each shape individually.',
       },
     ],
     exercise: {
@@ -49,11 +49,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Circles have siblings. <rect> draws rectangles from a top-left corner: x, y, width, height, plus an optional rx for rounded corners. <line> connects two points — x1,y1 to x2,y2 — and because a line has no inside, you color it with stroke and thicken it with stroke-width rather than fill.',
+        text: 'Circles have siblings. <rect> draws rectangles from a top-left corner: x and y place it, width and height set its size, and rx optionally rounds the corners. <line> connects two points — x1,y1 to x2,y2. Because a line has no inside, you color it with stroke and thicken it with stroke-width, not fill.',
       },
       {
         type: 'p',
-        text: 'When the ready-made shapes run out, <path> draws anything: its d attribute is a tiny language of move, line, and curve commands like "M10 80 L50 20 L90 80". In practice you will paste paths from design tools far more often than you write them — recognizing one is plenty for now.',
+        text: 'When the basic shapes are not enough, <path> draws anything. Its d attribute is a mini language of move, line, and curve commands, like "M10 80 L50 20 L90 80". In practice you will paste paths from design tools much more often than you write them. Recognizing one is enough for now.',
       },
       {
         type: 'code',
@@ -61,7 +61,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'fill paints the inside, stroke paints the outline. Most shapes accept both — lines, having no inside, only listen to stroke.',
+        text: 'fill paints the inside. stroke paints the outline. Most shapes accept both. Lines have no inside, so they only respond to stroke.',
       },
     ],
     exercise: {
@@ -88,11 +88,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'So far width and height did two jobs at once: sizing the drawing on screen and defining your coordinate space. viewBox splits those jobs. viewBox="0 0 100 100" declares "my coordinates run from 0,0 to 100,100" — and from then on, width and height merely choose how large that canvas appears.',
+        text: 'So far width and height did two jobs at once: sizing the drawing on screen and defining your coordinate space. viewBox splits those two jobs. viewBox="0 0 100 100" declares "my coordinates run from 0,0 to 100,100". After that, width and height only decide how large the canvas appears on screen.',
       },
       {
         type: 'p',
-        text: 'That split is the Scalable in SVG. Design once in viewBox coordinates, display at any size: width="300" shows the very same drawing three times larger, every shape scaling in lockstep. Leave width and height off entirely and the svg stretches to whatever space it is given.',
+        text: 'That split is the Scalable in SVG. Design once in viewBox coordinates and display at any size. width="300" shows the same drawing three times larger, every shape scaling together. Leave width and height off and the svg stretches to fit whatever space it is given.',
       },
       {
         type: 'code',
@@ -100,7 +100,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'The four viewBox numbers are min-x, min-y, width, height — "0 0 100 100" is the everyday choice and a fine default.',
+        text: 'The four viewBox numbers are min-x, min-y, width, height. "0 0 100 100" is the most common choice and a solid default.',
       },
     ],
     exercise: {
@@ -129,11 +129,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Sites repeat the same icons everywhere, and SVG has a built-in answer to copy-paste: define a shape once inside a <symbol> with an id, then stamp copies wherever you like with <use href="#that-id">. The symbol itself renders nothing — it is a stencil waiting to be used.',
+        text: 'Sites repeat the same icons everywhere. SVG has a built-in answer: define a shape once inside a <symbol> with an id, then stamp copies wherever you want with <use href="#that-id">. The symbol itself shows nothing — it is a stencil waiting to be used.',
       },
       {
         type: 'p',
-        text: 'An svg full of symbols is called a sprite sheet. Each <use> takes x, width, and height to place and size its stamp, and because symbols carry their own viewBox, every stamp scales cleanly. Edit the symbol once and every copy updates — which is the whole point.',
+        text: 'An SVG full of symbols is called a sprite sheet. Each <use> takes x, width, and height to place and size its stamp. Because symbols carry their own viewBox, every stamp scales cleanly. Edit the symbol once and every copy updates — that is the whole point.',
       },
       {
         type: 'code',
@@ -141,7 +141,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Older tutorials write xlink:href on <use> — that is the legacy spelling. Plain href is the modern one and the one to write.',
+        text: 'Older tutorials write xlink:href on <use>. That is the old spelling. Plain href is the modern one — use that.',
       },
     ],
     exercise: {
@@ -171,11 +171,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Closing project: a logo, drawn entirely in markup. Logos are SVG’s home turf — a few bold shapes, a wordmark, infinite scalability. Yours is a simple plant badge: a bloom, a pot, and the company name.',
+        text: 'Closing project: a logo drawn entirely in markup. SVG is perfect for logos — bold shapes, a wordmark, scales to any size. Yours will be a simple plant badge: a bloom, a pot, and the company name.',
       },
       {
         type: 'p',
-        text: 'Plan it on the 0–100 grid: a <circle> up top for the bloom, a <rect> below it for the pot, and the name set in <text> — SVG’s type tool, placed by x and y just like a shape (y marks the text baseline). Give the svg a viewBox so the finished logo scales anywhere, from hero banner to favicon.',
+        text: 'Plan it on the 0–100 grid. Put a <circle> up top for the bloom. Add a <rect> below for the pot. Set the name in <text> — SVG\'s type tool, placed by x and y like any shape (y marks the text baseline). Give the svg a viewBox so the logo scales anywhere, from hero banner to favicon.',
       },
       {
         type: 'code',
@@ -183,11 +183,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'One sentence of design advice: fewer shapes, bolder shapes. A logo has to survive being shrunk to tab-icon size, and viewBox guarantees yours can be.',
+        text: 'One design tip: fewer shapes, bolder shapes. A logo has to work at tab-icon size. viewBox makes sure yours can.',
       },
       {
         type: 'tip',
-        text: 'text-anchor="middle" centers text on its x coordinate — the painless way to center a wordmark at x="50".',
+        text: 'text-anchor="middle" centers text on its x coordinate. It is the easy way to center a wordmark at x="50".',
       },
     ],
     exercise: {

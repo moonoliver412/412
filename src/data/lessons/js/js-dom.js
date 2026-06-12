@@ -6,11 +6,11 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'When a browser loads a page it builds a tree of objects from the HTML — one object per element. This tree is called the Document Object Model, or DOM. JavaScript can reach into that tree, find any element, and read or change it.',
+        text: 'When a browser loads a page, it builds a tree of objects from the HTML — one object per element. This tree is called the Document Object Model, or DOM for short. JavaScript can reach into that tree, find any element, and read or change it.',
       },
       {
         type: 'p',
-        text: 'The two most useful selection methods are document.querySelector() and document.querySelectorAll(). Both take the same CSS selectors you already know. querySelector returns the first matching element (or null); querySelectorAll returns a NodeList of all matches.',
+        text: 'The two most useful selection methods are document.querySelector() and document.querySelectorAll(). Both accept the same CSS selectors you already know. querySelector returns the first matching element, or null if nothing matches. querySelectorAll returns a NodeList — a list of all matches.',
       },
       {
         type: 'code',
@@ -18,7 +18,7 @@ const lessons = [
       },
       {
         type: 'tip',
-        text: 'Always check that querySelector did not return null before touching the element. If the selector matched nothing and you try to read .textContent on null, JavaScript throws a TypeError — a very common beginner mistake.',
+        text: 'Always check that querySelector did not return null before you use the result. If the selector matched nothing and you try to read .textContent on null, JavaScript throws a TypeError. This is one of the most common beginner mistakes.',
       },
     ],
     exercise: {
@@ -47,7 +47,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Selecting an element is just the beginning — the real power is changing the page. You can rewrite an element\'s text, swap its class, change an attribute, or build entirely new elements and insert them into the tree.',
+        text: 'Selecting an element is just the start. The real power is changing the page. You can rewrite an element\'s text, swap its class, change an attribute, or build new elements and insert them into the tree.',
       },
       {
         type: 'code',
@@ -55,11 +55,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'textContent sets text safely — any HTML characters in the string are treated as plain text, not markup. innerHTML sets raw HTML markup, which is powerful but must never be used with user-supplied content (it opens cross-site scripting holes). When in doubt, use textContent.',
+        text: 'textContent sets text safely — any HTML characters in the string are treated as plain text, not markup. innerHTML sets raw HTML markup. It is powerful but never use it with text that came from a user: an attacker could inject malicious code. When in doubt, use textContent.',
       },
       {
         type: 'tip',
-        text: 'classList is your friend: classList.add("x"), classList.remove("x"), classList.toggle("x"), and classList.contains("x") all do exactly what they say. Avoid setting className directly — it replaces all existing classes at once.',
+        text: 'classList is the easiest way to manage classes: classList.add("x"), classList.remove("x"), classList.toggle("x"), and classList.contains("x") all do exactly what they say. Avoid setting className directly — it wipes all existing classes at once.',
       },
     ],
     exercise: {
@@ -96,7 +96,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'A static page is a painting; an interactive page is a conversation. Events are how the browser tells your JavaScript that something happened — a click, a key press, a mouse movement. You register a listener with addEventListener and give it a callback.',
+        text: 'A static page just sits there. An interactive page responds to you. Events are how the browser tells your JavaScript that something happened — a click, a key press, a mouse move. You listen for events with addEventListener and give it a callback — a function to run when the event fires.',
       },
       {
         type: 'code',
@@ -104,11 +104,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The callback receives an event object (usually written e or event) with details about what happened — which key was pressed, where the mouse was, which element was clicked. event.target is the element that triggered the event, which lets one listener handle many elements.',
+        text: 'The callback receives an event object (usually called e or event). It carries details about what happened — which key was pressed, where the mouse was, which element was clicked. event.target is the element that triggered the event. One listener can handle many elements using event.target.',
       },
       {
         type: 'tip',
-        text: 'Use addEventListener, not the older onclick = ... style. The older style only allows one listener per element — addEventListener lets you attach as many as you need, and removeEventListener lets you clean them up.',
+        text: 'Use addEventListener instead of the older onclick = ... style. The old style only allows one listener per element. addEventListener lets you attach as many as you need, and removeEventListener lets you remove them.',
       },
     ],
     exercise: {
@@ -137,7 +137,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Forms are the most common place where JavaScript and the DOM meet: you read input values, validate them, and update the page in response. The input event fires every time the user changes a field; the submit event fires when they send the form.',
+        text: 'Forms are where JavaScript and the DOM meet most often. You read input values, check them, and update the page in response. The input event fires every time the user changes a field. The submit event fires when they send the form.',
       },
       {
         type: 'code',
@@ -145,11 +145,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'For forms, always call event.preventDefault() inside the submit listener — otherwise the browser tries to navigate the page, wiping your JavaScript state. Reading input.value gives the current text; setting input.value = "" clears the field.',
+        text: 'For forms, always call event.preventDefault() inside the submit listener. If you skip it, the browser tries to navigate to a new page and your JavaScript state is wiped. Reading input.value gives the current text. Setting input.value = "" clears the field.',
       },
       {
         type: 'tip',
-        text: 'Keep your state (the data your app cares about) in JavaScript variables, not in the DOM. Read from the DOM into variables, process the variables, then write results back out. This direction — read → process → write — keeps code predictable.',
+        text: 'Keep your state — the data your app cares about — in JavaScript variables, not in the DOM. Read from the DOM into variables, process the variables, then write results back out. That direction — read → process → write — keeps code predictable.',
       },
     ],
     exercise: {
@@ -178,7 +178,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Time to put DOM selection, manipulation, and events together in one place. A to-do list is a classic mini-app because it exercises exactly these skills: reading input, building elements, adding them to the page, and handling more events to remove or complete items.',
+        text: 'Time to put DOM selection, manipulation, and events together. A to-do list is a classic mini-app. It exercises exactly these skills: reading input, building elements, adding them to the page, and handling events to remove items.',
       },
       {
         type: 'code',
@@ -186,11 +186,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'Each <li> gets its own click listener at the moment it is created — that is the cleanest pattern for dynamic items. Clicking the item removes it from the DOM entirely with the remove() method. The list element never needs to know about individual items; each item manages itself.',
+        text: 'Each <li> gets its own click listener the moment it is created. That is the cleanest pattern for dynamic items. Clicking an item removes it from the DOM with remove(). The list never needs to track individual items — each item manages itself.',
       },
       {
         type: 'tip',
-        text: 'Event delegation is an alternative: put one listener on the parent and check event.target to see which child was clicked. It scales better when the list is very long, and it survives items being added or removed without re-registering listeners.',
+        text: 'Event delegation is another option: put one listener on the parent and check event.target to see which child was clicked. It works better for long lists, and new items are covered automatically without you adding extra listeners.',
       },
     ],
     exercise: {

@@ -65,8 +65,7 @@ export default function TimerPanel({ topicId }) {
         <section className="cs-panel timer-panel timer-panel--done">
           <h2 className="cs-panel-title timer-title">Session complete!</h2>
           <p className="timer-done-note">
-            Great focus. Complete a lesson during your next session to lock in
-            a growth stage.
+            Great focus. Finish a lesson next session to grow your tree.
           </p>
           <button
             type="button"

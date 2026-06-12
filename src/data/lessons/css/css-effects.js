@@ -6,7 +6,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'CSS transitions turn abrupt state changes into smooth ones. Without a transition, hovering over a button changes its color instantly — a hard cut. With transition, the color glides from one value to the next over a duration you choose, giving the interface a feeling of responsiveness and polish.',
+        text: 'CSS transitions turn sudden changes into smooth ones. Without a transition, hovering over a button changes its color instantly. With transition, the color slides from one value to the next over a time you choose. The page feels alive and responsive.',
       },
       {
         type: 'code',
@@ -14,16 +14,16 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'transition takes three values: the property to animate, the duration in milliseconds, and the easing function. Use "all" to transition every animatable property at once, or name a specific property to keep transitions surgical. 150–300ms feels natural for hover effects; longer than 400ms starts to feel sluggish.',
+        text: 'transition takes three values: the property to animate, the duration in milliseconds, and the easing function (which controls the speed curve). Use "all" to animate every property at once, or name one property to keep it focused. 150–300ms feels natural for hover effects. Longer than 400ms starts to feel slow.',
       },
       {
         type: 'tip',
-        text: 'Put the transition rule on the element itself, not on the :hover rule. That way the reverse animation (hover-off) also plays smoothly.',
+        text: 'Put the transition on the base element, not on :hover. That way the reverse — when you move the mouse away — also plays smoothly.',
       },
     ],
     exercise: {
       instructions:
-        'Give the .leaf-btn a transition on "background" lasting 250ms with easing "ease-out". The :hover state is already provided — just add the transition to the base rule.',
+        'Add a transition to .leaf-btn: animate the "background" property over 250ms with easing "ease-out". The :hover state is already there — just add the transition to the base rule.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .leaf-btn {\n        background: #4caf50;\n        color: white;\n        border: none;\n        padding: 10px 24px;\n        border-radius: 6px;\n        cursor: pointer;\n        font-size: 1rem;\n        /* your css here */\n      }\n      .leaf-btn:hover {\n        background: #1b5e20;\n      }\n    </style>\n  </head>\n  <body>\n    <button class="leaf-btn">Plant a seed</button>\n  </body>\n</html>',
       checks: [
@@ -45,7 +45,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'CSS transforms let you move, rotate, scale, and skew elements without touching the layout. Because transforms work in the compositor layer — not the layout engine — they are silky-smooth even when animated. They are the go-to tool for interactive feedback.',
+        text: 'CSS transforms let you move, rotate, scale, and skew elements without disturbing the layout around them. They run in the browser\'s compositor layer — a fast graphics layer — so they stay smooth even when animated. Use them for hover and tap feedback.',
       },
       {
         type: 'code',
@@ -53,11 +53,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'You can chain multiple transform functions in one declaration. translateY(-4px) lifts the card off the surface; scale(1.02) makes it slightly larger — together they give a "pick up the card" feeling. rotate() and skewX() are also available for more dramatic effects.',
+        text: 'You can chain multiple transform functions in one rule. translateY(-4px) moves the card up 4 pixels. scale(1.02) makes it slightly bigger. Together they give a "pick up the card" feeling. rotate() and skewX() are also available for more dramatic effects.',
       },
       {
         type: 'tip',
-        text: 'Always pair transforms with a transition on the base element, otherwise the effect snaps on instantly. Transform + transition is the standard combo for hover lift effects.',
+        text: 'Always pair a transform with a transition on the base element. Without a transition, the effect snaps on with no animation. Transform + transition is the standard combo for hover lift effects.',
       },
     ],
     exercise: {
@@ -84,7 +84,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Transitions animate between two states. Keyframe animations can animate through many states in sequence, loop indefinitely, and run automatically without any user interaction. They are the engine behind loaders, pulse effects, and anything that needs to feel alive on its own.',
+        text: 'Transitions animate between two states. Keyframe animations (written with @keyframes) animate through many states in sequence. They can loop forever and run without any user action. They\'re how loaders, pulse effects, and other "always moving" elements are made.',
       },
       {
         type: 'code',
@@ -92,11 +92,11 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'The animation shorthand takes: name, duration, easing, delay, iteration count, and direction. infinite loops forever. alternate makes it play forward then backward smoothly, avoiding a jump-cut at the end of each cycle.',
+        text: 'The animation shorthand takes a name, duration, easing, delay, iteration count, and direction. infinite loops forever. alternate plays it forward then backward, so there\'s no jump at the end of each cycle.',
       },
       {
         type: 'tip',
-        text: 'Keyframe percentages are positions in the animation timeline, not speeds. 0% is the start, 100% is the end. You can add as many waypoints as you need in between.',
+        text: 'Keyframe percentages mark positions in the animation timeline. 0% is the start, 100% is the end. You can add as many stops in between as you need.',
       },
     ],
     exercise: {
@@ -128,7 +128,7 @@ const lessons = [
     blocks: [
       {
         type: 'p',
-        text: 'Easing functions are the difference between motion that feels mechanical and motion that feels natural. ease-out starts fast and slows to a stop — good for things entering the screen. ease-in starts slow and accelerates — good for exits. ease-in-out is symmetric and feels the most organic.',
+        text: 'Easing functions control the speed curve of an animation. ease-out starts fast and slows to a stop — good for things entering the screen. ease-in starts slow and speeds up — good for exits. ease-in-out is symmetric and feels the most natural.',
       },
       {
         type: 'code',
@@ -136,16 +136,16 @@ const lessons = [
       },
       {
         type: 'p',
-        text: 'For performance, only ever animate transform and opacity in anything that loops or affects many elements. These two properties run entirely in the GPU compositor and never trigger a layout recalculation. Animating width, height, or top forces the browser to re-measure the whole page — avoid it.',
+        text: 'For performance, only animate transform and opacity in loops or on many elements. These two run in the GPU and never force the browser to recalculate the layout. Animating width, height, or top forces the browser to re-measure the whole page. Avoid those.',
       },
       {
         type: 'tip',
-        text: 'Add "@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }" to respect users who prefer no motion.',
+        text: 'Add "@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }" to respect users who have set their device to reduce motion.',
       },
     ],
     exercise: {
       instructions:
-        'Add a transition on both "transform" and "opacity" to the .panel base rule, each 300ms with ease-out. The :hover state is provided — just add the transition.',
+        'Add a transition to the .panel base rule: animate both "transform" and "opacity", each over 300ms with ease-out. The :hover state is already there — just add the transition.',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      .panel {\n        background: #c8e6c9;\n        padding: 20px;\n        border-radius: 8px;\n        display: inline-block;\n        cursor: pointer;\n        opacity: 0.85;\n        /* your css here */\n      }\n      .panel:hover {\n        transform: scale(1.03);\n        opacity: 1;\n      }\n      @media (prefers-reduced-motion: reduce) {\n        .panel { transition: none; }\n      }\n    </style>\n  </head>\n  <body>\n    <div class="panel">\n      <h3>Grove Panel</h3>\n      <p>Hover to highlight.</p>\n    </div>\n  </body>\n</html>',
       checks: [

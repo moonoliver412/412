@@ -106,6 +106,23 @@ the user didn't earn.
 
 ## 6. Authoring lesson content for motion
 
+### Voice: write for a 13-year-old, respect an 18-year-old
+
+CodeSprout's audience is teens (13–18). Every learner-facing word — lesson
+blocks, exercise instructions, check labels, UI copy, achievement blurbs —
+follows these rules:
+
+- **Short sentences.** Aim under 18 words. One idea per sentence.
+- **Common words.** Say "use" not "utilize", "start" not "initiate",
+  "part" not "component" (unless it's the technical term being taught).
+- **Define every technical term in plain words the first time it appears.**
+  "An attribute is an extra setting you write inside a tag."
+- **Talk TO the learner.** "You" voice, active verbs, present tense.
+- **No idioms or cultural references** that confuse younger or ESL readers.
+- **Never dumb down the tech.** Simple language, accurate content. Code
+  examples, ids, and checks stay exactly as correct as before.
+- Keep the garden/treehouse flavor — it's the brand, and it lands with teens.
+
 When writing lesson data (`src/data/lessons/**`):
 
 - Write blocks in **beats**: paragraphs build up to a `code` or `tip` block.

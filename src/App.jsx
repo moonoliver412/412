@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import AchievementToasts from './components/AchievementToasts';
+import Onboarding from './components/Onboarding';
 import Home from './pages/Home';
 import Playground from './pages/Playground';
 import Forest from './pages/Forest';
@@ -15,6 +16,7 @@ export default function App() {
     <>
       <NavBar />
       <AchievementToasts />
+      <Onboarding />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/playground" element={<Playground />} />
