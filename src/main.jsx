@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { GameProvider } from './state/useGame';
 import { ProgressProvider } from './state/useProgress';
+import { SettingsProvider } from './state/useSettings';
 import ErrorBoundary from './components/ErrorBoundary';
 import App from './App';
 
@@ -11,11 +12,13 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
-        <GameProvider>
-          <ProgressProvider>
-            <App />
-          </ProgressProvider>
-        </GameProvider>
+        <SettingsProvider>
+          <GameProvider>
+            <ProgressProvider>
+              <App />
+            </ProgressProvider>
+          </GameProvider>
+        </SettingsProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>

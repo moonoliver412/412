@@ -28,6 +28,12 @@ const lessons = [
     exercise: {
       instructions:
         'Draw your first vector: add an <svg> with width="120" and height="120", containing a <circle> centered at cx="60" cy="60" with r="50" and any fill color you like.',
+      hints: [
+        'The <svg> tag opens a drawing area. Put it where the comment says. Then add a <circle> element inside it.',
+        'Write <svg width="120" height="120"> and inside it put <circle cx="60" cy="60" r="50" fill="seagreen" />. Close the svg with </svg>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>My first drawing</h1>\n    <svg width="120" height="120">\n      <circle cx="60" cy="60" r="50" fill="seagreen" />\n    </svg>\n\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>My first drawing</h1>\n    <!-- svg goes here -->\n\n  </body>\n</html>',
       checks: [
@@ -35,11 +41,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'svg',
           label: 'The page has an <svg> drawing area',
+          hint: 'Add an <svg width="120" height="120"> element to the page.',
         },
         {
           type: 'selectorExists',
           selector: 'svg circle',
           label: 'A <circle> sits inside the svg',
+          hint: 'Put a <circle cx="60" cy="60" r="50" fill="..."> inside your <svg>.',
         },
       ],
     },
@@ -67,6 +75,12 @@ const lessons = [
     exercise: {
       instructions:
         'Grow the scene: inside the <svg>, add a <rect> flower pot (try x="35" y="60" width="50" height="40" with a fill) and a <line> stem from 60,60 up to 60,20 with a stroke color and stroke-width.',
+      hints: [
+        'You need two new shapes inside the svg. <rect> draws a rectangle using x, y, width, height, and fill. <line> draws a line using x1, y1, x2, y2, stroke, and stroke-width.',
+        'Add <rect x="35" y="60" width="50" height="40" fill="peru" /> for the pot and <line x1="60" y1="60" x2="60" y2="20" stroke="forestgreen" stroke-width="4" /> for the stem.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <svg width="120" height="120">\n      <circle cx="60" cy="18" r="10" fill="hotpink" />\n      <rect x="35" y="60" width="50" height="40" fill="peru" />\n      <line x1="60" y1="60" x2="60" y2="20" stroke="forestgreen" stroke-width="4" />\n    </svg>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <svg width="120" height="120">\n      <circle cx="60" cy="18" r="10" fill="hotpink" />\n      <!-- pot and stem go here -->\n    </svg>\n  </body>\n</html>',
       checks: [
@@ -74,11 +88,13 @@ const lessons = [
           type: 'selectorExists',
           selector: 'svg rect',
           label: 'A <rect> pot anchors the drawing',
+          hint: 'Add <rect x="35" y="60" width="50" height="40" fill="peru" /> inside the svg.',
         },
         {
           type: 'selectorExists',
           selector: 'svg line',
           label: 'A <line> stem connects pot and bloom',
+          hint: 'Add <line x1="60" y1="60" x2="60" y2="20" stroke="green" stroke-width="4" /> inside the svg.',
         },
       ],
     },
@@ -106,6 +122,12 @@ const lessons = [
     exercise: {
       instructions:
         'Make the badge scalable: give the <svg> a viewBox="0 0 100 100", then change its width to 300 so the same drawing displays three times larger. (The height attribute can go — viewBox keeps the proportions.)',
+      hints: [
+        'viewBox is an attribute on the <svg> tag itself. It tells the browser what coordinate space your drawing uses. Once you add viewBox, changing width scales everything together.',
+        'Add viewBox="0 0 100 100" to the <svg> tag, then change width="100" to width="300". You can remove the height attribute.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <svg viewBox="0 0 100 100" width="300">\n      <circle cx="50" cy="50" r="40" fill="goldenrod" />\n      <circle cx="50" cy="50" r="18" fill="white" />\n    </svg>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <svg width="100" height="100">\n      <circle cx="50" cy="50" r="40" fill="goldenrod" />\n      <circle cx="50" cy="50" r="18" fill="white" />\n    </svg>\n  </body>\n</html>',
       checks: [
@@ -113,6 +135,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'svg[viewBox]',
           label: 'The svg declares a viewBox',
+          hint: 'Add viewBox="0 0 100 100" as an attribute on the <svg> tag.',
         },
         {
           type: 'attrEquals',
@@ -120,6 +143,7 @@ const lessons = [
           attr: 'width',
           value: '300',
           label: 'The badge displays at width 300',
+          hint: 'Change width="100" to width="300" on the <svg> tag.',
         },
       ],
     },
@@ -147,6 +171,12 @@ const lessons = [
     exercise: {
       instructions:
         'The leaf stencil is defined but never used. Stamp it twice: add two <use href="#leaf"> elements inside the svg — the first with x="0", the second with x="60", both with width="40" and height="40".',
+      hints: [
+        'The <symbol> is just a stencil. To show it on screen, you need <use> elements that point to it. The href attribute links to the symbol by its id.',
+        'Add two <use> tags after the symbol: <use href="#leaf" x="0" width="40" height="40" /> and <use href="#leaf" x="60" width="40" height="40" />.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <svg width="160" height="40">\n      <symbol id="leaf" viewBox="0 0 24 24">\n        <circle cx="12" cy="12" r="10" fill="olivedrab" />\n      </symbol>\n      <use href="#leaf" x="0" width="40" height="40" />\n      <use href="#leaf" x="60" width="40" height="40" />\n    </svg>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <svg width="160" height="40">\n      <symbol id="leaf" viewBox="0 0 24 24">\n        <circle cx="12" cy="12" r="10" fill="olivedrab" />\n      </symbol>\n      <!-- stamp the leaf here, twice -->\n    </svg>\n  </body>\n</html>',
       checks: [
@@ -155,6 +185,7 @@ const lessons = [
           selector: 'svg use',
           count: 2,
           label: 'The leaf is stamped exactly twice with <use>',
+          hint: 'Add two <use> elements inside the svg, one after the other.',
         },
         {
           type: 'attrEquals',
@@ -162,6 +193,7 @@ const lessons = [
           attr: 'href',
           value: '#leaf',
           label: 'The stamps reference the #leaf symbol',
+          hint: 'Each <use> needs href="#leaf" to point at the symbol.',
         },
       ],
     },
@@ -193,6 +225,12 @@ const lessons = [
     exercise: {
       instructions:
         'Draw the badge: give the <svg> a viewBox (try "0 0 100 100"), then add a <circle> bloom, a <rect> pot, and a <text> wordmark with your company name.',
+      hints: [
+        'You need four things on the <svg>: a viewBox attribute, a <circle>, a <rect>, and a <text> element. Plan your layout on the 0–100 grid: bloom at the top, pot in the middle, name at the bottom.',
+        'Add viewBox="0 0 100 100" to the svg. Then add <circle cx="50" cy="30" r="16" fill="tomato" />, <rect x="34" y="56" width="32" height="24" fill="peru" />, and <text x="50" y="96" font-size="12" text-anchor="middle">Sprout Co.</text>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Brand studio</h1>\n    <svg viewBox="0 0 100 100" width="200" height="200">\n      <circle cx="50" cy="30" r="16" fill="tomato" />\n      <rect x="34" y="56" width="32" height="24" fill="peru" />\n      <text x="50" y="96" font-size="12" text-anchor="middle">Sprout Co.</text>\n    </svg>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Brand studio</h1>\n    <svg width="200" height="200">\n      <!-- bloom, pot, and wordmark -->\n\n    </svg>\n  </body>\n</html>',
       checks: [
@@ -200,6 +238,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'svg[viewBox]',
           label: 'The logo scales via a viewBox',
+          hint: 'Add viewBox="0 0 100 100" as an attribute on the <svg> tag.',
         },
         {
           type: 'selectorExists',
@@ -215,6 +254,7 @@ const lessons = [
           type: 'selectorExists',
           selector: 'svg text',
           label: 'A <text> wordmark names the company',
+          hint: 'Add a <text> element inside the svg with your company name as its content.',
         },
       ],
     },

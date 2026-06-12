@@ -26,6 +26,12 @@ const lessons = [
     exercise: {
       instructions:
         'This page renders as one giant heading and the logo never appears. Two bugs: close the <h1> after "Sprout Shop", and fix the misspelled scr attribute on the image so it reads src.',
+      hints: [
+        'Open your inspector and look at the tree. The <p> is probably sitting inside the <h1>. That means the h1 was never closed. Also check the image tag — the attribute name is wrong.',
+        'Add </h1> after "Sprout Shop" on that line. Then change scr="logo.png" to src="logo.png".',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Sprout Shop</h1>\n    <p>Open daily, nine to five.</p>\n    <img src="logo.png" alt="Sprout Shop logo">\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Sprout Shop\n    <p>Open daily, nine to five.</p>\n    <img scr="logo.png" alt="Sprout Shop logo">\n  </body>\n</html>',
       checks: [
@@ -34,11 +40,13 @@ const lessons = [
           selector: 'h1 p',
           count: 0,
           label: 'The paragraph is no longer trapped inside the <h1>',
+          hint: 'Close the <h1> tag with </h1> right after "Sprout Shop".',
         },
         {
           type: 'selectorExists',
           selector: 'img[src]',
           label: 'The logo image has a real src attribute',
+          hint: 'Change scr="logo.png" to src="logo.png" on the img tag.',
         },
       ],
     },
@@ -66,6 +74,12 @@ const lessons = [
     exercise: {
       instructions:
         'The shop menu renders oddly because three links sit directly inside the <ul>, which is illegal. Wrap each link in its own <li> so the list is valid again.',
+      hints: [
+        'A <ul> can only hold <li> items as direct children. The links need to move inside <li> elements.',
+        'Wrap each <a> tag: change <a href="...">Seeds</a> to <li><a href="...">Seeds</a></li>, and do the same for the other two.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h2>Shop sections</h2>\n    <ul>\n      <li><a href="/seeds">Seeds</a></li>\n      <li><a href="/tools">Tools</a></li>\n      <li><a href="/advice">Advice</a></li>\n    </ul>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h2>Shop sections</h2>\n    <ul>\n      <a href="/seeds">Seeds</a>\n      <a href="/tools">Tools</a>\n      <a href="/advice">Advice</a>\n    </ul>\n  </body>\n</html>',
       checks: [
@@ -74,6 +88,7 @@ const lessons = [
           selector: 'ul li',
           count: 3,
           label: 'The list has three proper <li> items',
+          hint: 'Each link needs its own <li>...</li> wrapper inside the <ul>.',
         },
         {
           type: 'selectorCount',
@@ -107,6 +122,12 @@ const lessons = [
     exercise: {
       instructions:
         'A validator just flagged this page twice. Fix everything: rename the second id="intro" to id="outro", and replace the obsolete <center> element with an ordinary <p>.',
+      hints: [
+        'Two problems: an id is used twice (ids must be unique), and <center> is an old tag that was retired years ago. Each needs its own fix.',
+        'On the last <p>, change id="intro" to id="outro". Then change <center>...</center> to <p>...</p>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Open day</h1>\n    <p id="intro">Gates open Saturday at ten.</p>\n    <p>Free seedlings for the first twenty visitors!</p>\n    <p id="outro">Bring gloves and a thermos.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Open day</h1>\n    <p id="intro">Gates open Saturday at ten.</p>\n    <center>Free seedlings for the first twenty visitors!</center>\n    <p id="intro">Bring gloves and a thermos.</p>\n  </body>\n</html>',
       checks: [
@@ -115,6 +136,7 @@ const lessons = [
           selector: '#intro',
           count: 1,
           label: 'Only one element carries id="intro"',
+          hint: 'Change the second id="intro" to id="outro" on the last paragraph.',
         },
         {
           type: 'selectorExists',
@@ -126,6 +148,7 @@ const lessons = [
           selector: 'center',
           count: 0,
           label: 'The obsolete <center> is gone',
+          hint: 'Replace <center>...</center> with <p>...</p>.',
         },
       ],
     },
@@ -153,6 +176,12 @@ const lessons = [
     exercise: {
       instructions:
         'Below the first alert, the whole page renders bold — and the last two lines have become a link. Close the runaway <strong> in the first paragraph and the unclosed <a> in the third.',
+      hints: [
+        'When everything after a point looks bold or linked, there is a tag that was opened but never closed. Look for the first paragraph that goes wrong and find the missing closing tag there.',
+        'In the first <p>, add </strong> before </p> to close the bold. In the third <p>, add </a> before </p> to close the link.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <h1>Garden alerts</h1>\n    <p><strong>Frost tonight — cover your seedlings.</strong></p>\n    <p>Tomorrow looks sunny and calm.</p>\n    <p><a href="/alerts">All alerts</a></p>\n    <p>Updated hourly by the garden team.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <h1>Garden alerts</h1>\n    <p><strong>Frost tonight — cover your seedlings.</p>\n    <p>Tomorrow looks sunny and calm.</p>\n    <p><a href="/alerts">All alerts</p>\n    <p>Updated hourly by the garden team.</p>\n  </body>\n</html>',
       checks: [
@@ -161,12 +190,14 @@ const lessons = [
           selector: 'strong',
           count: 1,
           label: 'Exactly one <strong> — the bold stops spreading',
+          hint: 'Close the <strong> tag inside the first paragraph with </strong>.',
         },
         {
           type: 'selectorCount',
           selector: 'a',
           count: 1,
           label: 'Exactly one link — the <a> is closed',
+          hint: 'Close the link in the third paragraph with </a>.',
         },
       ],
     },
@@ -198,6 +229,12 @@ const lessons = [
     exercise: {
       instructions:
         'Repair all three bugs: close the unclosed <strong> in the intro paragraph, rename the second duplicate id="card" to id="card-2", and wrap the three loose <li> items in a <ul>.',
+      hints: [
+        'Fix one bug at a time. First: the bold spreading means a <strong> was never closed. Second: two elements share the same id — find the second one. Third: the <li> items need a parent <ul>.',
+        'Add </strong> before </p> in the first paragraph. Change the second section\'s id="card" to id="card-2". Wrap the three <li> items in <ul>...</ul>.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Sprout Fair</h1>\n    </header>\n    <main>\n      <p><strong>One day only — this Saturday.</strong></p>\n      <p>Stalls, talks, and a seedling swap.</p>\n      <section id="card">\n        <h2>Morning</h2>\n        <p>Pruning workshop at ten.</p>\n      </section>\n      <section id="card-2">\n        <h2>Afternoon</h2>\n        <p>Tomato tasting at two.</p>\n      </section>\n      <h2>What to bring</h2>\n      <ul>\n        <li>Gloves</li>\n        <li>A hat</li>\n        <li>Your questions</li>\n      </ul>\n    </main>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <body>\n    <header>\n      <h1>Sprout Fair</h1>\n    </header>\n    <main>\n      <p><strong>One day only — this Saturday.</p>\n      <p>Stalls, talks, and a seedling swap.</p>\n      <section id="card">\n        <h2>Morning</h2>\n        <p>Pruning workshop at ten.</p>\n      </section>\n      <section id="card">\n        <h2>Afternoon</h2>\n        <p>Tomato tasting at two.</p>\n      </section>\n      <h2>What to bring</h2>\n      <li>Gloves</li>\n      <li>A hat</li>\n      <li>Your questions</li>\n    </main>\n  </body>\n</html>',
       checks: [
@@ -206,12 +243,14 @@ const lessons = [
           selector: 'strong',
           count: 1,
           label: 'One <strong>, properly closed — the bold stays put',
+          hint: 'Add </strong> before </p> in the first paragraph to close the bold tag.',
         },
         {
           type: 'selectorCount',
           selector: '#card',
           count: 1,
           label: 'Ids are unique — only one #card remains',
+          hint: 'Find the second section with id="card" and change it to id="card-2".',
         },
         {
           type: 'selectorExists',

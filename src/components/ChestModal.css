@@ -1,0 +1,224 @@
+/* Growth Chest ceremony — motion per .claude/skills/motion-graphics. */
+
+.cm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  background: rgba(13, 13, 13, 0.55);
+  backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: cm-fade var(--mo-base) var(--ease-out);
+}
+
+@keyframes cm-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cm-dialog {
+  position: relative;
+  width: min(420px, 94vw);
+  padding: 36px 32px 30px;
+  background: linear-gradient(160deg, #141414, #0a0a0a);
+  border: 1.5px solid #2c2c2c;
+  outline: none;
+  text-align: center;
+  animation: cm-pop var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes cm-pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.cm-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 1.5px solid #4a4a4a;
+  border-radius: 50%;
+  color: var(--card);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.cm-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: cm-stage-in var(--mo-base) var(--ease-out) both;
+}
+
+@keyframes cm-stage-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The chest: rarity ring + idle wiggle inviting the open. */
+.cm-box {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 110px;
+  height: 110px;
+  font-size: 58px;
+  border-radius: 50%;
+  border: 3px solid var(--ring, #4a4a4a);
+  animation: cm-wiggle 2.2s var(--ease-out) infinite;
+}
+
+@keyframes cm-wiggle {
+  0%,
+  86%,
+  100% {
+    transform: rotate(0deg);
+  }
+  90% {
+    transform: rotate(-4deg) scale(1.03);
+  }
+  94% {
+    transform: rotate(4deg) scale(1.03);
+  }
+}
+
+.cm-box--open {
+  border-color: transparent;
+  animation: cm-open var(--mo-slow) var(--ease-spring) both;
+}
+
+@keyframes cm-open {
+  0% {
+    transform: scale(0.6);
+  }
+  55% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Spark burst on reveal (per-element transform keyframes, plays once). */
+.cm-burst {
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.cm-spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--spark, var(--amber));
+  --angle: calc(var(--n) * 30deg);
+  --dist: calc(80px + var(--n) * 3px);
+  animation: cm-spark-fly var(--mo-epic) var(--ease-out) both;
+  animation-delay: calc(var(--n) * 10ms);
+}
+
+@keyframes cm-spark-fly {
+  0% {
+    transform: translate(0, 0) scale(0.4);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+        calc(cos(var(--angle)) * var(--dist)),
+        calc(sin(var(--angle)) * var(--dist) - 20px)
+      )
+      scale(1);
+    opacity: 0;
+  }
+}
+
+.cm-kicker {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.cm-reason {
+  margin: 0;
+  color: #d6d6d6;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.cm-contents {
+  margin: 0;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.cm-gain {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: #fff;
+  animation: cm-gain-pop var(--mo-slow) var(--ease-spring) 150ms both;
+}
+
+@keyframes cm-gain-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cm-btn {
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.cm-more {
+  margin: 0;
+  font-size: 12px;
+  color: #8f8f8f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-overlay,
+  .cm-overlay * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

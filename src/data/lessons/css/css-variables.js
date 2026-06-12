@@ -76,6 +76,12 @@ const lessons = [
     exercise: {
       instructions:
         'Override --bg-color for the .dark element: define --bg-color as #ffffff on :root, then redefine it as #1a1a1a on .dark. Apply it as background on both selectors using var(--bg-color).',
+      hints: [
+        'CSS variables inherit down the tree. You can redefine the same variable on a child element to give it a different value. Start by defining --bg-color on :root.',
+        'Inside :root add --bg-color: #ffffff; and background: var(--bg-color); on body. Inside .dark add --bg-color: #1a1a1a; and background: var(--bg-color);.',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        --bg-color: #ffffff;\n      }\n      body {\n        background: var(--bg-color);\n      }\n      .dark {\n        --bg-color: #1a1a1a;\n        background: var(--bg-color);\n      }\n    </style>\n  </head>\n  <body>\n    <p>Light section</p>\n    <div class="dark"><p>Dark section</p></div>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        /* define --bg-color: #ffffff */\n      }\n      body {\n        background: var(--bg-color);\n      }\n      .dark {\n        /* override --bg-color and apply it */\n      }\n    </style>\n  </head>\n  <body>\n    <p>Light section</p>\n    <div class="dark"><p>Dark section</p></div>\n  </body>\n</html>',
       checks: [
@@ -83,11 +89,13 @@ const lessons = [
           type: 'styleIncludes',
           text: '--bg-color:#ffffff',
           label: '--bg-color is #ffffff on :root',
+          hint: 'Inside :root, write --bg-color: #ffffff;',
         },
         {
           type: 'styleIncludes',
           text: '--bg-color:#1a1a1a',
           label: '--bg-color is overridden to #1a1a1a on .dark',
+          hint: 'Inside .dark, redefine the variable: --bg-color: #1a1a1a;',
         },
         {
           type: 'styleIncludes',
@@ -116,6 +124,12 @@ const lessons = [
     exercise: {
       instructions:
         'Define a small token set on :root: --clr-primary as #3d8b5e, --clr-surface as #f8faf7, and --space-md as 1rem. Then apply them: body background uses --clr-surface, h1 color uses --clr-primary, and .card padding uses --space-md.',
+      hints: [
+        'A token set is just custom properties with role-based names. Define all three inside :root. Then use var() to apply each one where the comment tells you.',
+        'In :root: --clr-primary: #3d8b5e; --clr-surface: #f8faf7; --space-md: 1rem; Then: h1 { color: var(--clr-primary); } and .card { padding: var(--space-md); }',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        --clr-primary: #3d8b5e;\n        --clr-surface: #f8faf7;\n        --space-md: 1rem;\n      }\n      body {\n        background: var(--clr-surface);\n      }\n      h1 {\n        color: var(--clr-primary);\n      }\n      .card {\n        padding: var(--space-md);\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Grove Registry</h1>\n    <div class="card">Birch plot 4</div>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        /* your three tokens here */\n      }\n      body {\n        background: var(--clr-surface);\n      }\n      h1 {\n        /* color token */\n      }\n      .card {\n        /* spacing token */\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Grove Registry</h1>\n    <div class="card">Birch plot 4</div>\n  </body>\n</html>',
       checks: [
@@ -123,11 +137,13 @@ const lessons = [
           type: 'styleIncludes',
           text: '--clr-primary:#3d8b5e',
           label: '--clr-primary token is defined',
+          hint: 'Inside :root, write --clr-primary: #3d8b5e;',
         },
         {
           type: 'styleIncludes',
           text: '--clr-surface:#f8faf7',
           label: '--clr-surface token is defined',
+          hint: 'Inside :root, write --clr-surface: #f8faf7;',
         },
         {
           type: 'styleIncludes',
@@ -160,6 +176,12 @@ const lessons = [
     exercise: {
       instructions:
         'Define --base-space as 1rem on :root. Then give .small a padding of calc(var(--base-space) * 0.5) and .large a padding of calc(var(--base-space) * 2).',
+      hints: [
+        'calc() lets you do math with variable values. Use it like this: calc(var(--base-space) * 0.5). That means half of whatever --base-space is set to.',
+        'In :root: --base-space: 1rem; Then: .small { padding: calc(var(--base-space) * 0.5); } and .large { padding: calc(var(--base-space) * 2); }',
+      ],
+      solution:
+        '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        --base-space: 1rem;\n      }\n      .small {\n        background: #e8f5e9;\n        padding: calc(var(--base-space) * 0.5);\n      }\n      .large {\n        background: #c8e6c9;\n        padding: calc(var(--base-space) * 2);\n      }\n    </style>\n  </head>\n  <body>\n    <div class="small">Seedling</div>\n    <div class="large">Ancient oak</div>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html>\n  <head>\n    <style>\n      :root {\n        /* define --base-space: 1rem */\n      }\n      .small {\n        background: #e8f5e9;\n        /* calc padding */\n      }\n      .large {\n        background: #c8e6c9;\n        /* calc padding */\n      }\n    </style>\n  </head>\n  <body>\n    <div class="small">Seedling</div>\n    <div class="large">Ancient oak</div>\n  </body>\n</html>',
       checks: [
@@ -167,11 +189,13 @@ const lessons = [
           type: 'styleIncludes',
           text: '--base-space:1rem',
           label: '--base-space is defined as 1rem',
+          hint: 'Inside :root, write --base-space: 1rem;',
         },
         {
           type: 'styleIncludes',
           text: 'calc(var(--base-space)*0.5)',
           label: '.small uses calc() with --base-space',
+          hint: 'Set padding: calc(var(--base-space) * 0.5) on .small.',
         },
         {
           type: 'styleIncludes',
@@ -200,6 +224,12 @@ const lessons = [
     exercise: {
       instructions:
         'Build a two-theme page: define --clr-bg (#f5f5f5) and --clr-text (#111111) on :root. Override both inside a [data-theme="dark"] selector (use #111111 for bg and #f5f5f5 for text). Apply them to body background and color. Add data-theme="dark" to the <html> element to test the dark theme.',
+      hints: [
+        'Theme switching works by redefining variables on a different selector. Set the light colors on :root, then write a [data-theme="dark"] block that redefines the same variable names with dark values.',
+        'In :root: --clr-bg: #f5f5f5; --clr-text: #111111; In [data-theme="dark"]: --clr-bg: #111111; --clr-text: #f5f5f5; On body: background: var(--clr-bg); color: var(--clr-text);',
+      ],
+      solution:
+        '<!doctype html>\n<html data-theme="dark">\n  <head>\n    <style>\n      :root {\n        --clr-bg: #f5f5f5;\n        --clr-text: #111111;\n      }\n      [data-theme="dark"] {\n        --clr-bg: #111111;\n        --clr-text: #f5f5f5;\n      }\n      body {\n        background: var(--clr-bg);\n        color: var(--clr-text);\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Night Garden</h1>\n    <p>The forest after dark.</p>\n  </body>\n</html>',
       starter:
         '<!doctype html>\n<html data-theme="dark">\n  <head>\n    <style>\n      :root {\n        /* light tokens */\n      }\n      [data-theme="dark"] {\n        /* dark overrides */\n      }\n      body {\n        /* apply the tokens */\n      }\n    </style>\n  </head>\n  <body>\n    <h1>Night Garden</h1>\n    <p>The forest after dark.</p>\n  </body>\n</html>',
       checks: [
@@ -207,11 +237,13 @@ const lessons = [
           type: 'styleIncludes',
           text: '--clr-bg:#f5f5f5',
           label: '--clr-bg light token is defined',
+          hint: 'Inside :root, write --clr-bg: #f5f5f5;',
         },
         {
           type: 'styleIncludes',
           text: '[data-theme="dark"]',
           label: 'A [data-theme="dark"] override block exists',
+          hint: 'Add a [data-theme="dark"] { } rule block to your CSS.',
         },
         {
           type: 'styleIncludes',

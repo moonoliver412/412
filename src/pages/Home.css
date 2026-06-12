@@ -526,3 +526,53 @@
   opacity: 0.5;
   cursor: default;
 }
+
+/* Unopened chest strip — pulls the eye, opens the ceremony. */
+.home-chest-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+  padding: 14px 22px;
+  background: var(--panel);
+  border: 1.5px solid var(--amber);
+  border-radius: var(--radius-pill);
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  transition: transform var(--mo-fast) var(--ease-out);
+}
+
+.home-chest-strip:hover {
+  transform: translateY(-2px);
+}
+
+.home-chest-icon {
+  font-size: 22px;
+  animation: home-chest-bounce 2.4s var(--ease-out) infinite;
+}
+
+@keyframes home-chest-bounce {
+  0%,
+  88%,
+  100% {
+    transform: translateY(0);
+  }
+  92% {
+    transform: translateY(-4px);
+  }
+  96% {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-chest-strip,
+  .home-chest-icon {
+    animation: none !important;
+    transition: none !important;
+  }
+}

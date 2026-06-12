@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ChestModal from '../components/ChestModal';
 import { useGame, WAGER_PAYOUT, WAGER_STAKE } from '../state/useGame';
 import { useProgress } from '../state/useProgress';
 import { LANGUAGES, STAGES_PER_TOPIC } from '../data/curriculum';
@@ -61,6 +63,8 @@ export default function Home() {
   const rank = rankFor(game.xp);
   const next2 = nextRank(game.xp);
   const wagerDay = game.wager ? dayGap(game.wager.startDay, today) + 1 : 0;
+  const unopenedChests = (game.chests ?? []).filter((c) => !c.openedAt).length;
+  const [chestsOpen, setChestsOpen] = useState(false);
 
   const next = nextActionable(progress);
   const masteredCount = ALL_TOPICS.filter(
@@ -128,6 +132,22 @@ export default function Home() {
           label="trees mastered"
         />
       </section>
+
+      {unopenedChests > 0 && (
+        <button
+          type="button"
+          className="home-section home-chest-strip"
+          style={{ '--i': 2 }}
+          onClick={() => setChestsOpen(true)}
+        >
+          <span className="home-chest-icon" aria-hidden="true">
+            🎁
+          </span>
+          You have {unopenedChests} unopened{' '}
+          {unopenedChests === 1 ? 'chest' : 'chests'} — open{' '}
+          {unopenedChests === 1 ? 'it' : 'them'}
+        </button>
+      )}
 
       <div className="home-grid">
         <section className="home-section home-card cs-card" style={{ '--i': 2 }}>
@@ -285,6 +305,8 @@ export default function Home() {
           })}
         </section>
       </div>
+
+      {chestsOpen && <ChestModal onClose={() => setChestsOpen(false)} />}
     </main>
   );
 }

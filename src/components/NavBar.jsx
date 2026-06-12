@@ -94,7 +94,9 @@ export default function NavBar() {
             <path d="M10 19a2 2 0 0 0 4 0" />
           </svg>
         </button>
-        <div className="nav-avatar" aria-label="Profile">CS</div>
+        <NavLink to="/settings" className="nav-avatar" aria-label="Settings">
+          CS
+        </NavLink>
       </div>
     </header>
   );

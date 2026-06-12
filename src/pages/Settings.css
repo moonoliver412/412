@@ -1,0 +1,188 @@
+/* Settings — calm panels, obvious controls. */
+
+.settings {
+  max-width: 760px;
+}
+
+.set-rise {
+  animation: set-rise var(--mo-base) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes set-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.set-panel {
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.set-panel-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.set-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-top: 1.5px solid #2c2c2c;
+  padding-top: 16px;
+}
+
+.set-row-text {
+  min-width: 0;
+}
+
+.set-row-title {
+  margin: 0 0 3px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.set-row-blurb {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #a8a8a8;
+}
+
+/* Toggle switch (transform-only knob). */
+.set-toggle {
+  flex: none;
+  width: 52px;
+  height: 30px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid #4a4a4a;
+  background: #1d1d1d;
+  position: relative;
+  transition: background-color var(--mo-base) var(--ease-out),
+    border-color var(--mo-base) var(--ease-out);
+}
+
+.set-toggle.is-on {
+  background: rgba(255, 69, 0, 0.25);
+  border-color: var(--orange);
+}
+
+.set-toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: #8f8f8f;
+  transition: transform var(--mo-base) var(--ease-spring),
+    background-color var(--mo-base) var(--ease-out);
+}
+
+.set-toggle.is-on .set-toggle-knob {
+  transform: translateX(22px);
+  background: var(--orange);
+}
+
+.set-seg {
+  display: flex;
+  gap: 6px;
+}
+
+.set-seg-btn {
+  border: 1.5px solid #4a4a4a;
+  background: transparent;
+  color: #d6d6d6;
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  transition: border-color var(--mo-fast) var(--ease-out),
+    color var(--mo-fast) var(--ease-out);
+}
+
+.set-seg-btn.is-active {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.set-status-chip {
+  border: 1.5px solid #4a4a4a;
+  border-radius: var(--radius-pill);
+  padding: 5px 14px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8f8f8f;
+}
+
+.set-status-chip.is-on {
+  border-color: rgba(122, 160, 95, 0.6);
+  color: #8fbc70;
+}
+
+.set-small-btn {
+  font-size: 14px;
+  padding: 8px 20px;
+}
+
+.set-data-note {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #d6d6d6;
+}
+
+.set-data-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.set-danger-btn {
+  margin-left: auto;
+  background: transparent;
+  border: 1.5px solid #a04545;
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  color: #d98c8c;
+  font-family: var(--font-display);
+  font-size: 13px;
+  transition: background-color var(--mo-fast) var(--ease-out);
+}
+
+.set-danger-btn:hover {
+  background: rgba(160, 69, 69, 0.15);
+}
+
+.set-status {
+  margin: 0;
+  font-size: 13px;
+  color: var(--amber);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .set-rise,
+  .set-toggle,
+  .set-toggle-knob,
+  .set-seg-btn,
+  .set-danger-btn {
+    animation: none !important;
+    transition: none !important;
+  }
+}
